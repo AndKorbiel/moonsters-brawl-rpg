@@ -1,23 +1,22 @@
+import MainMenu from "./components/MainMenu";
+import { connect } from "react-redux";
 import './styles/App.css';
+import Navbar from "./components/Navbar";
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <Navbar />
+        <h1>{props.status}</h1>
+        <MainMenu />
     </div>
   );
 }
 
-export default App;
+const MapStateToProps = state => {
+    return {
+        status: state.status
+    }
+}
+
+export default connect(MapStateToProps, {})(App);
