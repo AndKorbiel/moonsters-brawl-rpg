@@ -4,3 +4,22 @@
   display: flex;
   color: #fff;
 }
+
+.navbar {
+  background: #b5d552;
+  position: fixed;
+  width: 100%;
+  color: #000;
+  padding: 10px 0;
+  z-index: 99;
+}
+
+.MuiTabs-flexContainer {
+  align-items: center;
+  justify-content: center;
+}
+
+
+.main-cont {
+  padding-top: 80px;
+}

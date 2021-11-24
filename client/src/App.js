@@ -1,22 +1,24 @@
-import MainMenu from "./components/MainMenu";
 import { connect } from "react-redux";
 import './styles/App.css';
 import Navbar from "./components/Navbar";
+import { Container } from '@mui/material';
+import Home from './views/Home';
 
 function App(props) {
   return (
     <div className="App">
-        <Navbar />
-        <h1>{props.status}</h1>
-        <MainMenu />
+        <Navbar status={props.status} />
+        <Container className="main-cont">
+            {props.status === 'In Main Menu' ? <Home /> : ''}
+        </Container>
     </div>
   );
 }
 
-const MapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         status: state.status
     }
 }
 
-export default connect(MapStateToProps, {})(App);
+export default connect(mapStateToProps, {})(App);
