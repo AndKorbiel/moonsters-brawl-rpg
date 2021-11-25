@@ -12,7 +12,7 @@ function MainMenu(props) {
     return (
         <Paper sx={{ width: 320, maxWidth: '100%' }}>
             <MenuList>
-                <MenuItem onClick={() => handleChange('Well done')}>
+                <MenuItem onClick={() => handleChange('New Game')}>
                     <h2>New game</h2>
                 </MenuItem>
                 <MenuItem>
