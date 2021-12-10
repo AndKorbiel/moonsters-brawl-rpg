@@ -6,6 +6,7 @@ import setStatusCode from './redux/actions';
 import Navbar from "./components/Navbar";
 import MainMenu from "./components/MainMenu";
 import Grid from '@mui/material/Grid';
+import CharacterCard from "./components/CharacterCard";
 
 class App extends React.Component {
     render() {
@@ -14,7 +15,7 @@ class App extends React.Component {
                 <Navbar status={this.props.statusCode} action={this.props.setStatusCode}/>
                 <Grid container maxWidth="xl" spacing={2} className="main-cont centered">
                     <Grid item xs={12}>
-                        {this.props.statusCode === 0 ? <MainMenu action={this.props.setStatusCode} /> : '' }
+                        {this.props.statusCode === 0 ? <MainMenu action={this.props.setStatusCode} /> : <CharacterCard /> }
                     </Grid>
                 </Grid>
             </div>
@@ -24,7 +25,7 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        statusCode: state.statusCode
+        statusCode: state.game.statusCode
     }
 }
 

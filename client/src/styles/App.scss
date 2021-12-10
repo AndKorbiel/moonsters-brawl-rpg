@@ -15,5 +15,9 @@
   .text-centered {
     text-align: center;
   }
+
+  .MuiCardMedia-img {
+    object-fit: contain;
+  }
 }
 

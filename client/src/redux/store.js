@@ -1,4 +1,7 @@
 import {createStore} from "redux";
-import mainReducer from './reducers';
+import combineReducers from './reducers/index.js';
 
-export const store = createStore(mainReducer);
+export const store = createStore(
+    combineReducers,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);

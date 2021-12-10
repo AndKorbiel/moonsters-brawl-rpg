@@ -17,7 +17,7 @@ export default function MainMenu(props) {
             <MenuList>
                 {options.map(element => {
                     return (
-                        <MenuItem>
+                        <MenuItem key={element.value}>
                             <ListItemText>
                                 <Typography variant="h3" onClick={()=> props.action(element.value)}>
                                     {element.label}
