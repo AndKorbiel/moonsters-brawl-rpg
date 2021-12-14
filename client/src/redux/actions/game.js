@@ -1,4 +1,4 @@
-import {SET_STATUS_CODE} from "./types";
+import {SET_STATUS_CODE} from "../types/game";
 
 export default function setStatusCode(statusCode) {
     return {

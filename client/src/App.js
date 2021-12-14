@@ -1,7 +1,7 @@
 import './styles/App.scss';
 import React from 'react';
 import {connect} from "react-redux";
-import setStatusCode from './redux/actions';
+import setStatusCode from './redux/actions/game';
 // material-ui
 import Navbar from "./components/Navbar";
 import MainMenu from "./components/MainMenu";

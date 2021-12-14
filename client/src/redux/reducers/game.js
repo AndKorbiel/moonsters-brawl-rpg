@@ -1,4 +1,4 @@
-import {SET_STATUS_CODE} from "../types";
+import {SET_STATUS_CODE} from "../types/game";
 
 const initialState = {
     statusCode: 0
