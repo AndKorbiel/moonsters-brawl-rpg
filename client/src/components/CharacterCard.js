@@ -15,9 +15,11 @@ class CharacterCard extends React.Component {
     state = {
         name: '',
         points: 0,
-        attack: 0,
-        defense: 0,
-        life: 0,
+        stats: [
+            {name: 'attack', value: 0},
+            {name: 'defense', value: 0},
+            {name: 'life', value: 0},
+        ],
         validation: {
             name: false
         }
@@ -31,28 +33,55 @@ class CharacterCard extends React.Component {
 
     handleIncrement = e => {
         const name = e.target.name;
-        let current = this.state[name];
+        let currentStat = this.state.stats.filter(el => el.name === name)[0].value;
+        let currentPoints = this.state.points;
 
-        this.setState(state => ({
-            ...state,
-            [name]: ++current
-        }))
+        if (currentPoints > 0) {
+            this.setState(state => ({
+                ...state,
+                stats: [
+                    ...state.stats.map(el => {
+                        if (el.name === name) {
+                            return {name, value: ++currentStat}
+                        } else {
+                            return el
+                        }
+                    })
+                ],
+                points: --currentPoints
+            }))
+        }
     }
 
     handleDecrement = e => {
         const name = e.target.name;
-        let current = this.state[name];
+        let currentStat = this.state[name];
+        let currentPoints = this.state.points;
+        const statisticValueFromStore = this.props.character.stats.filter(el => el.name === name)[0].value;
 
-        this.setState(state => ({
-            ...state,
-            [name]: --current
-        }))
+        if (currentStat > statisticValueFromStore) {
+            this.setState(state => ({
+                ...state,
+                stats: [
+                    ...state.stats.map(el => {
+                        if (el.name === name) {
+                            return {name, value: --currentStat}
+                        } else {
+                            return el
+                        }
+                    })
+                ],
+                points: ++currentPoints
+            }))
+        }
     }
 
     handleSave = () => {
         if (this.state.name.length >= 2) {
             this.props.setNewName(this.state.name);
             this.props.handleEditMode(false);
+            this.props.changeStats(this.state.stats);
+
             this.setState(state => ({
                 ...state,
                 validation: {
@@ -78,13 +107,13 @@ class CharacterCard extends React.Component {
         const currentDefense = currentStats.stats.filter(el => el.name === 'defense');
         const currentLife = currentStats.stats.filter(el => el.name === 'life');
 
-        console.log(currentLife)
-
         this.setState({
+            stats: [
+                {name: 'attack', value: currentAttack[0].value},
+                {name: 'defense', value: currentDefense[0].value},
+                {name: 'life', value: currentLife[0].value},
+            ],
             points: currentStats.points,
-            attack: currentAttack[0].value,
-            defense: currentDefense[0].value,
-            life: currentLife[0].value,
         })
     }
 
@@ -125,7 +154,7 @@ class CharacterCard extends React.Component {
                         </li>
                         <li>
                             <Typography variant="h6">
-                                Points to spend: {this.props.character.points}
+                                Points to spend: {this.state.points}
                             </Typography>
                         </li>
                         {this.props.character.stats.map(el => {
@@ -140,7 +169,7 @@ class CharacterCard extends React.Component {
                                         : ''
                                     }
                                     <Typography variant="h6">
-                                        {el.name}: {this.props.character.isEditing ? this.state[el.name] : el.value}
+                                        {el.name}: {this.props.character.isEditing ? this.state.stats.filter(item => item.name === el.name)[0].value : el.value}
                                     </Typography>
                                     {this.props.character.isEditing ?
                                         <Button
