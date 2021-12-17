@@ -31,49 +31,41 @@ class CharacterCard extends React.Component {
         })
     }
 
-    handleIncrement = e => {
+    handleStatsChange = (e, option) => {
         const name = e.target.name;
         let currentStat = this.state.stats.filter(el => el.name === name)[0].value;
         let currentPoints = this.state.points;
-
-        if (currentPoints > 0) {
-            this.setState(state => ({
-                ...state,
-                stats: [
-                    ...state.stats.map(el => {
-                        if (el.name === name) {
-                            return {name, value: ++currentStat}
-                        } else {
-                            return el
-                        }
-                    })
-                ],
-                points: --currentPoints
-            }))
-        }
-    }
-
-    handleDecrement = e => {
-        const name = e.target.name;
-        let currentStat = this.state[name];
-        let currentPoints = this.state.points;
         const statisticValueFromStore = this.props.character.stats.filter(el => el.name === name)[0].value;
 
-        if (currentStat > statisticValueFromStore) {
+        const updateState = () => {
+            let action = "+";
+            if (option === 'decrement') { action = '-'}
+
             this.setState(state => ({
                 ...state,
                 stats: [
                     ...state.stats.map(el => {
                         if (el.name === name) {
-                            return {name, value: --currentStat}
+                            return {name, value: currentStat + parseFloat(action + 1)}
                         } else {
                             return el
                         }
                     })
                 ],
-                points: ++currentPoints
+                points: currentPoints - parseFloat(action + 1)
             }))
         }
+
+        if (option === 'increment') {
+            if (currentPoints > 0) {
+                updateState()
+            }
+        } else {
+            if (currentStat > statisticValueFromStore) {
+                updateState()
+            }
+        }
+
     }
 
     handleSave = () => {
@@ -108,6 +100,7 @@ class CharacterCard extends React.Component {
         const currentLife = currentStats.stats.filter(el => el.name === 'life');
 
         this.setState({
+            name: currentStats.name,
             stats: [
                 {name: 'attack', value: currentAttack[0].value},
                 {name: 'defense', value: currentDefense[0].value},
@@ -164,7 +157,7 @@ class CharacterCard extends React.Component {
                                         <Button
                                             variant="outlined"
                                             name={el.name}
-                                            onClick={e => this.handleDecrement(e)}
+                                            onClick={e => this.handleStatsChange(e, 'decrement')}
                                         >-</Button>
                                         : ''
                                     }
@@ -175,7 +168,7 @@ class CharacterCard extends React.Component {
                                         <Button
                                             variant="outlined"
                                             name={el.name}
-                                            onClick={e => this.handleIncrement(e)}
+                                            onClick={e => this.handleStatsChange(e, 'increment')}
                                         >+</Button>
                                         : ''
                                     }
