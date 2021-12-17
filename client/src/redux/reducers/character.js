@@ -10,6 +10,7 @@ const initialState = {
         {name: 'defense', value: 10},
         {name: 'life', value: 10},
     ],
+    gold: 100,
     isEditing: false
 }
 

@@ -147,6 +147,11 @@ class CharacterCard extends React.Component {
                         </li>
                         <li>
                             <Typography variant="h6">
+                                Gold: {this.props.character.gold}
+                            </Typography>
+                        </li>
+                        <li>
+                            <Typography variant="h6">
                                 Points to spend: {this.state.points}
                             </Typography>
                         </li>
