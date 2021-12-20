@@ -17,7 +17,7 @@ const initialState = {
             image: 'assets/images/items/shield.jpg',
             price: 99,
             stats: [
-                {name: 'defence', value: '10'}
+                {name: 'defense', value: '10'}
             ]
         },
         {

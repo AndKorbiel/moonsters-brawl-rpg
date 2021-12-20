@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {buyItem} from '../redux/actions/character';
+import {buyItem, calculateStatsFromItem} from '../redux/actions/character';
 import {removeFromShop} from '../redux/actions/shop';
 
 // material-ui
@@ -12,7 +12,8 @@ function ShopCard(props) {
     const handleBuyAction = item => {
         if (props.character.items.length <= 2 && props.character.gold >= item.price) {
             props.buyItem(item);
-            props.removeFromShop(item)
+            props.removeFromShop(item);
+            props.calculateStatsFromItem(item);
         }
     }
 
@@ -32,6 +33,10 @@ function ShopCard(props) {
                             )
                         })}
                     </Grid>
+                    {props.availableItems.length === 0 ?
+                        <Typography variant="h6" align="center">All item have been sold. Come back later.</Typography>
+                        : ''
+                    }
                 </Grid>
             </Grid>
         </Paper>
@@ -48,7 +53,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         buyItem: item => dispatch(buyItem(item)),
-        removeFromShop: item => dispatch(removeFromShop(item))
+        removeFromShop: item => dispatch(removeFromShop(item)),
+        calculateStatsFromItem: item => dispatch(calculateStatsFromItem(item.stats))
     }
 }
 

@@ -1,4 +1,4 @@
-import {HANDLE_EDIT_MODE, SET_NEW_NAME, CHANGE_STATS, BUY_ITEM} from "../types/character";
+import {HANDLE_EDIT_MODE, SET_NEW_NAME, CHANGE_STATS, BUY_ITEM, DROP_ITEM, CALCULATE_STATS_FROM_ITEM} from "../types/character";
 
 const initialState = {
     name: 'Moonster',
@@ -40,6 +40,18 @@ export default function character(state = initialState, action) {
                     ...state.items,
                     action.payload
                 ]
+            }
+        case CALCULATE_STATS_FROM_ITEM:
+            return {
+                ...state,
+                stats: state.stats.map(stat => {
+                    return stat.name === action.payload.name ? {...stat, value:stat.value +  parseInt(action.payload.value)} : stat
+                })
+            }
+        case DROP_ITEM:
+            return {
+                ...state,
+                items: state.items.filter(item => item.id !== action.payload.id)
             }
         default:
             return state

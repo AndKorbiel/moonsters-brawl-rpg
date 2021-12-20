@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import React from 'react';
-import {handleEditMode, setNewName, changeStats} from "../redux/actions/character";
+import {handleEditMode, setNewName, changeStats, dropItem} from "../redux/actions/character";
 
 // material-ui
 import Card from '@mui/material/Card';
@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 class CharacterCard extends React.Component {
     state = {
@@ -97,7 +98,7 @@ class CharacterCard extends React.Component {
     render() {
         let emptySpaceInInventory = [];
         for (let n = this.props.character.items.length; n <=2; n++) {
-            emptySpaceInInventory.push( <Grid item xs={12} lg={4} className="inventory-box" />)
+            emptySpaceInInventory.push( <Grid item xs={12} lg={4} className="inventory-box" key={n} />)
         }
 
         return (
@@ -173,7 +174,7 @@ class CharacterCard extends React.Component {
                 </CardActions>
                 {this.props.character.isEditing ?
                     <Button variant="contained" onClick={() => this.handleSave()}>Save</Button>
-                    : <Button variant="outlined" onClick={() => this.props.handleEditMode(true)}>Edit</Button>
+                    : <Button variant="contained" onClick={() => this.props.handleEditMode(true)}>Edit</Button>
                 }
                 <hr />
                 <CardContent id="character-inventory">
@@ -188,6 +189,15 @@ class CharacterCard extends React.Component {
                                         component="img"
                                         image={item.image}
                                     />
+                                    <CardActions>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            startIcon={<HighlightOffIcon/>}
+                                            onClick={()=> this.props.dropItem(item)}>
+                                            Drop item
+                                        </Button>
+                                    </CardActions>
                                 </Grid>
                             )
                         })}
@@ -210,7 +220,8 @@ const mapDispatchToProps = dispatch => {
     return {
         handleEditMode: value => dispatch(handleEditMode(value)),
         setNewName: newName => dispatch(setNewName(newName)),
-        changeStats: value => dispatch(changeStats(value))
+        changeStats: value => dispatch(changeStats(value)),
+        dropItem: item => dispatch(dropItem(item))
     }
 }
 
