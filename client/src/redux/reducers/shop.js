@@ -1,3 +1,5 @@
+import { REMOVE_FROM_SHOP } from "../types/shop";
+
 const initialState = {
     availableItems: [
         {
@@ -31,5 +33,14 @@ const initialState = {
 }
 
 export default function shop(state = initialState, action) {
-    return state
+    switch (action.type) {
+        case REMOVE_FROM_SHOP:
+            return {
+                ...state,
+                availableItems: state.availableItems.filter(el => el.id !== action.payload.id)
+            }
+        default: {
+            return state
+        }
+    }
 }

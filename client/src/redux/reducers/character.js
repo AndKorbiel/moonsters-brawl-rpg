@@ -1,4 +1,4 @@
-import {HANDLE_EDIT_MODE, SET_NEW_NAME, CHANGE_STATS} from "../types/character";
+import {HANDLE_EDIT_MODE, SET_NEW_NAME, CHANGE_STATS, BUY_ITEM} from "../types/character";
 
 const initialState = {
     name: 'Moonster',
@@ -10,7 +10,8 @@ const initialState = {
         {name: 'defense', value: 10},
         {name: 'life', value: 10},
     ],
-    gold: 100,
+    gold: 1100,
+    items: [],
     isEditing: false
 }
 
@@ -30,6 +31,15 @@ export default function character(state = initialState, action) {
             return {
                 ...state,
                 stats: action.payload
+            }
+        case BUY_ITEM:
+            return {
+                ...state,
+                gold: state.gold - action.payload.price,
+                items: [
+                    ...state.items,
+                    action.payload
+                ]
             }
         default:
             return state

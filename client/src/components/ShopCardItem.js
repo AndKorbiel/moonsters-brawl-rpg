@@ -31,6 +31,9 @@ export default function ShopCardItem(props) {
                     })}
                 </Typography>
             </CardContent>
+            <CardActions>
+                <Button variant="outlined" onClick={()=> props.action(props.item)}>Buy this item</Button>
+            </CardActions>
         </Card>
     )
 }

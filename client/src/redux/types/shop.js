@@ -1,0 +1,1 @@
+export const REMOVE_FROM_SHOP = 'REMOVE_FROM_SHOP';

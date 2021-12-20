@@ -10,16 +10,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
 
 class CharacterCard extends React.Component {
     state = {
-        name: '',
-        points: 0,
-        stats: [
-            {name: 'attack', value: 0},
-            {name: 'defense', value: 0},
-            {name: 'life', value: 0},
-        ],
         validation: {
             name: false
         }
@@ -95,22 +89,17 @@ class CharacterCard extends React.Component {
     componentDidMount() {
         const currentStats = this.props.character;
 
-        const currentAttack = currentStats.stats.filter(el => el.name === 'attack');
-        const currentDefense = currentStats.stats.filter(el => el.name === 'defense');
-        const currentLife = currentStats.stats.filter(el => el.name === 'life');
-
         this.setState({
-            name: currentStats.name,
-            stats: [
-                {name: 'attack', value: currentAttack[0].value},
-                {name: 'defense', value: currentDefense[0].value},
-                {name: 'life', value: currentLife[0].value},
-            ],
-            points: currentStats.points,
+            ...currentStats
         })
     }
 
     render() {
+        let emptySpaceInInventory = [];
+        for (let n = this.props.character.items.length; n <=2; n++) {
+            emptySpaceInInventory.push( <Grid item xs={12} lg={4} className="inventory-box" />)
+        }
+
         return (
             <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
@@ -186,6 +175,25 @@ class CharacterCard extends React.Component {
                     <Button variant="contained" onClick={() => this.handleSave()}>Save</Button>
                     : <Button variant="outlined" onClick={() => this.props.handleEditMode(true)}>Edit</Button>
                 }
+                <hr />
+                <CardContent id="character-inventory">
+                    <Typography gutterBottom variant="h5" component="div">
+                        Inventory
+                    </Typography>
+                    <Grid container spacing={4} className="inventory-cont">
+                        {this.props.character.items.map(item => {
+                            return (
+                                <Grid item xs={12} lg={4} className="inventory-box" key={item.id}>
+                                    <CardMedia
+                                        component="img"
+                                        image={item.image}
+                                    />
+                                </Grid>
+                            )
+                        })}
+                        {emptySpaceInInventory}
+                    </Grid>
+                </CardContent>
             </Card>
         )
     }

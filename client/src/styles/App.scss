@@ -40,5 +40,19 @@
       }
     }
   }
+
+  #character-inventory {
+    .inventory-cont {
+      margin-left: -16px;
+      padding: 10px;
+      margin-top: 1em;
+
+      .inventory-box {
+        border: 1px solid #c5c5c5;
+        min-height: 66px;
+        padding: 0;
+      }
+    }
+  }
 }
 

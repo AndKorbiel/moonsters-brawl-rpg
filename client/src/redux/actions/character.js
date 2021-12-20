@@ -1,4 +1,4 @@
-import {HANDLE_EDIT_MODE, SET_NEW_NAME, CHANGE_STATS} from "../types/character";
+import {HANDLE_EDIT_MODE, SET_NEW_NAME, CHANGE_STATS, BUY_ITEM} from "../types/character";
 
 export function handleEditMode(value) {
     return {
@@ -18,5 +18,12 @@ export function changeStats(value) {
     return {
         type: CHANGE_STATS,
         payload: value
+    }
+}
+
+export function buyItem(item) {
+    return {
+        type: BUY_ITEM,
+        payload: item
     }
 }
