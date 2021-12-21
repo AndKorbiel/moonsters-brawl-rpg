@@ -29,7 +29,6 @@ export function buyItem(item) {
 }
 
 export function calculateStatsFromItem(item) {
-    console.log(item)
     return {
         type: CALCULATE_STATS_FROM_ITEM,
         payload: item[0]

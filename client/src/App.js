@@ -1,8 +1,8 @@
 import './styles/App.scss';
 import React from 'react';
 import {connect} from "react-redux";
-import setStatusCode from './redux/actions/game';
-import CharacterCard from "./components/CharacterCard";
+import {setStatusCode, startGame} from './redux/actions/game';
+import CharacterCard from "./components/CharacterCardContainer";
 import ShopCard from "./components/ShopCard";
 
 // material-ui
@@ -11,6 +11,14 @@ import MainMenu from "./components/MainMenu";
 import Grid from '@mui/material/Grid';
 
 class App extends React.Component {
+    handleGameStatus = status => {
+        console.log(status)
+        if (status === 1) {
+            this.props.startGame()
+        }
+        this.props.setStatusCode(status)
+    }
+
     render() {
         return (
             <div className="App">
@@ -18,7 +26,7 @@ class App extends React.Component {
                 <Grid container maxWidth="xl" spacing={2} className="main-cont centered">
                     {this.props.statusCode === 0 ?
                         <Grid item xs={12}>
-                            <MainMenu action={this.props.setStatusCode} />
+                            <MainMenu action={this.handleGameStatus} gameStarted={this.props.gameStarted} options={this.props.menuOptions} />
                         </Grid>
                         : <><Grid item xs={12} lg={3}>
                                 <CharacterCard />
@@ -36,13 +44,16 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        statusCode: state.game.statusCode
+        statusCode: state.game.statusCode,
+        gameStarted: state.game.gameStarted,
+        menuOptions: state.game.menuOptions
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        setStatusCode: statusCode => {dispatch(setStatusCode(statusCode))}
+        setStatusCode: statusCode => {dispatch(setStatusCode(statusCode))},
+        startGame: () => {dispatch(startGame())}
     }
 }
 

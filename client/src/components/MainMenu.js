@@ -3,19 +3,22 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
-const options = [
-    {value: 1, label: "New Game"},
-    {value: 2, label: "Save Game"},
-    {value: 3, label: "Load Game"},
-    {value: 4, label: "Quit"}
-]
+import {useEffect} from "react";
 
 export default function MainMenu(props) {
+    // useEffect(()=> {
+    //     console.log('aaa')
+    //     console.log(props)
+    //     if (props.gameStarted) {
+    //         options[0] = {value: 1, label: "Resume"}
+    //     }
+    //     console.log(options)
+    // })
+
     return (
         <Box maxWidth="sm" className="centered text-centered">
             <MenuList>
-                {options.map(element => {
+                {props.options.map(element => {
                     return (
                         <MenuItem key={element.value}>
                             <ListItemText>

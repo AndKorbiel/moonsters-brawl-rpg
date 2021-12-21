@@ -30,7 +30,8 @@ export default function character(state = initialState, action) {
         case CHANGE_STATS:
             return {
                 ...state,
-                stats: action.payload
+                stats: action.payload.stats,
+                points: action.payload.points
             }
         case BUY_ITEM:
             return {
