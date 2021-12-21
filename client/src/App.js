@@ -9,10 +9,10 @@ import ShopCard from "./components/ShopCard";
 import Navbar from "./components/Navbar";
 import MainMenu from "./components/MainMenu";
 import Grid from '@mui/material/Grid';
+import OpponentCard from "./components/OpponentCard";
 
 class App extends React.Component {
     handleGameStatus = status => {
-        console.log(status)
         if (status === 1) {
             this.props.startGame()
         }
@@ -28,12 +28,30 @@ class App extends React.Component {
                         <Grid item xs={12}>
                             <MainMenu action={this.handleGameStatus} gameStarted={this.props.gameStarted} options={this.props.menuOptions} />
                         </Grid>
-                        : <><Grid item xs={12} lg={3}>
+                        : ''
+                    }
+                    {this.props.statusCode === 1 ?
+                        <><Grid item xs={12} lg={3}>
+                            <CharacterCard />
+                        </Grid>
+                            <Grid item xs={12} lg={9}>
+                                <ShopCard />
+                            </Grid></>
+                        : ''
+                    }
+                    {this.props.statusCode === 2 ?
+                        <>
+                            <Grid item xs={12} lg={3}>
                                 <CharacterCard />
                             </Grid>
-                        <Grid item xs={12} lg={9}>
-                            <ShopCard />
-                        </Grid></>
+                            <Grid item xs={12} lg={6}>
+                                <ShopCard />
+                            </Grid>
+                            <Grid item xs={12} lg={3}>
+                                <OpponentCard />
+                            </Grid>
+                        </>
+                        : ''
                     }
 
                 </Grid>

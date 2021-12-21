@@ -19,16 +19,13 @@ export default function CharacterCardDisplay(props) {
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Name:
-                </Typography>
                 {props.character.isEditing ?
                     <TextField
                         error={props.validation.name}
                         helperText={!props.validation.name ? "" : "Name be at least 2 characters long"}
                         defaultValue={props.character.name}
                         id="outlined-basic"
-                        label={props.character.name}
+                        label="Your name"
                         onChange={e => props.handleNameChange(e)} variant="outlined"
                     />
                     :
@@ -89,9 +86,11 @@ export default function CharacterCardDisplay(props) {
             </CardActions>
             {props.character.isEditing ?
                 <Button variant="contained" onClick={() => props.handleSave()}>Save</Button>
-                : <Button variant="contained" onClick={() => props.handleEditMode(true)}>Edit</Button>
+                : props.statusCode === 1 ?
+                    <Button variant="contained" onClick={() => props.handleEditMode(true)}>Edit</Button>
+                    : ''
             }
-            {!props.character.isEditing && props.points === 0 ?
+            {!props.character.isEditing && props.statusCode === 1 && props.points === 0 ?
                 <Button variant="contained" color="error" onClick={() => props.setStatusCode(2)}>Start game</Button>
                 : ''
             }

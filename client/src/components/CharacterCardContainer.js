@@ -111,6 +111,7 @@ class CharacterCardContainer extends React.Component {
                 handleSave={this.handleSave}
                 handleDropItem={this.handleDropItem}
                 setStatusCode={this.props.setStatusCode}
+                statusCode={this.props.statusCode}
             />
         )
     }
@@ -119,7 +120,8 @@ class CharacterCardContainer extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        character: state.character
+        character: state.character,
+        statusCode: state.game.statusCode
     }
 }
 
