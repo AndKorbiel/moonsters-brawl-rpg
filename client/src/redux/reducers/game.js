@@ -1,14 +1,15 @@
-import {SET_STATUS_CODE, START_GAME} from "../types/game";
+import {SET_STATUS_CODE, START_GAME, START_FIGHT} from "../types/game";
 
 const initialState = {
     statusCode: 0,
     gameStarted: false,
     menuOptions: [
         {value: 1, label: "New Game"},
-        {value: 2, label: "Save Game"},
-        {value: 3, label: "Load Game"},
-        {value: 4, label: "Quit"}
-    ]
+        {value: 5, label: "Save Game"},
+        {value: 6, label: "Load Game"},
+        {value: 7, label: "Quit"}
+    ],
+    fightStarted: false
 }
 
 export default function game(state = initialState, action) {
@@ -29,6 +30,11 @@ export default function game(state = initialState, action) {
                         return el
                     }
                 })
+            }
+        case START_FIGHT:
+            return {
+                ...state,
+                fightStarted: true
             }
         default:
             return state

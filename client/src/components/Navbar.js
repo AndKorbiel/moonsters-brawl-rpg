@@ -15,7 +15,7 @@ export default function Navbar(props) {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Status: {props.status}
                     </Typography>
-                    <Button color="inherit" onClick={()=> props.action(0)}>MENU</Button>
+                    {props.status !== 2 ? <Button color="inherit" onClick={()=> props.action(0)}>MENU</Button> : '' }
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>

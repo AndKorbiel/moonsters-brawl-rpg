@@ -1,15 +1,16 @@
 import './styles/App.scss';
+// material-ui
+import Navbar from "./components/Navbar";
+import MainMenu from "./components/MainMenu";
+import Grid from '@mui/material/Grid';
+
 import React from 'react';
 import {connect} from "react-redux";
 import {setStatusCode, startGame} from './redux/actions/game';
 import CharacterCard from "./components/CharacterCardContainer";
 import ShopCard from "./components/ShopCard";
-
-// material-ui
-import Navbar from "./components/Navbar";
-import MainMenu from "./components/MainMenu";
-import Grid from '@mui/material/Grid';
 import OpponentCard from "./components/OpponentCard";
+import FightScreenCard from "./components/FightScreenCard";
 
 class App extends React.Component {
     handleGameStatus = status => {
@@ -45,7 +46,7 @@ class App extends React.Component {
                                 <CharacterCard />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                                <ShopCard />
+                                <FightScreenCard />
                             </Grid>
                             <Grid item xs={12} lg={3}>
                                 <OpponentCard />
