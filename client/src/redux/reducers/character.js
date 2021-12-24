@@ -1,4 +1,4 @@
-import {HANDLE_EDIT_MODE, SET_NEW_NAME, CHANGE_STATS, BUY_ITEM, DROP_ITEM, CALCULATE_STATS_FROM_ITEM} from "../types/character";
+import { HANDLE_EDIT_MODE, SET_NEW_NAME, CHANGE_STATS, BUY_ITEM, DROP_ITEM, CALCULATE_STATS_FROM_ITEM } from "../types/character";
 
 const initialState = {
     name: 'Moonster',
@@ -6,11 +6,11 @@ const initialState = {
     level: 1,
     points: 5,
     stats: [
-        {name: 'attack', value: 10},
-        {name: 'defense', value: 10},
-        {name: 'life', value: 10},
+        { name: 'attack', value: 10 },
+        { name: 'defense', value: 10 },
+        { name: 'life', value: 10 },
     ],
-    gold: 1100,
+    gold: 100,
     items: [],
     isEditing: false
 }
@@ -46,7 +46,7 @@ export default function character(state = initialState, action) {
             return {
                 ...state,
                 stats: state.stats.map(stat => {
-                    return stat.name === action.payload.name ? {...stat, value:stat.value +  parseInt(action.payload.value)} : stat
+                    return stat.name === action.payload.name ? { ...stat, value: stat.value + parseInt(action.payload.value) } : stat
                 })
             }
         case DROP_ITEM:

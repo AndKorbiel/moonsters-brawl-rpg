@@ -12,8 +12,8 @@ import React from "react";
 
 export default function CharacterCardDisplay(props) {
     let emptySpaceInInventory = [];
-    for (let n = props.character.items.length; n <=2; n++) {
-        emptySpaceInInventory.push( <Grid item xs={12} lg={4} className="inventory-box" key={n} />)
+    for (let n = props.character.items.length; n <= 2; n++) {
+        emptySpaceInInventory.push(<Grid item xs={12} lg={4} className="inventory-box" key={n} />)
     }
 
     return (
@@ -107,15 +107,18 @@ export default function CharacterCardDisplay(props) {
                                     component="img"
                                     image={item.image}
                                 />
-                                <CardActions>
-                                    <Button
-                                        variant="contained"
-                                        color="error"
-                                        startIcon={<HighlightOffIcon/>}
-                                        onClick={()=> props.handleDropItem(item)}>
-                                        Drop item
-                                    </Button>
-                                </CardActions>
+                                {props.character.isEditing ?
+                                    <CardActions>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            startIcon={<HighlightOffIcon />}
+                                            onClick={() => props.handleDropItem(item)}>
+                                            Drop item
+                                        </Button>
+                                    </CardActions>
+                                    : ''
+                                }
                             </Grid>
                         )
                     })}
