@@ -6,12 +6,9 @@ import Button from '@mui/material/Button';
 
 import { connect } from 'react-redux';
 import {startFight} from "../redux/actions/game";
-import {useEffect} from "react";
+import FightLogicContainer from './FightLogicContainer';
 
 function FightScreenCard(props) {
-    useEffect(()=> {
-        console.log(props.fightStarted)
-    })
     return (
         <Paper>
             <Grid container spacing={2}>
@@ -19,7 +16,7 @@ function FightScreenCard(props) {
                     <Typography variant="h5" align="center">Fight for your life!</Typography>
                     {props.fightStarted !== true ?
                         <Button variant="contained" onClick={()=> props.startFight()}>Fight</Button>
-                        : ''
+                        : <FightLogicContainer />
                     }
                 </Grid>
             </Grid>
