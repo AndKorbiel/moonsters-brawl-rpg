@@ -85,12 +85,21 @@ class CharacterCardContainer extends React.Component {
         this.props.calculateStatsFromItem(itemWithReverseStats);
     }
 
-    componentDidMount() {
-        const currentStats = this.props.character;
+    componentDidUpdate(previousProps) {
+        if (previousProps.character !== this.props.character) {
+            const currentStats = this.props.character;
+            this.setState({
+                ...currentStats
+            })
+        }
+    }
 
+    setToEditModeAndCalculateStats = () => {
+        const currentStats = this.props.character;
         this.setState({
             ...currentStats
         })
+        this.props.handleEditMode(true)
     }
 
     render() {
@@ -107,7 +116,7 @@ class CharacterCardContainer extends React.Component {
                 stats={this.state.stats}
                 handleNameChange={this.handleNameChange}
                 handleStatsChange={this.handleStatsChange}
-                handleEditMode={this.props.handleEditMode}
+                handleEditMode={this.setToEditModeAndCalculateStats}
                 handleSave={this.handleSave}
                 handleDropItem={this.handleDropItem}
                 setStatusCode={this.props.setStatusCode}
