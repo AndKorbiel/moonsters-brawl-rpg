@@ -8,7 +8,7 @@ const initialState = {
     stats: [
         { name: 'attack', value: 10 },
         { name: 'defense', value: 10 },
-        { name: 'life', value: 10 },
+        { name: 'life', value: 110 },
     ],
     gold: 100,
     items: [],

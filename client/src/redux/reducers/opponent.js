@@ -1,11 +1,11 @@
 const initialState = {
-    name: 'Moonster',
+    name: 'Slayer',
     level: 1,
     image: 'assets/images/frank.png',
     stats: [
         {name: 'attack', value: 10},
         {name: 'defense', value: 10},
-        {name: 'life', value: 15},
+        {name: 'life', value: 115},
     ],
 }
 

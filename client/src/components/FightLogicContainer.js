@@ -1,6 +1,7 @@
 import {connect} from "react-redux";
 import React from 'react';
 import Grid from '@mui/material/Grid';
+import {calculateFightStats} from '../handlers/FightMath'
 
 class FightLogicContainer extends React.Component {
     state = {
@@ -22,48 +23,29 @@ class FightLogicContainer extends React.Component {
             activePlayer: starting ? true : false
         })
 
-        setTimeout(()=> {
-            this.calculateFightStats()
-        }, 2000)
-    }
+        setTimeout(() => {
+            const gamePlay = setInterval(() => {
+                if (this.state.hero.stats.filter(el => el.name === 'life')[0].value > 0 && this.state.opponent.stats.filter(el => el.name === 'life')[0].value > 0) {
+                    const results = calculateFightStats(this.state)
+                    this.setState(state => ({
+                        ...state,
+                        activePlayer: !state.activePlayer,
+                        hero: results.hero,
+                        opponent: results.opponent,
+                        logger: results.logger
+                    }))
+                } else {
+                    let message = !this.state.activePlayer ? 'You have won' : 'You have lost!'
+                    let logger = this.state.logger;
+                    logger.push(message);
 
-    calculateLifePoints = (player, currentAttack) => {
-        player.stats = player.stats.map(el => {
-            if (el.name === 'life') {
-                return {name: 'life', value: el.value - currentAttack}
-            } else {
-                return el
-            }
-        })
-    }
-
-    calculateFightStats = () => {
-        for (let n = 10; n >= 0; n--) {
-            let tempHeroStats = this.state.hero;
-            let tempOpponentStats = this.state.opponent;
-            let currentPlayer = this.state.activePlayer === true ? this.state.hero : this.state.opponent;
-            let currentAttack = currentPlayer.stats.filter(el => el.name === 'attack')[0].value;
-            let logger = this.state.logger;
-
-            if (currentPlayer === this.state.hero) {
-                this.calculateLifePoints(tempOpponentStats, currentAttack)
-            } else {
-                this.calculateLifePoints(tempHeroStats, currentAttack)
-            }
-
-            let message = `${currentPlayer.name} has attacked for ${currentAttack}`;
-            logger.push(message);
-
-            this.setState(state => {
-                return {
-                    ...state,
-                    activePlayer: !state.activePlayer,
-                    hero: tempHeroStats,
-                    opponent: tempOpponentStats,
-                    logger
+                    this.setState({
+                        logger: logger
+                    })
+                    clearInterval(gamePlay)
                 }
-            })
-        }
+            }, 1500)
+        }, 2000)
     }
 
     getLifePoints = player => {
@@ -73,7 +55,6 @@ class FightLogicContainer extends React.Component {
     }
 
     render() {
-
         return (
             <Grid container maxWidth="xl" spacing={2} className="main-cont centered">
                 <Grid item xs={6}>
@@ -86,7 +67,7 @@ class FightLogicContainer extends React.Component {
                     {this.state.heroIsStarting === 1 ? this.state.hero.name : this.state.opponent.name} will attack first.
                     {this.state.logger.map((el, index) => {
                         return (
-                            <p key={el.index}>{el}</p>
+                            <p key={index}>{el}</p>
                         )
                     })}
                 </Grid>

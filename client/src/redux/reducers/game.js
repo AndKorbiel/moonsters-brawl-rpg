@@ -9,7 +9,8 @@ const initialState = {
         {value: 6, label: "Load Game"},
         {value: 7, label: "Quit"}
     ],
-    fightStarted: false
+    fightStarted: false,
+    playerHasWon: false
 }
 
 export default function game(state = initialState, action) {
