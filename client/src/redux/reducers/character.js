@@ -8,7 +8,7 @@ const initialState = {
     stats: [
         { name: 'attack', value: 10 },
         { name: 'defense', value: 10 },
-        { name: 'life', value: 110 },
+        { name: 'life', value: 20 },
     ],
     gold: 100,
     items: [],
@@ -31,7 +31,9 @@ export default function character(state = initialState, action) {
             return {
                 ...state,
                 stats: action.payload.stats,
-                points: action.payload.points
+                points: action.payload.points,
+                level: action.payload.level,
+                gold: action.payload.gold
             }
         case BUY_ITEM:
             return {

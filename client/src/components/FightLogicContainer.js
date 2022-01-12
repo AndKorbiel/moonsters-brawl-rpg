@@ -2,6 +2,10 @@ import {connect} from "react-redux";
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import {calculateFightStats} from '../handlers/FightMath'
+import {setStatusCode} from "../redux/actions/game";
+import {changeStats} from "../redux/actions/character";
+import Button from "@mui/material/Button";
+import {levelUp} from "../redux/actions/opponent";
 
 class FightLogicContainer extends React.Component {
     state = {
@@ -10,15 +14,15 @@ class FightLogicContainer extends React.Component {
         heroIsStarting: false,
         activePlayer: 0,
         isFighting: true,
-        logger: []
+        logger: [],
     }
 
     componentDidMount() {
         const starting = Math.round(Math.random());
 
         this.setState({
-            hero: this.props.character,
-            opponent: this.props.opponent,
+            hero: {...this.props.character},
+            opponent: {...this.props.opponent},
             heroIsStarting: starting,
             activePlayer: starting ? true : false
         })
@@ -35,12 +39,21 @@ class FightLogicContainer extends React.Component {
                         logger: results.logger
                     }))
                 } else {
-                    let message = !this.state.activePlayer ? 'You have won' : 'You have lost!'
+                    let fightWon = false;
+                    let message = '';
+                    if (!this.state.activePlayer) {
+                        fightWon = true;
+                        message = 'You have won';
+                    } else {
+                        message = 'You have lost!';
+                    }
                     let logger = this.state.logger;
                     logger.push(message);
 
                     this.setState({
-                        logger: logger
+                        logger: logger,
+                        isFighting: false,
+                        fightWon: fightWon
                     })
                     clearInterval(gamePlay)
                 }
@@ -51,6 +64,25 @@ class FightLogicContainer extends React.Component {
     getLifePoints = player => {
         if (player) {
             return player.stats.filter(el => el.name === 'life')[0].value
+        }
+    }
+
+    handleFightOverState = () => {
+        if (this.state.fightWon) {
+            let currentStats = {...this.props.character};
+            let opponent = {...this.props.opponent}
+
+            currentStats.level = currentStats.level + 1;
+            currentStats.gold = currentStats.gold + (10 * currentStats.level);
+            currentStats.points = 5;
+            opponent.level = opponent.level + 1;
+            opponent.points = opponent.points + (5 * opponent.level)
+
+            this.props.changeStats(currentStats);
+            this.props.setStatusCode(1)
+            this.props.opponentLevelUp(opponent)
+        } else {
+            this.props.setStatusCode(1)
         }
     }
 
@@ -70,6 +102,10 @@ class FightLogicContainer extends React.Component {
                             <p key={index}>{el}</p>
                         )
                     })}
+                    {!this.state.isFighting ?
+                        <Button variant="outlined" onClick={this.handleFightOverState}>Continue</Button>
+                        : ''
+                    }
                 </Grid>
             </Grid>
         )
@@ -83,4 +119,12 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(FightLogicContainer);
+const mapDispatchToProps = dispatch => {
+    return {
+        setStatusCode: status => dispatch(setStatusCode(status)),
+        changeStats: value => dispatch(changeStats(value)),
+        opponentLevelUp: stats => dispatch(levelUp(stats))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FightLogicContainer);

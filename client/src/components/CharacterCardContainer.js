@@ -59,7 +59,12 @@ class CharacterCardContainer extends React.Component {
         if (this.state.name.length >= 2) {
             this.props.setNewName(this.state.name);
             this.props.handleEditMode(false);
-            this.props.changeStats({stats: this.state.stats, points: this.state.points});
+            this.props.changeStats({
+                stats: this.state.stats,
+                points: this.state.points,
+                level: this.state.level,
+                gold: this.state.gold
+            });
 
             this.setState(state => ({
                 ...state,
@@ -87,7 +92,7 @@ class CharacterCardContainer extends React.Component {
 
     componentDidUpdate(previousProps) {
         if (previousProps.character !== this.props.character) {
-            const currentStats = this.props.character;
+            const currentStats = {...this.props.character};
             this.setState({
                 ...currentStats
             })
@@ -95,7 +100,7 @@ class CharacterCardContainer extends React.Component {
     }
 
     setToEditModeAndCalculateStats = () => {
-        const currentStats = this.props.character;
+        const currentStats ={...this.props.character} ;
         this.setState({
             ...currentStats
         })

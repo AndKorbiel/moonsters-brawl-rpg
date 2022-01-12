@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-
+import {useState, useEffect} from "react";
 // material-ui
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,6 +8,42 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
 function OpponentCard(props) {
+    let [opponentStats, setStats] = useState();
+
+    const handleSetStats = () => {
+        const points = props.opponent.points;
+        const stats = [...props.opponent.stats];
+        const  randomIntFromInterval = (min, max) => {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+
+        console.log(stats)
+
+        for (let n = points; n > 0; n--) {
+            const random = randomIntFromInterval(0,2)
+            switch(random) {
+                case 0 :
+                    stats.filter(el => el.name === 'attack')[0].value = stats.filter(el => el.name === 'attack')[0].value + 1
+                    break;
+                case 1:
+                    stats.filter(el => el.name === 'defense')[0].value = stats.filter(el => el.name === 'defense')[0].value + 1
+                    break;
+                case 2:
+                    stats.filter(el => el.name === 'life')[0].value = stats.filter(el => el.name === 'life')[0].value + 1
+                    break;
+                default:
+                    break;
+            }
+        }
+        console.log(stats)
+
+        setStats(stats)
+    }
+
+    useEffect(()=> {
+        handleSetStats()
+    }, [])
+
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardContent>
@@ -27,7 +63,7 @@ function OpponentCard(props) {
                             Level: {props.opponent.level}
                         </Typography>
                     </li>
-                    {props.opponent.stats.map(el => {
+                    {opponentStats && opponentStats.map(el => {
                         return (
                             <li key={el.name}>
                                 <Typography variant="h6">
