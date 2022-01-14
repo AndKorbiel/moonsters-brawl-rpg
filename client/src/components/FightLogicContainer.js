@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import {calculateFightStats} from '../handlers/FightMath'
-import {setStatusCode} from "../redux/actions/game";
+import {gameOver, setStatusCode} from "../redux/actions/game";
 import {changeStats} from "../redux/actions/character";
 import Button from "@mui/material/Button";
 import {levelUp} from "../redux/actions/opponent";
@@ -57,8 +57,8 @@ class FightLogicContainer extends React.Component {
                     })
                     clearInterval(gamePlay)
                 }
-            }, 1500)
-        }, 2000)
+            }, 300)
+        }, 300)
     }
 
     getLifePoints = player => {
@@ -75,14 +75,20 @@ class FightLogicContainer extends React.Component {
             currentStats.level = currentStats.level + 1;
             currentStats.gold = currentStats.gold + (10 * currentStats.level);
             currentStats.points = 5;
+
+            opponent.points = (5 * opponent.level);
             opponent.level = opponent.level + 1;
-            opponent.points = opponent.points + (5 * opponent.level)
 
             this.props.changeStats(currentStats);
             this.props.setStatusCode(1)
             this.props.opponentLevelUp(opponent)
         } else {
-            this.props.setStatusCode(1)
+            this.props.opponentLevelUp([
+                {name: 'attack', value: 10},
+                {name: 'defense', value: 10},
+                {name: 'life', value: 10},
+            ])
+            this.props.gameOver()
         }
     }
 
@@ -123,7 +129,8 @@ const mapDispatchToProps = dispatch => {
     return {
         setStatusCode: status => dispatch(setStatusCode(status)),
         changeStats: value => dispatch(changeStats(value)),
-        opponentLevelUp: stats => dispatch(levelUp(stats))
+        opponentLevelUp: stats => dispatch(levelUp(stats)),
+        gameOver: () => dispatch(gameOver())
     }
 }
 

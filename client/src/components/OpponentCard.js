@@ -11,13 +11,13 @@ function OpponentCard(props) {
     let [opponentStats, setStats] = useState();
 
     const handleSetStats = () => {
-        const points = props.opponent.points;
-        const stats = [...props.opponent.stats];
+        const opp = {...props.opponent}
+        console.log(opp)
+        const points = opp.points;
+        const stats = opp.stats;
         const  randomIntFromInterval = (min, max) => {
             return Math.floor(Math.random() * (max - min + 1) + min)
         }
-
-        console.log(stats)
 
         for (let n = points; n > 0; n--) {
             const random = randomIntFromInterval(0,2)
@@ -35,14 +35,12 @@ function OpponentCard(props) {
                     break;
             }
         }
-        console.log(stats)
-
         setStats(stats)
     }
 
     useEffect(()=> {
         handleSetStats()
-    }, [])
+    }, [props.opponent])
 
     return (
         <Card sx={{ maxWidth: 345 }}>
