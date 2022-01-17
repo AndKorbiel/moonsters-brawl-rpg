@@ -12,9 +12,8 @@ function OpponentCard(props) {
 
     const handleSetStats = () => {
         const opp = {...props.opponent}
-        console.log(opp)
         const points = opp.points;
-        const stats = opp.stats;
+        const stats = opp.stats.map(el => el);
         const  randomIntFromInterval = (min, max) => {
             return Math.floor(Math.random() * (max - min + 1) + min)
         }

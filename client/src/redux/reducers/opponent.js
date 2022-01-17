@@ -1,4 +1,4 @@
-import {LEVEL_UP} from "../types/opponent";
+import {LEVEL_UP, RESET_STATS} from "../types/opponent";
 
 const initialState = {
     name: 'Slayer',
@@ -18,7 +18,13 @@ export default function opponent(state = initialState, action) {
             return {
                 ...state,
                 level: action.payload.level,
-                points: action.payload.points
+                points: action.payload.points,
+                stats: action.payload.stats
+            }
+        case RESET_STATS:
+            return {
+                ...state,
+                stats: action.payload
             }
         default:
             return state

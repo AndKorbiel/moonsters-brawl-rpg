@@ -65,3 +65,17 @@ export const calculateFightStats = state => {
         logger
     }
 }
+
+export const calculateLevelUp = props => {
+    let currentStats = {...props.character};
+    let opponent = {...props.opponent}
+
+    currentStats.level = currentStats.level + 1;
+    currentStats.gold = currentStats.gold + (10 * currentStats.level);
+    currentStats.points = 5;
+
+    opponent.points = (5 * opponent.level);
+    opponent.level = opponent.level + 1;
+
+    return {currentStats, opponent}
+}

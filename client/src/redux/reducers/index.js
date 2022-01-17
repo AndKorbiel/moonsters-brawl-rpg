@@ -14,7 +14,7 @@ const appReducer = combineReducers({
 
 export const rootReducer = (state, action) => {
     if (action.type === 'GAME_OVER') {
-        return appReducer(undefined, action)
+        state = undefined;
     }
 
     return appReducer(state, action)

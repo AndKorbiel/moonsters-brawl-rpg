@@ -1,11 +1,11 @@
 import {connect} from "react-redux";
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import {calculateFightStats} from '../handlers/FightMath'
+import {calculateFightStats, calculateLevelUp} from '../handlers/FightMath'
 import {gameOver, setStatusCode} from "../redux/actions/game";
 import {changeStats} from "../redux/actions/character";
 import Button from "@mui/material/Button";
-import {levelUp} from "../redux/actions/opponent";
+import {levelUp, resetStats} from "../redux/actions/opponent";
 
 class FightLogicContainer extends React.Component {
     state = {
@@ -69,26 +69,18 @@ class FightLogicContainer extends React.Component {
 
     handleFightOverState = () => {
         if (this.state.fightWon) {
-            let currentStats = {...this.props.character};
-            let opponent = {...this.props.opponent}
+            const calculateStats = calculateLevelUp(this.props);
 
-            currentStats.level = currentStats.level + 1;
-            currentStats.gold = currentStats.gold + (10 * currentStats.level);
-            currentStats.points = 5;
-
-            opponent.points = (5 * opponent.level);
-            opponent.level = opponent.level + 1;
-
-            this.props.changeStats(currentStats);
+            this.props.changeStats(calculateStats.currentStats);
             this.props.setStatusCode(1)
-            this.props.opponentLevelUp(opponent)
+            this.props.opponentLevelUp(calculateStats.opponent)
         } else {
-            this.props.opponentLevelUp([
+            this.props.gameOver()
+            this.props.resetStats([
                 {name: 'attack', value: 10},
                 {name: 'defense', value: 10},
                 {name: 'life', value: 10},
             ])
-            this.props.gameOver()
         }
     }
 
@@ -130,6 +122,7 @@ const mapDispatchToProps = dispatch => {
         setStatusCode: status => dispatch(setStatusCode(status)),
         changeStats: value => dispatch(changeStats(value)),
         opponentLevelUp: stats => dispatch(levelUp(stats)),
+        resetStats: stats => dispatch(resetStats(stats)),
         gameOver: () => dispatch(gameOver())
     }
 }
