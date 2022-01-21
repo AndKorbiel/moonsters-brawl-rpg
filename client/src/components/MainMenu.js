@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 
 export default function MainMenu(props) {
     return (
-        <Box maxWidth="sm" className="centered text-centered">
+        <Box maxWidth="sm" className="centered text-centered" data-testid="main-menu">
             <MenuList>
                 {props.options.map(element => {
                     return (

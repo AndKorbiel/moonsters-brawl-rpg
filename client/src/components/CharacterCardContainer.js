@@ -115,6 +115,7 @@ class CharacterCardContainer extends React.Component {
 
         return (
             <CharacterCardDisplay
+                data-testid="character-card"
                 character={this.props.character}
                 validation={this.state.validation}
                 points={this.state.points}
