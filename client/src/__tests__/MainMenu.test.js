@@ -1,11 +1,8 @@
 import React from 'react';
 import MainMenu from "../components/MainMenu";
-import {render, screen} from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
+import {render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import {Provider} from "react-redux";
-import {store} from "../redux/store";
-import App from "../App";
+import renderer from 'react-test-renderer'
 
 const menuOptions= [
     {value: 1, label: "New Game"},
@@ -18,3 +15,17 @@ it('renders correctly with props', ()=> {
     render(<MainMenu options={menuOptions} />)
 })
 
+it('matches snapshot 1', ()=> {
+    const domTree = renderer
+        .create(<MainMenu options={menuOptions} />)
+        .toJSON()
+    expect(domTree).toMatchSnapshot();
+})
+
+it('matches snapshot 2', ()=> {
+    const menuOptions = [{value: 1, label: "New Game"}, {value: 5, label: "Save Game"}]
+    const tree = renderer
+        .create(<MainMenu options={menuOptions} />)
+        .toJSON()
+    expect(tree).toMatchSnapshot()
+})

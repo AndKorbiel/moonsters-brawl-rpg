@@ -1,11 +1,9 @@
 import React from 'react';
-import {getByTestId, getByText, render, screen} from '@testing-library/react';
+import {getByTestId, getByText, render, screen, queryByRole, waitFor, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import App from '../App';
 import { Provider } from 'react-redux'
 import { store } from '../redux/store'
-import userEvent from "@testing-library/user-event";
-import {queryByTestId} from '@testing-library/react'
 
 const app = () => render(
     <Provider store={store}>
@@ -30,9 +28,17 @@ it('renders main menu', ()=> {
 })
 
 it('hides main menu once option is clicked', ()=> {
-    const {getByRole } = app();
-    const newGameButton = screen.getByRole('menuitem', {name: /New game/i})
+    app();
+    const newGameButton = screen.getByRole('button', {name: /New game/i})
     expect(newGameButton).toBeInTheDocument()
-    userEvent.click(newGameButton)
-    expect(getByRole ('character-card')).toBeInTheDocument()
+    fireEvent.click(newGameButton)
+    expect(screen.getByText('Welcome in Magic Shop')).toBeInTheDocument()
+})
+
+it('returns to main menu once munu button is clicked', ()=> {
+    app()
+    const mainMenuButton = screen.getByRole('button', {name: /MENU/i});
+    expect(mainMenuButton).toBeInTheDocument()
+    fireEvent.click(mainMenuButton)
+    expect(screen.getByTestId('main-menu')).toBeInTheDocument()
 })
