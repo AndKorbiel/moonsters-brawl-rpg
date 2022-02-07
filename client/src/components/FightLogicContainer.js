@@ -2,7 +2,8 @@ import {connect} from "react-redux";
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import {calculateFightStats, calculateLevelUp} from '../handlers/FightMath'
-import {gameOver, setStatusCode} from "../redux/actions/game";
+import {setStatusCode} from "../redux/actions/game";
+import {GAME_OVER} from "../redux/types/game";
 import {changeStats} from "../redux/actions/character";
 import Button from "@mui/material/Button";
 import {levelUp, resetStats} from "../redux/actions/opponent";
@@ -123,7 +124,7 @@ const mapDispatchToProps = dispatch => {
         changeStats: value => dispatch(changeStats(value)),
         opponentLevelUp: stats => dispatch(levelUp(stats)),
         resetStats: stats => dispatch(resetStats(stats)),
-        gameOver: () => dispatch(gameOver())
+        gameOver: () => dispatch({type: GAME_OVER})
     }
 }
 
