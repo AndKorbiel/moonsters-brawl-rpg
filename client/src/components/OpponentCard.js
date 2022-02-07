@@ -1,5 +1,7 @@
 import {connect} from 'react-redux'
 import {useState, useEffect} from "react";
+import {setImage, setName} from "../redux/actions/opponent";
+import {getNewNameEffect} from "../redux/effects/opponent";
 // material-ui
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -7,16 +9,17 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
+
 function OpponentCard(props) {
     let [opponentStats, setStats] = useState();
+    const  randomIntFromInterval = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1) + min)
+    }
 
     const handleSetStats = () => {
         const opp = {...props.opponent}
         const points = opp.points;
         const stats = opp.stats.map(el => el);
-        const  randomIntFromInterval = (min, max) => {
-            return Math.floor(Math.random() * (max - min + 1) + min)
-        }
 
         for (let n = points; n > 0; n--) {
             const random = randomIntFromInterval(0,2)
@@ -36,6 +39,11 @@ function OpponentCard(props) {
         }
         setStats(stats)
     }
+
+    useEffect(()=> {
+        props.getNewName()
+        props.setImage(randomIntFromInterval(1,4))
+    }, [])
 
     useEffect(()=> {
         handleSetStats()
@@ -81,4 +89,12 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(OpponentCard)
+const mapDispatchToProps = dispatch => {
+    return {
+        setName: name => dispatch(setName(name)),
+        getNewName: ()=> dispatch(getNewNameEffect()),
+        setImage: number => dispatch(setImage(number))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OpponentCard)

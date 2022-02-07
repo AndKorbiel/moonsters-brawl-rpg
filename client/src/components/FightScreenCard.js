@@ -5,8 +5,8 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
 import { connect } from 'react-redux';
-import {startFight} from "../redux/actions/game";
 import FightLogicContainer from './FightLogicContainer';
+import {START_FIGHT} from "../redux/types/game";
 
 function FightScreenCard(props) {
     return (
@@ -32,7 +32,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        startFight: () => {dispatch(startFight())}
+        startFight: () => {dispatch({type: START_FIGHT})}
     }
 }
 

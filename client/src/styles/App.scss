@@ -1,5 +1,4 @@
 .App {
-  background-color: #282c34;
   min-height: 100vh;
   color: #fff;
 
@@ -14,6 +13,17 @@
 
   .text-centered {
     text-align: center;
+  }
+
+  .main-menu {
+    background: rgba(40,44,52,.57);
+    border: 2px solid #601111;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .62);
+
+    button {
+      font-size: 32px;
+    }
   }
 
   .MuiCardMedia-img {

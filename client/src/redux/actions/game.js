@@ -1,4 +1,4 @@
-import {SET_STATUS_CODE, START_GAME,START_FIGHT, GAME_OVER} from "../types/game";
+import {SET_STATUS_CODE, LOAD_GAME} from "../types/game";
 
 export function setStatusCode(statusCode) {
     return {
@@ -7,20 +7,9 @@ export function setStatusCode(statusCode) {
     }
 }
 
-export function startGame() {
+export function loadGame(savedGame) {
     return {
-        type: START_GAME
-    }
-}
-
-export function startFight() {
-    return {
-        type: START_FIGHT
-    }
-}
-
-export function gameOver() {
-    return {
-        type: GAME_OVER
+        type: LOAD_GAME,
+        payload: savedGame
     }
 }

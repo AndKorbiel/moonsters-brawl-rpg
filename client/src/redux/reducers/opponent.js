@@ -1,9 +1,9 @@
-import {LEVEL_UP, RESET_STATS} from "../types/opponent";
+import {LEVEL_UP, RESET_STATS, SET_NAME, SET_IMAGE} from "../types/opponent";
 
 const initialState = {
-    name: 'Slayer',
+    name: '',
     level: 1,
-    image: 'assets/images/frank.png',
+    image: 'assets/images/Mons1.png',
     points: 0,
     stats: [
         {name: 'attack', value: 10},
@@ -25,6 +25,16 @@ export default function opponent(state = initialState, action) {
             return {
                 ...state,
                 stats: action.payload
+            }
+        case SET_NAME:
+            return {
+                ...state,
+                name: action.payload
+            }
+        case SET_IMAGE:
+            return {
+                ...state,
+                image: `assets/images/Mons${action.payload}.png`
             }
         default:
             return state
