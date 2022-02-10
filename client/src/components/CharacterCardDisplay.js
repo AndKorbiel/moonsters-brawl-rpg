@@ -17,13 +17,14 @@ export default function CharacterCardDisplay(props) {
     }
 
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card>
             <CardContent>
                 {props.character.isEditing ?
                     <TextField
                         error={props.validation.name}
                         helperText={!props.validation.name ? "" : "Name be at least 2 characters long"}
                         defaultValue={props.character.name}
+                        color="secondary"
                         id="outlined-basic"
                         label="Your name"
                         onChange={e => props.handleNameChange(e)} variant="outlined"
@@ -62,7 +63,7 @@ export default function CharacterCardDisplay(props) {
                             <li key={el.name}>
                                 {props.character.isEditing ?
                                     <Button
-                                        variant="outlined"
+                                        variant="contained"
                                         name={el.name}
                                         onClick={e => props.handleStatsChange(e, 'decrement')}
                                     >-</Button>
@@ -73,7 +74,7 @@ export default function CharacterCardDisplay(props) {
                                 </Typography>
                                 {props.character.isEditing ?
                                     <Button
-                                        variant="outlined"
+                                        variant="contained"
                                         name={el.name}
                                         onClick={e => props.handleStatsChange(e, 'increment')}
                                     >+</Button>
@@ -84,25 +85,28 @@ export default function CharacterCardDisplay(props) {
                     })}
                 </ul>
             </CardActions>
-            {props.character.isEditing ?
-                <Button variant="contained" onClick={() => props.handleSave()}>Save</Button>
-                : props.statusCode === 1 ?
-                    <Button variant="contained" onClick={() => props.handleEditMode(true)}>Edit</Button>
-                    : ''
-            }
+            <CardContent>
+                {props.character.isEditing ?
+                    <Button variant="contained" color="secondary" onClick={() => props.handleSave()}>Save</Button>
+                    : props.statusCode === 1 ?
+                        <Button variant="contained" color="secondary"  onClick={() => props.handleEditMode(true)}>Edit</Button>
+                        : ''
+
+                }
+
             {!props.character.isEditing && props.statusCode === 1 && props.points === 0 ?
                 <Button variant="contained" color="error" onClick={() => props.setStatusCode(2)}>Start game</Button>
                 : ''
             }
-            <hr />
+            </CardContent>
             <CardContent id="character-inventory">
                 <Typography gutterBottom variant="h5" component="div">
                     Inventory
                 </Typography>
-                <Grid container spacing={4} className="inventory-cont">
+                <Grid container spacing={2} className="inventory-cont">
                     {props.character.items.map(item => {
                         return (
-                            <Grid item xs={12} lg={4} className="inventory-box" key={item.id}>
+                            <Grid item xs={4} className="inventory-box" key={item.id}>
                                 <CardMedia
                                     component="img"
                                     image={item.image}

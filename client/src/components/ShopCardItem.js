@@ -8,7 +8,7 @@ import React from "react";
 
 export default function ShopCardItem(props) {
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345 }} className="centered">
             <CardContent>
                 <Typography variant="h6">
                     {props.item.name}
@@ -32,7 +32,7 @@ export default function ShopCardItem(props) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button variant="outlined" onClick={()=> props.action(props.item)}>Buy this item</Button>
+                <Button variant="outlined" color="secondary" onClick={()=> props.action(props.item)}>Buy this item</Button>
             </CardActions>
         </Card>
     )

@@ -14,13 +14,14 @@ const appReducer = combineReducers({
 
 export const rootReducer = (state, action) => {
     switch (action.type) {
-        case 'GAME_OVER':
+        case GAME_OVER:
             state = undefined
             break;
-        case 'LOAD_GAME':
+        case LOAD_GAME:
             return {
                 ...action.payload
             }
+        default:
     }
 
     return appReducer(state, action)

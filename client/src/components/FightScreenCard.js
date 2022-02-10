@@ -11,11 +11,11 @@ import {START_FIGHT} from "../redux/types/game";
 function FightScreenCard(props) {
     return (
         <Paper>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
+            <Grid container className="padlr">
+                <Grid item xs={12} spacing={2}>
                     <Typography variant="h5" align="center">Fight for your life!</Typography>
                     {props.fightStarted !== true ?
-                        <Button variant="contained" onClick={()=> props.startFight()}>Fight</Button>
+                        <Button variant="contained" color="error" onClick={()=> props.startFight()}>Fight</Button>
                         : <FightLogicContainer />
                     }
                 </Grid>

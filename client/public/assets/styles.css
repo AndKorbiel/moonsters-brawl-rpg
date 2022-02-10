@@ -9,7 +9,7 @@ body {
     background: #282c34;
     color: #888888;
     margin-top: -9px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
 }

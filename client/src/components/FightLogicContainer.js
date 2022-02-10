@@ -87,12 +87,12 @@ class FightLogicContainer extends React.Component {
 
     render() {
         return (
-            <Grid container maxWidth="xl" spacing={2} className="main-cont centered">
+            <Grid container maxWidth="xl" spacing={2} className="centered">
                 <Grid item xs={6}>
-                    <p>Your life points: {this.getLifePoints(this.state.hero)}</p>
+                    <p><b>Your life points: {this.getLifePoints(this.state.hero)}</b></p>
                 </Grid>
                 <Grid item xs={6}>
-                    <p>Your opponent life points: {this.getLifePoints(this.state.opponent)}</p>
+                    <p><b>Your opponent life points: {this.getLifePoints(this.state.opponent)}</b></p>
                 </Grid>
                 <Grid item xs={12}>
                     {this.state.heroIsStarting === 1 ? this.state.hero.name : this.state.opponent.name} will attack first.
@@ -102,7 +102,7 @@ class FightLogicContainer extends React.Component {
                         )
                     })}
                     {!this.state.isFighting ?
-                        <Button variant="outlined" onClick={this.handleFightOverState}>Continue</Button>
+                        <Button variant="contained" color="error" onClick={this.handleFightOverState}>Continue</Button>
                         : ''
                     }
                 </Grid>

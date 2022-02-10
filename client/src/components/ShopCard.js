@@ -18,16 +18,15 @@ function ShopCard(props) {
     }
 
     return (
-        <Paper>
-            <Grid container spacing={2}>
+        <Paper className="topbot">
                 <Grid item xs={12}>
-                    <Typography variant="h5" align="center">Welcome in Magic Shop</Typography>
+                    <Typography variant="h5" align="center" gutterBottom={true}>Welcome in the Magic Shop</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Grid container spacing={2}>
+                    <Grid container >
                         {props.availableItems.map(item => {
                             return (
-                                <Grid item xs={12} lg={4} key={item.id}>
+                                <Grid item xs={12} md={4} key={item.id}>
                                     <ShopCardItem item={item} action={handleBuyAction} />
                                 </Grid>
                             )
@@ -38,7 +37,6 @@ function ShopCard(props) {
                         : ''
                     }
                 </Grid>
-            </Grid>
         </Paper>
     )
 }

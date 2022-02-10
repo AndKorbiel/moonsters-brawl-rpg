@@ -7,7 +7,7 @@ const initialState = {
         {value: 1, label: "New Game"},
         {value: 5, label: "Save Game"},
         {value: 6, label: "Load Game"},
-        {value: 7, label: "Quit"}
+        {value: 7, label: "About"}
     ],
     fightStarted: false,
     playerHasWon: false

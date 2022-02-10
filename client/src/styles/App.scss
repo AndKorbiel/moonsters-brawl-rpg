@@ -1,6 +1,6 @@
 .App {
-  min-height: 100vh;
   color: #fff;
+  width: calc(100% - 32px);
 
   .main-cont {
     margin-top: 60px;
@@ -15,12 +15,15 @@
     text-align: center;
   }
 
-  .main-menu {
-    background: rgba(40,44,52,.57);
+  .main-menu, .MuiPaper-rounded {
+    background: rgba(40, 44, 52, .57);
     border: 2px solid #601111;
     border-radius: 6px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, .62);
+    color: #d3d3d3;
+  }
 
+  .main-menu {
     button {
       font-size: 32px;
     }
@@ -51,6 +54,19 @@
     }
   }
 
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input,
+  .css-1dhyhd5-MuiFormLabel-root-MuiInputLabel-root {
+    color: #d3d3d3;
+  }
+
+  .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    border-color: #d3d3d3;
+  }
+
+  .char-hr {
+
+  }
+
   #character-inventory {
     .inventory-cont {
       margin-left: -16px;
@@ -58,10 +74,31 @@
       margin-top: 1em;
 
       .inventory-box {
-        border: 1px solid #c5c5c5;
+        border: 1px solid #2c2c2c;
         min-height: 66px;
         padding: 0;
       }
+    }
+  }
+
+  .topbot {
+    padding: 15px 0;
+  }
+
+  .padlr {
+    padding: 15px;
+  }
+
+  .padlrextra {
+    padding: 15px 45px;
+  }
+
+  .load-game {
+    margin-bottom: 40px;
+
+    th, td {
+      color: #d3d3d3;
+      font-size: 16px;
     }
   }
 }
