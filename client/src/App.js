@@ -18,6 +18,7 @@ import { collection } from 'firebase/firestore'
 import LoadGame from "./components/MainMenu/LoadGame";
 import SaveGame from "./components/MainMenu/SaveGame";
 import About from "./components/MainMenu/About";
+import HighScore from "./components/MainMenu/HighScore";
 
 const theme = createTheme({
     palette: {
@@ -87,6 +88,10 @@ class App extends React.Component {
                     }
                     {this.props.statusCode === 7 ?
                         <About />
+                        : ''
+                    }
+                    {this.props.statusCode === 8 ?
+                        <HighScore />
                         : ''
                     }
                 </Grid>

@@ -11,7 +11,7 @@ import Alert from '@mui/material/Alert';
 export default function SaveGame() {
     const state = useSelector(state => state);
     const gameCollectionRef = collection(db, 'games');
-    state.game.date = new Date().toLocaleDateString("en-GB");
+    state.date = new Date().toLocaleDateString("en-GB");
     const [status, setStatus] = useState(false);
 
     const handleSetStatus = () => {

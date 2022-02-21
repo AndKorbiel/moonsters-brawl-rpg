@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import { db } from '../../firebase-config';
 import {collection, getDocs, deleteDoc, doc} from 'firebase/firestore';
-import {loadGame} from '../../redux/actions/game';
+import {loadGame, setStatusCode} from '../../redux/actions/game';
 
 // material-ui
 import Table from '@mui/material/Table';
@@ -44,6 +44,7 @@ function LoadGame(props) {
 
     const handleLoadGame = (savedGame) => {
         dispatch(loadGame(savedGame))
+        dispatch(setStatusCode(1))
     }
 
     const deleteSavedGame = async (id) => {
@@ -52,7 +53,7 @@ function LoadGame(props) {
     }
 
     return (
-        <Box maxWidth="xl" className="centered text-centered load-game">
+        <Box maxWidth="xl" className="centered text-centered menu-table">
             {props.mode === 'save' ? '' : <h1>Load game</h1>}
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -72,7 +73,7 @@ function LoadGame(props) {
                                     <TableCell>{savedGame.character.name}</TableCell>
                                     <TableCell>{savedGame.character.level}</TableCell>
                                     <TableCell>{savedGame.character.gold}</TableCell>
-                                    <TableCell>{savedGame.game.date}</TableCell>
+                                    <TableCell>{savedGame.date}</TableCell>
                                     <TableCell>
                                         {props.mode === 'save' ?
                                             <Button variant="contained" onClick={()=>props.action(savedGame.game.id)}>Overwrite game</Button>

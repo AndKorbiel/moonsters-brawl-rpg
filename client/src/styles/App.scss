@@ -93,8 +93,12 @@
     padding: 15px 45px;
   }
 
-  .load-game {
+  .menu-table  {
     margin-bottom: 40px;
+
+    th {
+      font-weight: bold;
+    }
 
     th, td {
       color: #d3d3d3;

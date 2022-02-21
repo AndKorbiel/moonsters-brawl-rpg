@@ -7,6 +7,7 @@ import {GAME_OVER} from "../redux/types/game";
 import {changeStats} from "../redux/actions/character";
 import Button from "@mui/material/Button";
 import {levelUp, resetStats} from "../redux/actions/opponent";
+import setHighScore from "../handlers/SetHighScore";
 
 class FightLogicContainer extends React.Component {
     state = {
@@ -76,7 +77,8 @@ class FightLogicContainer extends React.Component {
             this.props.setStatusCode(1)
             this.props.opponentLevelUp(calculateStats.opponent)
         } else {
-            this.props.gameOver()
+            this.props.gameOver();
+            setHighScore(this.props.character);
             this.props.resetStats([
                 {name: 'attack', value: 10},
                 {name: 'defense', value: 10},
