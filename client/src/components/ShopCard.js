@@ -20,7 +20,7 @@ function ShopCard(props) {
     return (
         <Paper className="topbot">
                 <Grid item xs={12}>
-                    <Typography variant="h5" align="center" gutterBottom={true}>Welcome in the Magic Shop</Typography>
+                    <Typography variant="h4" align="center" gutterBottom={true}>Welcome in the Magic Shop</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container >

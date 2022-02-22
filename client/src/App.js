@@ -19,11 +19,11 @@ import LoadGame from "./components/MainMenu/LoadGame";
 import SaveGame from "./components/MainMenu/SaveGame";
 import About from "./components/MainMenu/About";
 import HighScore from "./components/MainMenu/HighScore";
+import Login from "./components/Login";
 
 const theme = createTheme({
     palette: {
         primary: {
-            // This is green.A700 as hex.
             main: '#2c0f23',
         },
         secondary: {
@@ -92,6 +92,10 @@ class App extends React.Component {
                     }
                     {this.props.statusCode === 8 ?
                         <HighScore />
+                        : ''
+                    }
+                    {this.props.statusCode === 9 ?
+                        <Login />
                         : ''
                     }
                 </Grid>

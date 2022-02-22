@@ -3,7 +3,6 @@ import {useState, useEffect} from "react";
 import {collection, getDocs } from 'firebase/firestore';
 
 // material-ui
-import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,6 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from "@mui/material/Paper";
 import {db} from "../../firebase-config";
+import Card from "@mui/material/Card";
 
 const HighScore = () => {
     const [results, setResults] = useState([]);
@@ -43,29 +43,31 @@ const HighScore = () => {
 
     return (
         <Box maxWidth="xl" className="centered text-centered menu-table">
-            <h1>High score</h1>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Character name</TableCell>
-                            <TableCell>Character Level</TableCell>
-                            <TableCell>Date</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {results.length > 1 && results.map(el => {
-                            return (
-                                <TableRow key={el.id}>
-                                    <TableCell>{el.name}</TableCell>
-                                    <TableCell>{el.level}</TableCell>
-                                    <TableCell>{el.date}</TableCell>
-                                </TableRow>
-                            )
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Card className="padlr">
+                <h1>High score</h1>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Character name</TableCell>
+                                <TableCell>Character Level</TableCell>
+                                <TableCell>Date</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {results.length > 1 && results.map(el => {
+                                return (
+                                    <TableRow key={el.id}>
+                                        <TableCell>{el.name}</TableCell>
+                                        <TableCell>{el.level}</TableCell>
+                                        <TableCell>{el.date}</TableCell>
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Card>
         </Box>
     )
 }

@@ -13,6 +13,7 @@ export default function SaveGame() {
     const gameCollectionRef = collection(db, 'games');
     state.date = new Date().toLocaleDateString("en-GB");
     const [status, setStatus] = useState(false);
+    const currentUser = useSelector(state => state.game.currentUser);
 
     const handleSetStatus = () => {
         setStatus(true);
@@ -33,12 +34,18 @@ export default function SaveGame() {
     }
 
     return (
-        <Box maxWidth="xl" className="centered text-centered">
+        <Box maxWidth="xl" className="centered text-centered save">
             <Card className="padlr">
                 <h1>Save your game</h1>
-                {status ? <Alert severity="success">Game saved</Alert> : ''}
-                <LoadGame mode="save" action={handleOverwriteGame} />
-                <Button variant="contained" color="secondary" onClick={()=> saveGame()}>Save new game</Button>
+                {currentUser?.email ?
+                    <>
+                        {status ? <Alert severity="success">Game saved</Alert> : ''}
+                        <LoadGame mode="save" action={handleOverwriteGame} />
+                        <Button variant="contained" color="secondary" onClick={()=> saveGame()}>Save new game</Button>
+                        </>
+                    :
+                    <Alert severity="error">You have to be logged in to save game</Alert>
+                }
             </Card>
         </Box>
     )

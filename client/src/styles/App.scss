@@ -6,6 +6,10 @@
     margin-top: 60px;
   }
 
+  .topbot {
+    background: rgba(40, 44, 52, .57);
+  }
+
   .centered {
     margin-left: auto;
     margin-right: auto;
@@ -15,12 +19,39 @@
     text-align: center;
   }
 
-  .main-menu, .MuiPaper-rounded {
-    background: rgba(40, 44, 52, .57);
-    border: 2px solid #601111;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, .62);
+  .font-white .MuiInputBase-root.MuiInput-root,
+  .font-white .custom-input,
+  .font-white .MuiFormLabel-root.MuiInputLabel-root,
+  .font-white .MuiTypography-root.MuiLink-root,
+  h4 {
     color: #d3d3d3;
+  }
+
+  .font-white .MuiInputBase-root .MuiInput-root:after {
+    border-bottom: 2px solid #d3d3d3;
+  }
+
+  .main-menu, .MuiPaper-root.MuiCard-root {
+    background: rgba(40, 44, 52, .57);
+    border-radius: 6px;
+    color: #d3d3d3;
+  }
+
+  .MuiPaper-root.MuiTableContainer-root {
+    background: none;
+    box-shadow: none;
+  }
+
+  .save .MuiPaper-root {
+    background: rgba(40, 44, 52, .57);
+
+    .MuiCard-root, > .MuiPaper-root {
+      background: none;
+      box-shadow: none;
+    }
+    .MuiAlert-standardError {
+      background: rgb(253, 237, 237);
+    }
   }
 
   .main-menu {
@@ -61,10 +92,6 @@
 
   .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
     border-color: #d3d3d3;
-  }
-
-  .char-hr {
-
   }
 
   #character-inventory {
