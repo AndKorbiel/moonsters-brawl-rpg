@@ -9,11 +9,20 @@ import {useState} from 'react';
 import Alert from '@mui/material/Alert';
 
 export default function SaveGame() {
-    const state = useSelector(state => state);
+    const state = useSelector(state => {
+        return {
+            game: state.game,
+            user: state.user.currentUser.email,
+            opponent: state.opponent,
+            shop: state.shop,
+            character: state.character
+        }
+
+    });
     const gameCollectionRef = collection(db, 'games');
     state.date = new Date().toLocaleDateString("en-GB");
     const [status, setStatus] = useState(false);
-    const currentUser = useSelector(state => state.game.currentUser);
+    const currentUser = useSelector(state => state.user.currentUser);
 
     const handleSetStatus = () => {
         setStatus(true);

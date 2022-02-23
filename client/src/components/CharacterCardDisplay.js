@@ -24,7 +24,6 @@ export default function CharacterCardDisplay(props) {
                         error={props.validation.name}
                         helperText={!props.validation.name ? "" : "Name be at least 2 characters long"}
                         defaultValue={props.character.name}
-                        color="secondary"
                         id="outlined-basic"
                         label="Your name"
                         onChange={e => props.handleNameChange(e)} variant="outlined"

@@ -1,4 +1,4 @@
-import {SET_STATUS_CODE, START_GAME, START_FIGHT, SET_CURRENT_USER} from "../types/game";
+import {SET_STATUS_CODE, START_GAME, START_FIGHT } from "../types/game";
 
 const initialState = {
     statusCode: 0,
@@ -38,11 +38,6 @@ export default function game(state = initialState, action) {
             return {
                 ...state,
                 fightStarted: true
-            }
-        case SET_CURRENT_USER:
-            return {
-                ...state,
-                currentUser: action.payload
             }
         default:
             return state

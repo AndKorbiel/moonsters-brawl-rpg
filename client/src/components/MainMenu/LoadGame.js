@@ -21,7 +21,7 @@ function LoadGame(props) {
     const gameCollectionRef = collection(db, 'games');
     const [savedGames, setSavedGames] = useState([])
     const dispatch = useDispatch();
-    const currentUser = useSelector(state => state.game.currentUser);
+    const currentUser = useSelector(state => state.user.currentUser);
 
     useEffect(()=> {
         let isDataSubscribed = true;
@@ -35,6 +35,8 @@ function LoadGame(props) {
                 }
             }))
             if (isDataSubscribed) {
+                console.log(currentUser.email)
+                console.log(savedGames)
                 setSavedGames(savedGames);
             }
         }
@@ -43,7 +45,7 @@ function LoadGame(props) {
         return ()=> {
             isDataSubscribed = false;
         }
-    }, [gameCollectionRef])
+    }, [])
 
     const handleLoadGame = (savedGame) => {
         dispatch(loadGame(savedGame))

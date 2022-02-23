@@ -1,4 +1,4 @@
-import {SET_STATUS_CODE, LOAD_GAME, SET_CURRENT_USER} from "../types/game";
+import {SET_STATUS_CODE, LOAD_GAME } from "../types/game";
 
 export function setStatusCode(statusCode) {
     return {
@@ -11,12 +11,5 @@ export function loadGame(savedGame) {
     return {
         type: LOAD_GAME,
         payload: savedGame
-    }
-}
-
-export function setCurrentUser(userData) {
-    return {
-        type: SET_CURRENT_USER,
-        payload: userData
     }
 }
