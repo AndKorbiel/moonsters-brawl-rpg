@@ -3,6 +3,7 @@ import character from "./character";
 import shop from './shop';
 import opponent from './opponent';
 import user from './user';
+import date from './date';
 import { combineReducers } from 'redux'
 import { GAME_OVER, LOAD_GAME } from "../types/game";
 
@@ -11,7 +12,8 @@ const appReducer = combineReducers({
     character,
     shop,
     opponent,
-    user
+    user,
+    date
 })
 
 export const rootReducer = (state, action) => {

@@ -4,6 +4,11 @@
 
   .main-cont {
     margin-top: 60px;
+
+    .MuiPaper-root {
+      background: rgba(40, 44, 52, .57);
+      color: #fff;
+    }
   }
 
   .topbot {
@@ -49,8 +54,15 @@
       background: none;
       box-shadow: none;
     }
+
     .MuiAlert-standardError {
       background: rgb(253, 237, 237);
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .MuiAlert-standardSuccess {
+      background-color: rgb(237, 247, 237);
+      color: rgba(0, 0, 0, 0.87);
     }
   }
 

@@ -12,7 +12,7 @@ export default function SaveGame() {
     const state = useSelector(state => {
         return {
             game: state.game,
-            user: state.user.currentUser.email,
+            user: state.user.currentUser ? state.user.currentUser.email : null,
             opponent: state.opponent,
             shop: state.shop,
             character: state.character

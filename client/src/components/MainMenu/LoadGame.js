@@ -22,45 +22,59 @@ function LoadGame(props) {
     const [savedGames, setSavedGames] = useState([])
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.user.currentUser);
+    const [status, setStatus] = useState(false);
+
+    async function getData() {
+        const data = await getDocs(gameCollectionRef)
+        const savedGames = data.docs.map(doc => ({
+            ...doc.data(),
+            game: {
+                ...doc.data().game,
+                id: doc.id
+            }
+        }))
+        if (currentUser) {
+            const filtered = savedGames.map(el => el).filter(game => game.user === currentUser.email)
+            setSavedGames(filtered);
+        }
+    }
 
     useEffect(()=> {
         let isDataSubscribed = true;
-        async function getData() {
-            const data = await getDocs(gameCollectionRef)
-            const savedGames = data.docs.map(doc => ({
-                ...doc.data(),
-                game: {
-                    ...doc.data().game,
-                    id: doc.id
-                }
-            }))
-            if (isDataSubscribed) {
-                console.log(currentUser.email)
-                console.log(savedGames)
-                setSavedGames(savedGames);
-            }
+
+        if (isDataSubscribed) {
+            getData();
         }
-        getData();
 
         return ()=> {
             isDataSubscribed = false;
         }
-    }, [])
+    }, [props])
 
     const handleLoadGame = (savedGame) => {
         dispatch(loadGame(savedGame))
         dispatch(setStatusCode(1))
     }
 
+    const handleSetStatus = () => {
+        setStatus(true);
+        setTimeout(()=> {
+            setStatus(false);
+            getData()
+        }, 2000);
+    }
+
     const deleteSavedGame = async (id) => {
         const gameDoc = doc(db, 'games', id);
         await deleteDoc(gameDoc)
+        handleSetStatus();
     }
 
     return (
         <Box maxWidth="xl" className="centered text-centered menu-table">
             <Card className="padlr">
             {props.mode === 'save' ? '' : <h1>Load game</h1>}
+            {status ? <Alert severity="warning">Game deleted</Alert> : ''}
             {currentUser?.email ?
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
