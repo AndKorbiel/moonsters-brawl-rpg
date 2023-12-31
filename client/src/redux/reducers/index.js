@@ -6,22 +6,22 @@ import { combineReducers } from 'redux'
 import { GAME_OVER, LOAD_GAME } from "../types/game";
 
 const appReducer = combineReducers({
-    game,
-    character,
-    shop,
-    opponent
+  game,
+  character,
+  shop,
+  opponent
 })
 
 export const rootReducer = (state, action) => {
-    switch (action.type) {
-        case 'GAME_OVER':
-            state = undefined
-            break;
-        case 'LOAD_GAME':
-            return {
-                ...action.payload
-            }
-    }
+  switch (action.type) {
+    case 'GAME_OVER':
+      state = undefined
+      break;
+    case 'LOAD_GAME':
+      return {
+        ...action.payload
+      }
+  }
 
-    return appReducer(state, action)
+  return appReducer(state, action)
 }
