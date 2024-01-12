@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../firebase-config';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
@@ -17,29 +17,39 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 
-function LoadGame(props) {
+export default function LoadGame({ mode, action }) {
   const gameCollectionRef = collection(db, 'games');
   const [savedGames, setSavedGames] = useState([]);
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const { currentUser } = useSelector((state) => state.user.currentUser ?? {});
   const [status, setStatus] = useState(false);
 
-  async function getData() {
-    const data = await getDocs(gameCollectionRef);
-    const savedGames = data.docs.map((doc) => ({
-      ...doc.data(),
-      game: {
-        ...doc.data().game,
-        id: doc.id,
-      },
-    }));
+  const getData = useCallback(async () => {
+    let savedGames = [];
+    let filteredSavedGames = [];
+
+    try {
+      const data = await getDocs(gameCollectionRef);
+
+      savedGames = data.docs.map((doc) => ({
+        ...doc.data(),
+        game: {
+          ...doc.data().game,
+          id: doc.id,
+        },
+      }));
+    } catch (e) {
+      console.log(e);
+    }
+
     if (currentUser) {
-      const filtered = savedGames
+      filteredSavedGames = savedGames
         .map((el) => el)
         .filter((game) => game.user === currentUser.email);
-      setSavedGames(filtered);
     }
-  }
+
+    setSavedGames(filteredSavedGames);
+  }, []);
 
   useEffect(() => {
     let isDataSubscribed = true;
@@ -51,7 +61,7 @@ function LoadGame(props) {
     return () => {
       isDataSubscribed = false;
     };
-  }, [props]);
+  }, [getData]);
 
   const handleLoadGame = (savedGame) => {
     dispatch(loadGame(savedGame));
@@ -75,7 +85,7 @@ function LoadGame(props) {
   return (
     <Box maxWidth="xl" className="centered text-centered menu-table">
       <Card className="padlr">
-        {props.mode === 'save' ? '' : <h1>Load game</h1>}
+        {mode === 'save' ? '' : <h1>Load game</h1>}
         {status ? <Alert severity="warning">Game deleted</Alert> : ''}
         {currentUser?.email ? (
           <TableContainer component={Paper}>
@@ -99,10 +109,10 @@ function LoadGame(props) {
                         <TableCell>{savedGame.character.gold}</TableCell>
                         <TableCell>{savedGame.date}</TableCell>
                         <TableCell>
-                          {props.mode === 'save' ? (
+                          {mode === 'save' ? (
                             <Button
                               variant="contained"
-                              onClick={() => props.action(savedGame.game.id)}
+                              onClick={() => action(savedGame.game.id)}
                             >
                               Overwrite game
                             </Button>
@@ -139,5 +149,3 @@ function LoadGame(props) {
     </Box>
   );
 }
-
-export default LoadGame;

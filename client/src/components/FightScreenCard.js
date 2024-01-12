@@ -1,14 +1,16 @@
+import { useDispatch, useSelector } from 'react-redux';
+import FightLogicContainer from './FightLogicContainer';
+import { START_FIGHT } from '../redux/types/game';
 // material-ui
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-import { connect } from 'react-redux';
-import FightLogicContainer from './FightLogicContainer';
-import { START_FIGHT } from '../redux/types/game';
+export default function FightScreenCard() {
+  const dispatch = useDispatch();
+  const { fightStarted } = useSelector((state) => state.game.fightStarted);
 
-function FightScreenCard(props) {
   return (
     <Paper>
       <Grid container className="padlr">
@@ -16,11 +18,12 @@ function FightScreenCard(props) {
           <Typography variant="h5" align="center">
             Fight for your life!
           </Typography>
-          {props.fightStarted !== true ? (
+
+          {fightStarted !== true ? (
             <Button
               variant="contained"
               color="error"
-              onClick={() => props.startFight()}
+              onClick={() => dispatch({ type: START_FIGHT })}
             >
               Fight
             </Button>
@@ -32,19 +35,3 @@ function FightScreenCard(props) {
     </Paper>
   );
 }
-
-const mapStateToProps = (state) => {
-  return {
-    fightStarted: state.game.fightStarted,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    startFight: () => {
-      dispatch({ type: START_FIGHT });
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(FightScreenCard);

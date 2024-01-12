@@ -6,17 +6,19 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 
-export default function ShopCardItem(props) {
+export default function ShopCardItem({ item, action }) {
   return (
     <Card sx={{ maxWidth: 345 }} className="centered">
       <CardContent>
-        <Typography variant="h6">{props.item.name}</Typography>
+        <Typography variant="h6">{item.name}</Typography>
       </CardContent>
-      <CardMedia component="img" height="140" image={props.item.image} />
+
+      <CardMedia component="img" height="140" image={item.image} />
+
       <CardContent>
-        <Typography variant="h6">Price: {props.item.price} gold</Typography>
+        <Typography variant="h6">Price: {item.price} gold</Typography>
         <Typography variant="h6">
-          {props.item.stats.map((stat) => {
+          {item.stats.map((stat) => {
             return (
               <p key={stat.name}>
                 +{stat.value} {stat.name}
@@ -25,11 +27,12 @@ export default function ShopCardItem(props) {
           })}
         </Typography>
       </CardContent>
+
       <CardActions>
         <Button
           variant="outlined"
           color="secondary"
-          onClick={() => props.action(props.item)}
+          onClick={() => action(item)}
         >
           Buy this item
         </Button>

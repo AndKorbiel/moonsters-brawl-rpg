@@ -1,22 +1,24 @@
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { buyItem, calculateStatsFromItem } from '../redux/actions/character';
 import { removeFromShop } from '../redux/actions/shop';
-
 // material-ui
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import ShopCardItem from './ShopCardItem';
 
-function ShopCard(props) {
+export default function ShopCard() {
+  const dispatch = useDispatch();
+  const { availableItems, character } = useSelector((state) => ({
+    availableItems: state.shop.availableItems,
+    character: state.character,
+  }));
+
   const handleBuyAction = (item) => {
-    if (
-      props.character.items.length <= 2 &&
-      props.character.gold >= item.price
-    ) {
-      props.buyItem(item);
-      props.removeFromShop(item);
-      props.calculateStatsFromItem(item);
+    if (character.items.length <= 2 && character.gold >= item.price) {
+      dispatch(buyItem(item));
+      dispatch(removeFromShop(item));
+      dispatch(calculateStatsFromItem(item));
     }
   };
 
@@ -27,9 +29,10 @@ function ShopCard(props) {
           Welcome in the Magic Shop
         </Typography>
       </Grid>
+
       <Grid item xs={12}>
         <Grid container>
-          {props.availableItems.map((item) => {
+          {availableItems.map((item) => {
             return (
               <Grid item xs={12} md={4} key={item.id}>
                 <ShopCardItem item={item} action={handleBuyAction} />
@@ -37,32 +40,13 @@ function ShopCard(props) {
             );
           })}
         </Grid>
-        {props.availableItems.length === 0 ? (
+
+        {availableItems.length === 0 && (
           <Typography variant="h6" align="center">
             All item have been sold. Come back later.
           </Typography>
-        ) : (
-          ''
         )}
       </Grid>
     </Paper>
   );
 }
-
-const mapStateToProps = (state) => {
-  return {
-    availableItems: state.shop.availableItems,
-    character: state.character,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    buyItem: (item) => dispatch(buyItem(item)),
-    removeFromShop: (item) => dispatch(removeFromShop(item)),
-    calculateStatsFromItem: (item) =>
-      dispatch(calculateStatsFromItem(item.stats)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShopCard);

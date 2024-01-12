@@ -57,7 +57,7 @@ class App extends React.Component {
             spacing={2}
             className="main-cont centered"
           >
-            {this.props.statusCode === 0 ? (
+            {this.props.statusCode === 0 && (
               <Grid item xs={12}>
                 <MainMenu
                   action={this.handleGameStatus}
@@ -65,10 +65,9 @@ class App extends React.Component {
                   options={this.props.menuOptions}
                 />
               </Grid>
-            ) : (
-              ''
             )}
-            {this.props.statusCode === 1 ? (
+
+            {this.props.statusCode === 1 && (
               <>
                 <Grid item xs={12} md={4} lg={3}>
                   <CharacterCard />
@@ -77,10 +76,9 @@ class App extends React.Component {
                   <ShopCard />
                 </Grid>
               </>
-            ) : (
-              ''
             )}
-            {this.props.statusCode === 2 ? (
+
+            {this.props.statusCode === 2 && (
               <>
                 <Grid item xs={12} md={4} lg={3}>
                   <CharacterCard />
@@ -92,14 +90,13 @@ class App extends React.Component {
                   <OpponentCard />
                 </Grid>
               </>
-            ) : (
-              ''
             )}
-            {this.props.statusCode === 5 ? <SaveGame /> : ''}
-            {this.props.statusCode === 6 ? <LoadGame /> : ''}
-            {this.props.statusCode === 7 ? <About /> : ''}
-            {this.props.statusCode === 8 ? <HighScore /> : ''}
-            {this.props.statusCode === 9 ? <Login /> : ''}
+
+            {this.props.statusCode === 5 && <SaveGame />}
+            {this.props.statusCode === 6 && <LoadGame />}
+            {this.props.statusCode === 7 && <About />}
+            {this.props.statusCode === 8 && <HighScore />}
+            {this.props.statusCode === 9 && <Login />}
           </Grid>
         </div>
       </ThemeProvider>

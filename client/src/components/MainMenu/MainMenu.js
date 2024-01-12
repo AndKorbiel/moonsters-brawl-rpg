@@ -4,22 +4,26 @@ import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-export default function MainMenu(props) {
+export default function MainMenu({ options, action }) {
   return (
-    <Box maxWidth="sm" className="centered text-centered main-menu" data-testid="main-menu">
+    <Box
+      maxWidth="sm"
+      className="centered text-centered main-menu"
+      data-testid="main-menu"
+    >
       <MenuList>
-        {props.options.map(element => {
+        {options.map((element) => {
           return (
             <MenuItem key={element.value}>
               <ListItemText>
-                <Button variant="h2" onClick={() => props.action(element.value)}>
+                <Button variant="h2" onClick={() => action(element.value)}>
                   {element.label}
                 </Button>
               </ListItemText>
             </MenuItem>
-          )
+          );
         })}
       </MenuList>
     </Box>
-  )
+  );
 }

@@ -10,9 +10,21 @@ import Grid from '@mui/material/Grid';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import React from 'react';
 
-export default function CharacterCardDisplay(props) {
+export default function CharacterCardDisplay({
+  character,
+  handleDropItem,
+  handleNameChange,
+  handleStatsChange,
+  handleSave,
+  handleEditMode,
+  validation,
+  points,
+  statusCode,
+  setStatusCode,
+  stats,
+}) {
   let emptySpaceInInventory = [];
-  for (let n = props.character.items.length; n <= 2; n++) {
+  for (let n = character.items.length; n <= 2; n++) {
     emptySpaceInInventory.push(
       <Grid item xs={12} lg={4} className="inventory-box" key={n} />,
     );
@@ -21,46 +33,46 @@ export default function CharacterCardDisplay(props) {
   return (
     <Card>
       <CardContent>
-        {props.character.isEditing ? (
+        {character.isEditing ? (
           <TextField
-            error={props.validation.name}
+            error={validation.name}
             helperText={
-              !props.validation.name ? '' : 'Name be at least 2 characters long'
+              !validation.name ? '' : 'Name be at least 2 characters long'
             }
-            defaultValue={props.character.name}
+            defaultValue={character.name}
             id="outlined-basic"
             label="Your name"
-            onChange={(e) => props.handleNameChange(e)}
+            onChange={(e) => handleNameChange(e)}
             variant="outlined"
           />
         ) : (
           <Typography gutterBottom variant="h5" component="div">
-            {props.character.name}
+            {character.name}
           </Typography>
         )}
       </CardContent>
-      <CardMedia component="img" height="140" image={props.character.image} />
+
+      <CardMedia component="img" height="140" image={character.image} />
+
       <CardActions className="stats">
         <ul>
           <li>
-            <Typography variant="h6">Level: {props.character.level}</Typography>
+            <Typography variant="h6">Level: {character.level}</Typography>
           </li>
           <li>
-            <Typography variant="h6">Gold: {props.character.gold}</Typography>
+            <Typography variant="h6">Gold: {character.gold}</Typography>
           </li>
           <li>
-            <Typography variant="h6">
-              Points to spend: {props.points}
-            </Typography>
+            <Typography variant="h6">Points to spend: {points}</Typography>
           </li>
-          {props.character.stats.map((el) => {
+          {character.stats.map((el) => {
             return (
               <li key={el.name}>
-                {props.character.isEditing ? (
+                {character.isEditing ? (
                   <Button
                     variant="contained"
                     name={el.name}
-                    onClick={(e) => props.handleStatsChange(e, 'decrement')}
+                    onClick={(e) => handleStatsChange(e, 'decrement')}
                   >
                     -
                   </Button>
@@ -69,16 +81,15 @@ export default function CharacterCardDisplay(props) {
                 )}
                 <Typography variant="h6">
                   {el.name}:{' '}
-                  {props.character.isEditing
-                    ? props.stats.filter((item) => item.name === el.name)[0]
-                        .value
+                  {character.isEditing
+                    ? stats.filter((item) => item.name === el.name)[0].value
                     : el.value}
                 </Typography>
-                {props.character.isEditing ? (
+                {character.isEditing ? (
                   <Button
                     variant="contained"
                     name={el.name}
-                    onClick={(e) => props.handleStatsChange(e, 'increment')}
+                    onClick={(e) => handleStatsChange(e, 'increment')}
                   >
                     +
                   </Button>
@@ -90,20 +101,21 @@ export default function CharacterCardDisplay(props) {
           })}
         </ul>
       </CardActions>
+
       <CardContent>
-        {props.character.isEditing ? (
+        {character.isEditing ? (
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => props.handleSave()}
+            onClick={() => handleSave()}
           >
             Save
           </Button>
-        ) : props.statusCode === 1 ? (
+        ) : statusCode === 1 ? (
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => props.handleEditMode(true)}
+            onClick={() => handleEditMode(true)}
           >
             Edit
           </Button>
@@ -111,13 +123,11 @@ export default function CharacterCardDisplay(props) {
           ''
         )}
 
-        {!props.character.isEditing &&
-        props.statusCode === 1 &&
-        props.points === 0 ? (
+        {!character.isEditing && statusCode === 1 && points === 0 ? (
           <Button
             variant="contained"
             color="error"
-            onClick={() => props.setStatusCode(2)}
+            onClick={() => setStatusCode(2)}
           >
             Start game
           </Button>
@@ -125,22 +135,23 @@ export default function CharacterCardDisplay(props) {
           ''
         )}
       </CardContent>
+
       <CardContent id="character-inventory">
         <Typography gutterBottom variant="h5" component="div">
           Inventory
         </Typography>
         <Grid container spacing={2} className="inventory-cont">
-          {props.character.items.map((item) => {
+          {character.items.map((item) => {
             return (
               <Grid item xs={4} className="inventory-box" key={item.id}>
                 <CardMedia component="img" image={item.image} />
-                {props.character.isEditing ? (
+                {character.isEditing ? (
                   <CardActions>
                     <Button
                       variant="contained"
                       color="error"
                       startIcon={<HighlightOffIcon />}
-                      onClick={() => props.handleDropItem(item)}
+                      onClick={() => handleDropItem(item)}
                     >
                       Drop item
                     </Button>

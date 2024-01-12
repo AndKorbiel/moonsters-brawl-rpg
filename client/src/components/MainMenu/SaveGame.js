@@ -18,6 +18,7 @@ export default function SaveGame() {
       character: state.character,
     };
   });
+
   const gameCollectionRef = collection(db, 'games');
   state.date = new Date().toLocaleDateString('en-GB');
   const [status, setStatus] = useState(false);
@@ -45,6 +46,7 @@ export default function SaveGame() {
     <Box maxWidth="xl" className="centered text-centered save">
       <Card className="padlr">
         <h1>Save your game</h1>
+
         {currentUser?.email ? (
           <>
             {status ? <Alert severity="success">Game saved</Alert> : ''}
