@@ -1,106 +1,129 @@
 import './styles/App.scss';
 // material-ui
-import Navbar from "./components/Navbar";
-import MainMenu from "./components/MainMenu/MainMenu";
+import Navbar from './components/Navbar';
+import MainMenu from './components/MainMenu/MainMenu';
 import Grid from '@mui/material/Grid';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import React from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { setStatusCode } from './redux/actions/game';
 import { START_GAME } from './redux/types/game';
-import CharacterCard from "./components/CharacterCardContainer";
-import ShopCard from "./components/ShopCard";
-import OpponentCard from "./components/OpponentCard";
-import FightScreenCard from "./components/FightScreenCard";
+import CharacterCard from './components/CharacterCardContainer';
+import ShopCard from './components/ShopCard';
+import OpponentCard from './components/OpponentCard';
+import FightScreenCard from './components/FightScreenCard';
 import { db } from './firebase-config';
-import { collection, getDocs } from 'firebase/firestore'
-import LoadGame from "./components/MainMenu/LoadGame";
-import SaveGame from "./components/MainMenu/SaveGame";
+import { collection } from 'firebase/firestore';
+import LoadGame from './components/MainMenu/LoadGame';
+import SaveGame from './components/MainMenu/SaveGame';
+import About from './components/MainMenu/About';
+import HighScore from './components/MainMenu/HighScore';
+import Login from './components/Login';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2c0f23',
+    },
+    secondary: {
+      main: '#fe7800',
+    },
+  },
+});
 
 class App extends React.Component {
   gameCollectionRef = collection(db, 'games');
 
-  handleGameStatus = status => {
+  handleGameStatus = (status) => {
     if (status === 1) {
-      this.props.startGame()
+      this.props.startGame();
     }
-    this.props.setStatusCode(status)
-  }
-
-  componentDidMount() {
-    const getGames = async () => {
-      const data = await getDocs(this.gameCollectionRef)
-      const formattedData = data.docs.map(doc => ({
-        ...doc.data(),
-        id: doc.id
-      }))
-      console.log(formattedData)
-    }
-
-    getGames()
-  }
+    this.props.setStatusCode(status);
+  };
 
   render() {
     return (
-      <div className="App">
-        <Navbar status={this.props.statusCode} action={this.props.setStatusCode} />
-        <Grid container maxWidth="xl" spacing={2} className="main-cont centered">
-          {this.props.statusCode === 0 ?
-            <Grid item xs={12}>
-              <MainMenu action={this.handleGameStatus} gameStarted={this.props.gameStarted} options={this.props.menuOptions} />
-            </Grid>
-            : ''
-          }
-          {this.props.statusCode === 1 ?
-            <><Grid item xs={12} lg={3}>
-              <CharacterCard />
-            </Grid>
-              <Grid item xs={12} lg={9}>
-                <ShopCard />
-              </Grid></>
-            : ''
-          }
-          {this.props.statusCode === 2 ?
-            <>
-              <Grid item xs={12} lg={3}>
-                <CharacterCard />
+      <ThemeProvider theme={theme}>
+        <Navbar
+          status={this.props.statusCode}
+          action={this.props.setStatusCode}
+        />
+
+        <div className="App">
+          <Grid
+            container
+            maxWidth="xl"
+            spacing={2}
+            className="main-cont centered"
+          >
+            {this.props.statusCode === 0 ? (
+              <Grid item xs={12}>
+                <MainMenu
+                  action={this.handleGameStatus}
+                  gameStarted={this.props.gameStarted}
+                  options={this.props.menuOptions}
+                />
               </Grid>
-              <Grid item xs={12} lg={6}>
-                <FightScreenCard />
-              </Grid>
-              <Grid item xs={12} lg={3}>
-                <OpponentCard />
-              </Grid>
-            </>
-            : ''
-          }
-          {this.props.statusCode === 5 ?
-            <SaveGame />
-            : ''
-          }
-          {this.props.statusCode === 6 ?
-            <LoadGame />
-            : ''
-          }
-        </Grid>
-      </div>
-    )
+            ) : (
+              ''
+            )}
+            {this.props.statusCode === 1 ? (
+              <>
+                <Grid item xs={12} md={4} lg={3}>
+                  <CharacterCard />
+                </Grid>
+                <Grid item xs={12} md={8} lg={9}>
+                  <ShopCard />
+                </Grid>
+              </>
+            ) : (
+              ''
+            )}
+            {this.props.statusCode === 2 ? (
+              <>
+                <Grid item xs={12} md={4} lg={3}>
+                  <CharacterCard />
+                </Grid>
+                <Grid item xs={12} md={4} lg={6}>
+                  <FightScreenCard />
+                </Grid>
+                <Grid item xs={12} md={4} lg={3}>
+                  <OpponentCard />
+                </Grid>
+              </>
+            ) : (
+              ''
+            )}
+            {this.props.statusCode === 5 ? <SaveGame /> : ''}
+            {this.props.statusCode === 6 ? <LoadGame /> : ''}
+            {this.props.statusCode === 7 ? <About /> : ''}
+            {this.props.statusCode === 8 ? <HighScore /> : ''}
+            {this.props.statusCode === 9 ? <Login /> : ''}
+          </Grid>
+        </div>
+      </ThemeProvider>
+    );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     statusCode: state.game.statusCode,
     gameStarted: state.game.gameStarted,
-    menuOptions: state.game.menuOptions
-  }
-}
+    menuOptions: state.game.menuOptions,
+  };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setStatusCode: statusCode => { dispatch(setStatusCode(statusCode)) },
-    startGame: () => { dispatch({ type: START_GAME }) }
-  }
-}
+    setStatusCode: (statusCode) => {
+      dispatch(setStatusCode(statusCode));
+    },
+    startGame: () => {
+      dispatch({ type: START_GAME });
+    },
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

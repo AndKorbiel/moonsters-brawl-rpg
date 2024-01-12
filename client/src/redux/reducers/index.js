@@ -1,27 +1,32 @@
-import game from "./game";
-import character from "./character";
+import game from './game';
+import character from './character';
 import shop from './shop';
 import opponent from './opponent';
-import { combineReducers } from 'redux'
-import { GAME_OVER, LOAD_GAME } from "../types/game";
+import user from './user';
+import date from './date';
+import { combineReducers } from 'redux';
+import { GAME_OVER, LOAD_GAME } from '../types/game';
 
 const appReducer = combineReducers({
   game,
   character,
   shop,
-  opponent
-})
+  opponent,
+  user,
+  date,
+});
 
 export const rootReducer = (state, action) => {
   switch (action.type) {
-    case 'GAME_OVER':
-      state = undefined
+    case GAME_OVER:
+      state = undefined;
       break;
-    case 'LOAD_GAME':
+    case LOAD_GAME:
       return {
-        ...action.payload
-      }
+        ...action.payload,
+      };
+    default:
   }
 
-  return appReducer(state, action)
-}
+  return appReducer(state, action);
+};
