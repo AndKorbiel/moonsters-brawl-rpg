@@ -1,7 +1,4 @@
 import './styles/App.scss';
-// material-ui
-import Navbar from './components/Navbar';
-import MainMenu from './components/MainMenu/MainMenu';
 import Grid from '@mui/material/Grid';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -9,17 +6,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setStatusCode } from './redux/actions/game';
 import { START_GAME } from './redux/types/game';
-import CharacterCard from './components/CharacterCardContainer';
-import ShopCard from './components/ShopCard';
-import OpponentCard from './components/OpponentCard';
-import FightScreenCard from './components/FightScreenCard';
+import { FightScreenCard, MainMenu, OpponentCard, ShopCard } from './modules/';
+import CharacterCard from './modules/CharacterCard';
+
 import { db } from './firebase-config';
 import { collection } from 'firebase/firestore';
-import LoadGame from './components/MainMenu/LoadGame';
-import SaveGame from './components/MainMenu/SaveGame';
-import About from './components/MainMenu/About';
-import HighScore from './components/MainMenu/HighScore';
-import Login from './components/Login';
+
+import {
+  About,
+  HighScore,
+  LoadGame,
+  Login,
+  Navbar,
+  SaveGame,
+} from './components';
 
 const theme = createTheme({
   palette: {

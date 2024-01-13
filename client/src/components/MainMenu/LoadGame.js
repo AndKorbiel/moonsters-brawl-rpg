@@ -17,7 +17,7 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 
-export default function LoadGame({ mode, action }) {
+export function LoadGame({ mode, action }) {
   const gameCollectionRef = collection(db, 'games');
   const [savedGames, setSavedGames] = useState([]);
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ export default function LoadGame({ mode, action }) {
     }
 
     setSavedGames(filteredSavedGames);
-  }, []);
+  }, [currentUser, gameCollectionRef]);
 
   useEffect(() => {
     let isDataSubscribed = true;

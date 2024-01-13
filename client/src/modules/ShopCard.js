@@ -5,9 +5,9 @@ import { removeFromShop } from '../redux/actions/shop';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import ShopCardItem from './ShopCardItem';
+import { ShopCardItem } from '../components/ShopCardItem';
 
-export default function ShopCard() {
+export function ShopCard() {
   const dispatch = useDispatch();
   const { availableItems, character } = useSelector((state) => ({
     availableItems: state.shop.availableItems,

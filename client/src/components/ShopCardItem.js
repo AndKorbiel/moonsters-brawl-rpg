@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 
-export default function ShopCardItem({ item, action }) {
+export function ShopCardItem({ item, action }) {
   return (
     <Card sx={{ maxWidth: 345 }} className="centered">
       <CardContent>

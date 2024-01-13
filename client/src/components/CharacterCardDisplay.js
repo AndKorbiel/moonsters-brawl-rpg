@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import React from 'react';
 
-export default function CharacterCardDisplay({
+export function CharacterCardDisplay({
   character,
   handleDropItem,
   handleNameChange,

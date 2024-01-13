@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import FightLogicContainer from './FightLogicContainer';
+import FightLogicContainer from '../components/FightLogicContainer';
 import { START_FIGHT } from '../redux/types/game';
 // material-ui
 import Typography from '@mui/material/Typography';
@@ -7,9 +7,19 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-export default function FightScreenCard() {
+export function FightScreenCard() {
   const dispatch = useDispatch();
   const { fightStarted } = useSelector((state) => state.game.fightStarted);
+
+  const StartFightButton = (
+    <Button
+      variant="contained"
+      color="error"
+      onClick={() => dispatch({ type: START_FIGHT })}
+    >
+      Fight
+    </Button>
+  );
 
   return (
     <Paper>
@@ -19,17 +29,7 @@ export default function FightScreenCard() {
             Fight for your life!
           </Typography>
 
-          {fightStarted !== true ? (
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => dispatch({ type: START_FIGHT })}
-            >
-              Fight
-            </Button>
-          ) : (
-            <FightLogicContainer />
-          )}
+          {fightStarted ? StartFightButton : <FightLogicContainer />}
         </Grid>
       </Grid>
     </Paper>

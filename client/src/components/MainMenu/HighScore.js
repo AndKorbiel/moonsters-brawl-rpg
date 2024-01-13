@@ -1,7 +1,8 @@
-import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-// material-ui
+import { db } from '../../firebase-config';
+
+import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,10 +10,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { db } from '../../firebase-config';
 import Card from '@mui/material/Card';
 
-export default function HighScore() {
+export function HighScore() {
   const [results, setResults] = useState([]);
   const highScoreRef = collection(db, 'high-score');
 

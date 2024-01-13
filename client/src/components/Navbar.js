@@ -9,7 +9,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { setCurrentUser } from '../redux/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function Navbar(props) {
+export function Navbar(props) {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
 

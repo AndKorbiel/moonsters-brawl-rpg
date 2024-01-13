@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 
-export default function About() {
+export function About() {
   return (
     <Box maxWidth="md" className="centered text-centered">
       <Card className="padlrextra">
@@ -24,7 +24,7 @@ export default function About() {
           of damage, thank you've got 35% chance to block the damage (becasue:
           (5 / 10) / 1.4 = 0.35).
         </Typography>
-        
+
         <Typography variant="subtitle1" gutterBottom>
           <b>Life points</b> determine how much damage you can take. The player
           which life points gets to 0 or less, losses the brawl.

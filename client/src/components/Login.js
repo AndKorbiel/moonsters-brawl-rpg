@@ -14,7 +14,7 @@ import { auth } from '../firebase-config';
 import { useDispatch } from 'react-redux';
 import { setStatusCode } from '../redux/actions/game';
 
-export default function Login() {
+export function Login() {
   const [showRegisterForm, switchForm] = useState(false);
   const [credentials, setCredentials] = useState({ login: '', password: '' });
   const [errorMessage, setMessage] = useState('');

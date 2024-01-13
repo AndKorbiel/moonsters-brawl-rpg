@@ -4,7 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-export default function MainMenu({ options, action }) {
+export function MainMenu({ options, action }) {
   return (
     <Box
       maxWidth="sm"
@@ -12,12 +12,12 @@ export default function MainMenu({ options, action }) {
       data-testid="main-menu"
     >
       <MenuList>
-        {options.map((element) => {
+        {options.map((option) => {
           return (
-            <MenuItem key={element.value}>
+            <MenuItem key={option.value}>
               <ListItemText>
-                <Button variant="h2" onClick={() => action(element.value)}>
-                  {element.label}
+                <Button variant="h2" onClick={() => action(option.value)}>
+                  {option.label}
                 </Button>
               </ListItemText>
             </MenuItem>

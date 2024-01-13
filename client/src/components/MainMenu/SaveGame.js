@@ -1,14 +1,17 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+
 import { db } from '../../firebase-config';
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
+
+import { LoadGame } from './LoadGame';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import LoadGame from './LoadGame';
-import Button from '@mui/material/Button';
-import { useState } from 'react';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
-export default function SaveGame() {
+export function SaveGame() {
   const state = useSelector((state) => {
     return {
       game: state.game,
