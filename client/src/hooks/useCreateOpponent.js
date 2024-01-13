@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { setImage } from '../redux/actions/opponent';
 import { getNewNameEffect } from '../redux/effects/opponent';
 
@@ -14,7 +14,7 @@ export const useCreateOpponent = () => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
-  const handleSetStats = useMemo(() => {
+  const handleSetStats = useCallback(() => {
     const points = opponent.points;
     const stats = opponent.stats.map((el) => el);
 
@@ -44,7 +44,7 @@ export const useCreateOpponent = () => {
     dispatch(getNewNameEffect());
     dispatch(setImage(randomIntFromInterval(1, 4)));
     handleSetStats();
-  }, [dispatch, handleSetStats]);
+  }, []);
 
   return { opponent, opponentStats };
 };
