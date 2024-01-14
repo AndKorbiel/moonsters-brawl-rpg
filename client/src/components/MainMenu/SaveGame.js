@@ -11,6 +11,8 @@ import Card from '@mui/material/Card';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 
+const gameCollectionRef = collection(db, 'games');
+
 export function SaveGame() {
   const state = useSelector((state) => {
     return {
@@ -22,8 +24,7 @@ export function SaveGame() {
     };
   });
 
-  const gameCollectionRef = collection(db, 'games');
-  state.date = new Date().toLocaleDateString('en-GB');
+  const startDate = new Date().toLocaleDateString('en-GB');
   const [status, setStatus] = useState(false);
   const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -35,7 +36,7 @@ export function SaveGame() {
   };
 
   const saveGame = async () => {
-    await addDoc(gameCollectionRef, state);
+    await addDoc(gameCollectionRef, { ...state, date: startDate });
     handleSetStatus();
   };
 

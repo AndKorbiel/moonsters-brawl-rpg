@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase-config';
+import { getHighScoreData } from '../../utils';
 
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -14,34 +13,15 @@ import Card from '@mui/material/Card';
 
 export function HighScore() {
   const [results, setResults] = useState([]);
-  const highScoreRef = collection(db, 'high-score');
-
-  const sortData = (data) => {
-    return data
-      .sort((a, b) => {
-        return a.level - b.level;
-      })
-      .reverse()
-      .slice(0, 10);
-  };
 
   useEffect(() => {
-    async function getData() {
-      const data = await getDocs(highScoreRef);
-
-      try {
-        const highScoreData = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        const sorted = sortData(highScoreData);
-        setResults(sorted);
-      } catch (error) {
-        console.log(error);
-      }
+    async function init() {
+      const highScoreData = await getHighScoreData();
+      setResults(highScoreData);
     }
-    getData();
-  }, [highScoreRef]);
+
+    init();
+  }, []);
 
   return (
     <Box maxWidth="xl" className="centered text-centered menu-table">
@@ -59,7 +39,7 @@ export function HighScore() {
             </TableHead>
 
             <TableBody>
-              {results.length > 1 &&
+              {results?.length ? (
                 results.map((el) => {
                   return (
                     <TableRow key={el.id}>
@@ -68,7 +48,14 @@ export function HighScore() {
                       <TableCell>{el.date}</TableCell>
                     </TableRow>
                   );
-                })}
+                })
+              ) : (
+                <TableRow>
+                  <TableCell>No data to display</TableCell>
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

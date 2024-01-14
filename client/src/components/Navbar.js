@@ -9,7 +9,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { setCurrentUser } from '../redux/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 
-export function Navbar(props) {
+export function Navbar({ action, status }) {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -43,15 +43,15 @@ export function Navbar(props) {
             Moonster Brawl RPG
           </Typography>
 
-          {props.status !== 2 && (
+          {status !== 2 && (
             <>
-              <Button color="inherit" onClick={() => props.action(0)}>
+              <Button color="inherit" onClick={() => action(0)}>
                 MENU
               </Button>
               {currentUser?.email ? (
                 CurrentUserInfoLabel
               ) : (
-                <Button color="inherit" onClick={() => props.action(9)}>
+                <Button color="inherit" onClick={() => action(9)}>
                   Login
                 </Button>
               )}

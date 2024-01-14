@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { setStatusCode } from './redux/actions/game';
 import { START_GAME } from './redux/types/game';
 
@@ -30,15 +30,17 @@ const theme = createTheme({
 });
 
 const App = (props) => {
-  const handleGameStatus = (status) => {
-    if (status === 1) props.startGame();
+  const dispatch = useDispatch();
 
-    props.setStatusCode(status);
+  const handleGameStatus = (status) => {
+    if (status === 1) dispatch({ type: START_GAME });
+
+    dispatch(setStatusCode(status));
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Navbar status={props.statusCode} action={props.setStatusCode} />
+      <Navbar status={props.statusCode} action={handleGameStatus} />
 
       <div className="App">
         <Grid
@@ -101,15 +103,15 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setStatusCode: (statusCode) => {
-      dispatch(setStatusCode(statusCode));
-    },
-    startGame: () => {
-      dispatch({ type: START_GAME });
-    },
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     setStatusCode: (statusCode) => {
+//       dispatch(setStatusCode(statusCode));
+//     },
+//     startGame: () => {
+//       dispatch({ type: START_GAME });
+//     },
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, null)(App);

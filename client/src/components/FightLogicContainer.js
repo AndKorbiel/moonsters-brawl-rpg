@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import { calculateFightStats, calculateLevelUp } from '../handlers/FightMath';
+import { calculateFightStats, calculateLevelUp } from '../utils/FightMath';
 import { setStatusCode } from '../redux/actions/game';
 import { GAME_OVER } from '../redux/types/game';
 import { changeStats } from '../redux/actions/character';
 import Button from '@mui/material/Button';
 import { levelUp, resetStats } from '../redux/actions/opponent';
-import setHighScore from '../handlers/SetHighScore';
+import setHighScore from '../utils/HighScoreDataOperations';
 
 class FightLogicContainer extends React.Component {
   state = {
