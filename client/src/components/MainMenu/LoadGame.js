@@ -21,47 +21,39 @@ export function LoadGame({ mode, action }) {
   const gameCollectionRef = collection(db, 'games');
   const [savedGames, setSavedGames] = useState([]);
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user.currentUser ?? {});
+  const currentUser = useSelector((state) => state.user.currentUser);
   const [status, setStatus] = useState(false);
 
   const getData = useCallback(async () => {
-    let savedGames = [];
-    let filteredSavedGames = [];
-
-    try {
-      const data = await getDocs(gameCollectionRef);
-
-      savedGames = data.docs.map((doc) => ({
-        ...doc.data(),
-        game: {
-          ...doc.data().game,
-          id: doc.id,
-        },
-      }));
-    } catch (e) {
-      console.log(e);
-    }
-
     if (currentUser) {
+      let savedGames = [];
+      let filteredSavedGames = [];
+
+      try {
+        const data = await getDocs(gameCollectionRef);
+
+        savedGames = data.docs.map((doc) => ({
+          ...doc.data(),
+          game: {
+            ...doc.data().game,
+            id: doc.id,
+          },
+        }));
+      } catch (e) {
+        console.log(e);
+      }
+
       filteredSavedGames = savedGames
         .map((el) => el)
         .filter((game) => game.user === currentUser.email);
-    }
 
-    setSavedGames(filteredSavedGames);
+      setSavedGames(filteredSavedGames);
+    }
   }, [currentUser, gameCollectionRef]);
 
   useEffect(() => {
-    let isDataSubscribed = true;
-
-    if (isDataSubscribed) {
-      getData();
-    }
-
-    return () => {
-      isDataSubscribed = false;
-    };
-  }, [getData]);
+    getData();
+  }, []);
 
   const handleLoadGame = (savedGame) => {
     dispatch(loadGame(savedGame));
@@ -87,6 +79,7 @@ export function LoadGame({ mode, action }) {
       <Card className="padlr">
         {mode === 'save' ? '' : <h1>Load game</h1>}
         {status ? <Alert severity="warning">Game deleted</Alert> : ''}
+
         {currentUser?.email ? (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">

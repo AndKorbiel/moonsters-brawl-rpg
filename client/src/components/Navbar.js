@@ -17,7 +17,7 @@ export function Navbar(props) {
     dispatch(setCurrentUser(currentUser));
   });
 
-  const CurrentUserInfoLabel = () => (
+  const CurrentUserInfoLabel = (
     <>
       <Typography
         variant="body1"
@@ -27,7 +27,7 @@ export function Navbar(props) {
           padding: '0 10px',
         }}
       >
-        Logged in as: {currentUser.email}
+        Logged in as: {currentUser?.email}
       </Typography>
       <Button color="inherit" onClick={() => signOut(auth)}>
         Logout
