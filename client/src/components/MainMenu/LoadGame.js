@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../firebase-config';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { deleteDoc, doc } from 'firebase/firestore';
 import { loadGame, setStatusCode } from '../../redux/actions/game';
+import { getSavedGamesEffect } from '../../redux/effects/user';
 
-// material-ui
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,42 +18,13 @@ import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 
 export function LoadGame({ mode, action }) {
-  const gameCollectionRef = collection(db, 'games');
-  const [savedGames, setSavedGames] = useState([]);
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const [status, setStatus] = useState(false);
+  const { currentUser, savedGames } = useSelector((state) => ({
+    currentUser: state.user.currentUser,
+    savedGames: state.user.savedGames,
+  }));
 
-  const getData = useCallback(async () => {
-    if (currentUser) {
-      let savedGames = [];
-      let filteredSavedGames = [];
-
-      try {
-        const data = await getDocs(gameCollectionRef);
-
-        savedGames = data.docs.map((doc) => ({
-          ...doc.data(),
-          game: {
-            ...doc.data().game,
-            id: doc.id,
-          },
-        }));
-      } catch (e) {
-        console.log(e);
-      }
-
-      filteredSavedGames = savedGames
-        .map((el) => el)
-        .filter((game) => game.user === currentUser.email);
-
-      setSavedGames(filteredSavedGames);
-    }
-  }, [currentUser, gameCollectionRef]);
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const [successNotification, setSuccesNotification] = useState(false);
 
   const handleLoadGame = (savedGame) => {
     dispatch(loadGame(savedGame));
@@ -61,10 +32,9 @@ export function LoadGame({ mode, action }) {
   };
 
   const handleSetStatus = () => {
-    setStatus(true);
+    setSuccesNotification(true);
     setTimeout(() => {
-      setStatus(false);
-      getData();
+      setSuccesNotification(false);
     }, 2000);
   };
 
@@ -72,13 +42,19 @@ export function LoadGame({ mode, action }) {
     const gameDoc = doc(db, 'games', id);
     await deleteDoc(gameDoc);
     handleSetStatus();
+    dispatch(getSavedGamesEffect(currentUser.email));
   };
+
+  useEffect(() => {
+    currentUser && dispatch(getSavedGamesEffect(currentUser.email));
+  }, []);
 
   return (
     <Box maxWidth="xl" className="centered text-centered menu-table">
       <Card className="padlr">
-        {mode === 'save' ? '' : <h1>Load game</h1>}
-        {status ? <Alert severity="warning">Game deleted</Alert> : ''}
+        {mode !== 'save' && <h1>Load game</h1>}
+
+        {successNotification && <Alert severity="warning">Game deleted</Alert>}
 
         {currentUser?.email ? (
           <TableContainer component={Paper}>
@@ -93,7 +69,7 @@ export function LoadGame({ mode, action }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {savedGames.length > 0 &&
+                {savedGames.length > 1 &&
                   savedGames.map((savedGame) => {
                     return (
                       <TableRow key={savedGame.game.id}>
@@ -117,6 +93,7 @@ export function LoadGame({ mode, action }) {
                               >
                                 Load game
                               </Button>
+
                               <Button
                                 variant="contained"
                                 color="error"

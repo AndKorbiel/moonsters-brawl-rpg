@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { db } from '../../firebase-config';
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 
+import { getSavedGamesEffect } from '../../redux/effects/user';
 import { LoadGame } from './LoadGame';
 
 import Box from '@mui/material/Box';
@@ -14,10 +15,11 @@ import Button from '@mui/material/Button';
 const gameCollectionRef = collection(db, 'games');
 
 export function SaveGame() {
+  const dispatch = useDispatch();
   const state = useSelector((state) => {
     return {
       game: state.game,
-      user: state.user.currentUser ? state.user.currentUser.email : null,
+      userEmail: state.user.currentUser ? state.user.currentUser.email : null,
       opponent: state.opponent,
       shop: state.shop,
       character: state.character,
@@ -25,13 +27,15 @@ export function SaveGame() {
   });
 
   const startDate = new Date().toLocaleDateString('en-GB');
-  const [status, setStatus] = useState(false);
+  const [successNotification, setSuccesNotification] = useState(false);
   const currentUser = useSelector((state) => state.user.currentUser);
 
   const handleSetStatus = () => {
-    setStatus(true);
+    setSuccesNotification(true);
+    dispatch(getSavedGamesEffect(currentUser.email));
+
     setTimeout(() => {
-      setStatus(false);
+      setSuccesNotification(false);
     }, 2000);
   };
 
@@ -46,6 +50,10 @@ export function SaveGame() {
     handleSetStatus();
   };
 
+  // useEffect(() => {
+  //   currentUser && dispatch(getSavedGamesEffect(currentUser.email));
+  // }, []);
+
   return (
     <Box maxWidth="xl" className="centered text-centered save">
       <Card className="padlr">
@@ -53,13 +61,13 @@ export function SaveGame() {
 
         {currentUser?.email ? (
           <>
-            {status ? <Alert severity="success">Game saved</Alert> : ''}
+            {successNotification && (
+              <Alert severity="success">Game saved</Alert>
+            )}
+
             <LoadGame mode="save" action={handleOverwriteGame} />
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => saveGame()}
-            >
+
+            <Button variant="contained" color="secondary" onClick={saveGame}>
               Save new game
             </Button>
           </>
