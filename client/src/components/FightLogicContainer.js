@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
-import React from 'react';
+import { connect, useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { calculateFightStats, calculateLevelUp } from '../utils/FightMath';
 import { setStatusCode } from '../redux/actions/game';
@@ -9,36 +9,37 @@ import Button from '@mui/material/Button';
 import { levelUp, resetStats } from '../redux/actions/opponent';
 import setHighScore from '../utils/HighScoreDataOperations';
 
-class FightLogicContainer extends React.Component {
-  state = {
+const FightLogicContainer = (props) => {
+  const { character, opponent, opponentIsReaady } = useSelector((state) => ({
+    character: state.character,
+    opponent: state.opponent,
+    opponentIsReaady: state.opponent.isReady,
+  }));
+
+  const iniitialState = {
     hero: false,
     opponent: false,
     heroIsStarting: false,
     activePlayer: 0,
     isFighting: true,
     logger: [],
+    previousOpponent: '',
   };
 
-  componentDidMount() {
-    const starting = Math.round(Math.random());
+  const [state, setState] = useState(iniitialState);
+  const [gameIsReady, setGameIsReady] = useState(false);
+  const [isFightOver, setIsFightIsOver] = useState(false);
 
-    this.setState({
-      hero: { ...this.props.character },
-      opponent: { ...this.props.opponent },
-      heroIsStarting: starting,
-      activePlayer: starting ? true : false,
-    });
-
-    setTimeout(() => {
-      const gamePlay = setInterval(() => {
+  const handleGameStart = useCallback(() => {
+    return setTimeout(() => {
+      if (!isFightOver) {
         if (
-          this.state.hero.stats.filter((el) => el.name === 'life')[0].value >
-            0 &&
-          this.state.opponent.stats.filter((el) => el.name === 'life')[0]
-            .value > 0
+          state.hero.stats.filter((el) => el.name === 'life')[0].value > 0 &&
+          state.opponent.stats.filter((el) => el.name === 'life')[0].value > 0
         ) {
-          const results = calculateFightStats(this.state);
-          this.setState((state) => ({
+          const results = calculateFightStats(state);
+
+          setState((state) => ({
             ...state,
             activePlayer: !state.activePlayer,
             hero: results.hero,
@@ -48,96 +49,109 @@ class FightLogicContainer extends React.Component {
         } else {
           let fightWon = false;
           let message = '';
-          if (!this.state.activePlayer) {
+          setIsFightIsOver(true);
+
+          if (!state.activePlayer) {
             fightWon = true;
             message = 'You have won';
           } else {
             message = 'You have lost!';
           }
-          let logger = this.state.logger;
+          let logger = state.logger;
           logger.push(message);
 
-          this.setState({
+          setState({
+            ...state,
             logger: logger,
             isFighting: false,
             fightWon: fightWon,
           });
-          clearInterval(gamePlay);
         }
-      }, 300);
+      }
     }, 300);
-  }
+  }, [state]);
 
-  getLifePoints = (player) => {
+  useEffect(() => {
+    if (opponentIsReaady) {
+      setGameIsReady(true);
+      const starting = Math.round(Math.random());
+
+      setState({
+        ...state,
+        hero: { ...character },
+        opponent: { ...opponent },
+        heroIsStarting: starting,
+        activePlayer: starting ? true : false,
+      });
+    }
+  }, [character, opponent, opponentIsReaady]);
+
+  useEffect(() => {
+    if (gameIsReady) {
+      handleGameStart();
+    }
+  }, [handleGameStart, gameIsReady]);
+
+  const getLifePoints = (player) => {
     if (player) {
       return player.stats.filter((el) => el.name === 'life')[0].value;
     }
   };
 
-  handleFightOverState = () => {
-    if (this.state.fightWon) {
-      const calculateStats = calculateLevelUp(this.props);
+  const handleFightOverState = () => {
+    if (state.fightWon) {
+      const calculateStats = calculateLevelUp({ character, opponent });
 
-      this.props.changeStats(calculateStats.currentStats);
-      this.props.setStatusCode(1);
-      this.props.opponentLevelUp(calculateStats.opponent);
+      props.changeStats(calculateStats.currentStats);
+      props.setStatusCode(1);
+      props.opponentLevelUp(calculateStats.opponent);
     } else {
-      this.props.gameOver();
-      setHighScore(this.props.character);
-      this.props.resetStats([
+      props.gameOver();
+      setHighScore(character);
+      props.resetStats([
         { name: 'attack', value: 10 },
         { name: 'defense', value: 10 },
         { name: 'life', value: 10 },
       ]);
     }
+
+    setIsFightIsOver(false);
+    setGameIsReady(false);
+    setState({ ...iniitialState });
   };
 
-  render() {
-    return (
-      <Grid container maxWidth="xl" spacing={2} className="centered">
-        <Grid item xs={6}>
-          <p>
-            <b>Your life points: {this.getLifePoints(this.state.hero)}</b>
-          </p>
-        </Grid>
-        <Grid item xs={6}>
-          <p>
-            <b>
-              Your opponent life points:{' '}
-              {this.getLifePoints(this.state.opponent)}
-            </b>
-          </p>
-        </Grid>
-        <Grid item xs={12}>
-          {this.state.heroIsStarting === 1
-            ? this.state.hero.name
-            : this.state.opponent.name}{' '}
-          will attack first.
-          {this.state.logger.map((el, index) => {
-            return <p key={index}>{el}</p>;
-          })}
-          {!this.state.isFighting ? (
-            <Button
-              variant="contained"
-              color="error"
-              onClick={this.handleFightOverState}
-            >
-              Continue
-            </Button>
-          ) : (
-            ''
-          )}
-        </Grid>
+  if (!gameIsReady) return <h1>Loading...</h1>;
+
+  return (
+    <Grid container maxWidth="xl" spacing={2} className="centered">
+      <Grid item xs={6}>
+        <p>
+          <b>Your life points: {getLifePoints(state.hero)}</b>
+        </p>
       </Grid>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    character: state.character,
-    opponent: state.opponent,
-  };
+      <Grid item xs={6}>
+        <p>
+          <b>Your opponent life points: {getLifePoints(state.opponent)}</b>
+        </p>
+      </Grid>
+      <Grid item xs={12}>
+        {state.heroIsStarting === 1 ? state.hero.name : state.opponent.name}{' '}
+        will attack first.
+        {state.logger.map((el, index) => {
+          return <p key={index}>{el}</p>;
+        })}
+        {!state.isFighting && (
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleFightOverState}
+          >
+            Continue
+          </Button>
+        )}
+      </Grid>
+    </Grid>
+  );
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -150,7 +164,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(FightLogicContainer);
+export default connect(null, mapDispatchToProps)(FightLogicContainer);
