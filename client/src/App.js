@@ -2,13 +2,12 @@ import './styles/App.scss';
 import Grid from '@mui/material/Grid';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-import React from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { setStatusCode } from './redux/actions/game';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { START_GAME } from './redux/types/game';
 
 import { FightScreenCard, MainMenu, OpponentCard, ShopCard } from './modules/';
-import CharacterCard from './modules/CharacterCard';
+import { CharacterCardContainer } from './modules/CharacterCard';
 import {
   About,
   HighScore,
@@ -29,18 +28,20 @@ const theme = createTheme({
   },
 });
 
-const App = (props) => {
+export default function App() {
   const dispatch = useDispatch();
+  const game = useSelector((state) => state.game);
+  const { menuOptions, statusCode } = game;
 
-  const handleGameStatus = (status) => {
-    if (status === 1) dispatch({ type: START_GAME });
+  useEffect(() => {
+    if (statusCode === 1) dispatch({ type: START_GAME });
+  }, [dispatch, statusCode]);
 
-    dispatch(setStatusCode(status));
-  };
+  if (!menuOptions) return <h1>Loading...</h1>;
 
   return (
     <ThemeProvider theme={theme}>
-      <Navbar status={props.statusCode} action={handleGameStatus} />
+      <Navbar status={statusCode} />
 
       <div className="App">
         <Grid
@@ -49,20 +50,16 @@ const App = (props) => {
           spacing={2}
           className="main-cont centered"
         >
-          {props.statusCode === 0 && (
+          {statusCode === 0 && (
             <Grid item xs={12}>
-              <MainMenu
-                action={handleGameStatus}
-                gameStarted={props.gameStarted}
-                options={props.menuOptions}
-              />
+              <MainMenu options={menuOptions} />
             </Grid>
           )}
 
-          {props.statusCode === 1 && (
+          {statusCode === 1 && (
             <>
               <Grid item xs={12} md={4} lg={3}>
-                <CharacterCard />
+                <CharacterCardContainer />
               </Grid>
               <Grid item xs={12} md={8} lg={9}>
                 <ShopCard />
@@ -70,10 +67,10 @@ const App = (props) => {
             </>
           )}
 
-          {props.statusCode === 2 && (
+          {statusCode === 2 && (
             <>
               <Grid item xs={12} md={4} lg={3}>
-                <CharacterCard />
+                <CharacterCardContainer />
               </Grid>
               <Grid item xs={12} md={4} lg={6}>
                 <FightScreenCard />
@@ -84,34 +81,13 @@ const App = (props) => {
             </>
           )}
 
-          {props.statusCode === 5 && <SaveGame />}
-          {props.statusCode === 6 && <LoadGame />}
-          {props.statusCode === 7 && <About />}
-          {props.statusCode === 8 && <HighScore />}
-          {props.statusCode === 9 && <Login />}
+          {statusCode === 5 && <SaveGame />}
+          {statusCode === 6 && <LoadGame />}
+          {statusCode === 7 && <About />}
+          {statusCode === 8 && <HighScore />}
+          {statusCode === 9 && <Login />}
         </Grid>
       </div>
     </ThemeProvider>
   );
-};
-
-const mapStateToProps = (state) => {
-  return {
-    statusCode: state.game.statusCode,
-    gameStarted: state.game.gameStarted,
-    menuOptions: state.game.menuOptions,
-  };
-};
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     setStatusCode: (statusCode) => {
-//       dispatch(setStatusCode(statusCode));
-//     },
-//     startGame: () => {
-//       dispatch({ type: START_GAME });
-//     },
-//   };
-// };
-
-export default connect(mapStateToProps, null)(App);
+}

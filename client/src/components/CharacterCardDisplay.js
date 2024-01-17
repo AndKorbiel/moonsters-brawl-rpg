@@ -1,4 +1,3 @@
-// material-ui
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -8,7 +7,8 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import React from 'react';
+
+import { useDispatch } from 'react-redux';
 
 export function CharacterCardDisplay({
   character,
@@ -23,7 +23,9 @@ export function CharacterCardDisplay({
   setStatusCode,
   stats,
 }) {
-  let emptySpaceInInventory = [];
+  const dispatch = useDispatch();
+
+  const emptySpaceInInventory = [];
   for (let n = character.items.length; n <= 2; n++) {
     emptySpaceInInventory.push(
       <Grid item xs={12} lg={4} className="inventory-box" key={n} />,
@@ -65,40 +67,38 @@ export function CharacterCardDisplay({
           <li>
             <Typography variant="h6">Points to spend: {points}</Typography>
           </li>
-          {character.stats.map((el) => {
-            return (
-              <li key={el.name}>
-                {character.isEditing ? (
-                  <Button
-                    variant="contained"
-                    name={el.name}
-                    onClick={(e) => handleStatsChange(e, 'decrement')}
-                  >
-                    -
-                  </Button>
-                ) : (
-                  ''
-                )}
-                <Typography variant="h6">
-                  {el.name}:{' '}
-                  {character.isEditing
+
+          {character.stats.map((el) => (
+            <li key={el.name}>
+              {character.isEditing && (
+                <Button
+                  variant="contained"
+                  name={el.name}
+                  onClick={(e) => handleStatsChange(e, 'decrement')}
+                >
+                  -
+                </Button>
+              )}
+
+              <Typography variant="h6">
+                {`${el.name}: ${
+                  character.isEditing
                     ? stats.filter((item) => item.name === el.name)[0].value
-                    : el.value}
-                </Typography>
-                {character.isEditing ? (
-                  <Button
-                    variant="contained"
-                    name={el.name}
-                    onClick={(e) => handleStatsChange(e, 'increment')}
-                  >
-                    +
-                  </Button>
-                ) : (
-                  ''
-                )}
-              </li>
-            );
-          })}
+                    : el.value
+                }`}
+              </Typography>
+
+              {character.isEditing && (
+                <Button
+                  variant="contained"
+                  name={el.name}
+                  onClick={(e) => handleStatsChange(e, 'increment')}
+                >
+                  +
+                </Button>
+              )}
+            </li>
+          ))}
         </ul>
       </CardActions>
 
@@ -111,28 +111,26 @@ export function CharacterCardDisplay({
           >
             Save
           </Button>
-        ) : statusCode === 1 ? (
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => handleEditMode(true)}
-          >
-            Edit
-          </Button>
         ) : (
-          ''
+          statusCode === 1 && (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => handleEditMode(true)}
+            >
+              Set Stats
+            </Button>
+          )
         )}
 
-        {!character.isEditing && statusCode === 1 && points === 0 ? (
+        {!character.isEditing && statusCode === 1 && points === 0 && (
           <Button
             variant="contained"
             color="error"
-            onClick={() => setStatusCode(2)}
+            onClick={() => dispatch(setStatusCode(2))}
           >
             Start game
           </Button>
-        ) : (
-          ''
         )}
       </CardContent>
 
@@ -140,28 +138,25 @@ export function CharacterCardDisplay({
         <Typography gutterBottom variant="h5" component="div">
           Inventory
         </Typography>
+
         <Grid container spacing={2} className="inventory-cont">
-          {character.items.map((item) => {
-            return (
-              <Grid item xs={4} className="inventory-box" key={item.id}>
-                <CardMedia component="img" image={item.image} />
-                {character.isEditing ? (
-                  <CardActions>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      startIcon={<HighlightOffIcon />}
-                      onClick={() => handleDropItem(item)}
-                    >
-                      Drop item
-                    </Button>
-                  </CardActions>
-                ) : (
-                  ''
-                )}
-              </Grid>
-            );
-          })}
+          {character.items.map((item) => (
+            <Grid item xs={4} className="inventory-box" key={item.id}>
+              <CardMedia component="img" image={item.image} />
+              {character.isEditing && (
+                <CardActions>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    startIcon={<HighlightOffIcon />}
+                    onClick={() => handleDropItem(item)}
+                  >
+                    Drop item
+                  </Button>
+                </CardActions>
+              )}
+            </Grid>
+          ))}
           {emptySpaceInInventory}
         </Grid>
       </CardContent>

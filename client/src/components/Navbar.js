@@ -8,8 +8,9 @@ import { auth } from '../firebase-config';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { setCurrentUser } from '../redux/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
+import { setStatusCode } from '../redux/actions/game';
 
-export function Navbar({ action, status }) {
+export function Navbar({ status }) {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -45,13 +46,19 @@ export function Navbar({ action, status }) {
 
           {status !== 2 && (
             <>
-              <Button color="inherit" onClick={() => action(0)}>
+              <Button
+                color="inherit"
+                onClick={() => dispatch(setStatusCode(0))}
+              >
                 MENU
               </Button>
               {currentUser?.email ? (
                 CurrentUserInfoLabel
               ) : (
-                <Button color="inherit" onClick={() => action(9)}>
+                <Button
+                  color="inherit"
+                  onClick={() => dispatch(setStatusCode(9))}
+                >
                   Login
                 </Button>
               )}

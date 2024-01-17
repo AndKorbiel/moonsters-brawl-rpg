@@ -1,5 +1,8 @@
-import { connect } from 'react-redux';
-import React from 'react';
+import Grid from '@mui/material/Grid';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+
 import {
   handleEditMode,
   setNewName,
@@ -7,29 +10,46 @@ import {
   dropItem,
   calculateStatsFromItem,
 } from '../redux/actions/character';
-import { CharacterCardDisplay } from '../components/CharacterCardDisplay';
-import Grid from '@mui/material/Grid';
 import { setStatusCode } from '../redux/actions/game';
+import { CharacterCardDisplay } from '../components/CharacterCardDisplay';
 
-class CharacterCardContainer extends React.Component {
-  state = {
+export const CharacterCardContainer = (props) => {
+  const dispatch = useDispatch();
+  const { character, statusCode } = useSelector((state) => ({
+    character: state.character,
+    statusCode: state.game.statusCode,
+  }));
+
+  const [state, setState] = useState({
     validation: {
       name: false,
     },
-  };
+  });
 
-  handleNameChange = (e) => {
-    this.setState({
+  useEffect(
+    (previousProps) => {
+      if (previousProps?.character !== character) {
+        setState((state) => ({
+          ...state,
+          ...character,
+        }));
+      }
+    },
+    [character],
+  );
+
+  const handleNameChange = (e) => {
+    setState((state) => ({
+      ...state,
       name: e.target.value,
-    });
+    }));
   };
 
-  handleStatsChange = (e, option) => {
+  const handleStatsChange = (e, option) => {
     const name = e.target.name;
-    let currentStat = this.state.stats.filter((el) => el.name === name)[0]
-      .value;
-    let currentPoints = this.state.points;
-    const statisticValueFromStore = this.props.character.stats.filter(
+    let currentStat = state.stats.filter((el) => el.name === name)[0].value;
+    let currentPoints = state.points;
+    const statisticValueFromStore = character.stats.filter(
       (el) => el.name === name,
     )[0].value;
 
@@ -39,7 +59,7 @@ class CharacterCardContainer extends React.Component {
         action = '-';
       }
 
-      this.setState((state) => ({
+      setState((state) => ({
         ...state,
         stats: [
           ...state.stats.map((el) => {
@@ -65,18 +85,20 @@ class CharacterCardContainer extends React.Component {
     }
   };
 
-  handleSave = () => {
-    if (this.state.name.length >= 2) {
-      this.props.setNewName(this.state.name);
-      this.props.handleEditMode(false);
-      this.props.changeStats({
-        stats: this.state.stats,
-        points: this.state.points,
-        level: this.state.level,
-        gold: this.state.gold,
-      });
+  const handleSave = () => {
+    if (state.name.length >= 2) {
+      dispatch(setNewName(state.name));
+      dispatch(handleEditMode(false));
+      dispatch(
+        changeStats({
+          stats: state.stats,
+          points: state.points,
+          level: state.level,
+          gold: state.gold,
+        }),
+      );
 
-      this.setState((state) => ({
+      setState((state) => ({
         ...state,
         validation: {
           ...state.validation,
@@ -84,7 +106,7 @@ class CharacterCardContainer extends React.Component {
         },
       }));
     } else {
-      this.setState((state) => ({
+      setState((state) => ({
         ...state,
         validation: {
           ...state.validation,
@@ -94,77 +116,44 @@ class CharacterCardContainer extends React.Component {
     }
   };
 
-  handleDropItem = (item) => {
-    this.props.dropItem(item);
+  const handleDropItem = (item) => {
+    dispatch(dropItem(item));
     const itemWithReverseStats = [
       { name: item.stats[0].name, value: -item.stats[0].value },
     ];
-    this.props.calculateStatsFromItem(itemWithReverseStats);
+    dispatch(calculateStatsFromItem(itemWithReverseStats));
   };
 
-  componentDidUpdate(previousProps) {
-    if (previousProps.character !== this.props.character) {
-      const currentStats = { ...this.props.character };
-      this.setState({
-        ...currentStats,
-      });
-    }
-  }
+  const setToEditModeAndCalculateStats = () => {
+    setState((state) => ({
+      ...state,
+      ...character,
+    }));
 
-  setToEditModeAndCalculateStats = () => {
-    const currentStats = { ...this.props.character };
-    this.setState({
-      ...currentStats,
-    });
-    this.props.handleEditMode(true);
+    dispatch(handleEditMode(true));
   };
 
-  render() {
-    let emptySpaceInInventory = [];
-    for (let n = this.props.character.items.length; n <= 2; n++) {
-      emptySpaceInInventory.push(
-        <Grid item xs={12} lg={4} className="inventory-box" key={n} />,
-      );
-    }
-
-    return (
-      <CharacterCardDisplay
-        data-testid="character-card"
-        character={this.props.character}
-        validation={this.state.validation}
-        points={this.state.points}
-        stats={this.state.stats}
-        handleNameChange={this.handleNameChange}
-        handleStatsChange={this.handleStatsChange}
-        handleEditMode={this.setToEditModeAndCalculateStats}
-        handleSave={this.handleSave}
-        handleDropItem={this.handleDropItem}
-        setStatusCode={this.props.setStatusCode}
-        statusCode={this.props.statusCode}
-      />
+  let emptySpaceInInventory = [];
+  for (let n = character?.items.length; n <= 2; n++) {
+    emptySpaceInInventory.push(
+      <Grid item xs={12} lg={4} className="inventory-box" key={n} />,
     );
   }
-}
 
-const mapStateToProps = (state) => {
-  return {
-    character: state.character,
-    statusCode: state.game.statusCode,
-  };
+  return (
+    <CharacterCardDisplay
+      data-testid="character-card"
+      character={character}
+      validation={state.validation}
+      points={state.points}
+      stats={state.stats}
+      handleNameChange={handleNameChange}
+      handleStatsChange={handleStatsChange}
+      handleEditMode={setToEditModeAndCalculateStats}
+      handleSave={handleSave}
+      handleDropItem={handleDropItem}
+      setStatusCode={setStatusCode}
+      statusCode={statusCode}
+    />
+  );
 };
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    handleEditMode: (value) => dispatch(handleEditMode(value)),
-    setNewName: (newName) => dispatch(setNewName(newName)),
-    changeStats: (value) => dispatch(changeStats(value)),
-    dropItem: (item) => dispatch(dropItem(item)),
-    calculateStatsFromItem: (item) => dispatch(calculateStatsFromItem(item)),
-    setStatusCode: (statusCode) => dispatch(setStatusCode(statusCode)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CharacterCardContainer);

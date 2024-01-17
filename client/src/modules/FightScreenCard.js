@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import FightLogicContainer from '../components/FightLogicContainer';
+import { FightLogicContainer } from '../components/FightLogicContainer';
 import { START_FIGHT } from '../redux/types/game';
 // material-ui
 import Typography from '@mui/material/Typography';

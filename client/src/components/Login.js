@@ -12,6 +12,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebase-config';
 import { useDispatch } from 'react-redux';
+
 import { setStatusCode } from '../redux/actions/game';
 
 export function Login() {

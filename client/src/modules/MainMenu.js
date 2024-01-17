@@ -4,7 +4,12 @@ import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-export function MainMenu({ options, action }) {
+import { useDispatch } from 'react-redux';
+import { setStatusCode } from '../redux/actions/game';
+
+export function MainMenu({ options }) {
+  const dispatch = useDispatch();
+
   return (
     <Box
       maxWidth="sm"
@@ -16,7 +21,10 @@ export function MainMenu({ options, action }) {
           return (
             <MenuItem key={option.value}>
               <ListItemText>
-                <Button variant="h2" onClick={() => action(option.value)}>
+                <Button
+                  variant="h2"
+                  onClick={() => dispatch(setStatusCode(option.value))}
+                >
                   {option.label}
                 </Button>
               </ListItemText>

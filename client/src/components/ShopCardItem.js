@@ -4,7 +4,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import React from 'react';
 
 export function ShopCardItem({ item, action }) {
   return (
@@ -18,13 +17,11 @@ export function ShopCardItem({ item, action }) {
       <CardContent>
         <Typography variant="h6">Price: {item.price} gold</Typography>
         <Typography variant="h6">
-          {item.stats.map((stat) => {
-            return (
-              <p key={stat.name}>
-                +{stat.value} {stat.name}
-              </p>
-            );
-          })}
+          {item.stats.map((stat) => (
+            <p key={stat.name}>
+              +{stat.value} {stat.name}
+            </p>
+          ))}
         </Typography>
       </CardContent>
 

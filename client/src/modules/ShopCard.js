@@ -32,13 +32,11 @@ export function ShopCard() {
 
       <Grid item xs={12}>
         <Grid container>
-          {availableItems.map((item) => {
-            return (
-              <Grid item xs={12} md={4} key={item.id}>
-                <ShopCardItem item={item} action={handleBuyAction} />
-              </Grid>
-            );
-          })}
+          {availableItems.map((item) => (
+            <Grid item xs={12} md={4} key={item.id}>
+              <ShopCardItem item={item} action={handleBuyAction} />
+            </Grid>
+          ))}
         </Grid>
 
         {availableItems.length === 0 && (

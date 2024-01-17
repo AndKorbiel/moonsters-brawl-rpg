@@ -1,15 +1,19 @@
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useCallback, useEffect, useState } from 'react';
+
 import Grid from '@mui/material/Grid';
-import { calculateFightStats, calculateLevelUp } from '../utils/FightMath';
+import Button from '@mui/material/Button';
+
 import { setStatusCode } from '../redux/actions/game';
 import { GAME_OVER } from '../redux/types/game';
 import { changeStats } from '../redux/actions/character';
-import Button from '@mui/material/Button';
 import { levelUp, resetStats } from '../redux/actions/opponent';
-import setHighScore from '../utils/HighScoreDataOperations';
 
-const FightLogicContainer = (props) => {
+import setHighScore from '../utils/HighScoreDataOperations';
+import { calculateFightStats, calculateLevelUp } from '../utils/FightMath';
+
+export const FightLogicContainer = () => {
+  const dispatch = useDispatch();
   const { character, opponent, opponentIsReaady } = useSelector((state) => ({
     character: state.character,
     opponent: state.opponent,
@@ -102,17 +106,19 @@ const FightLogicContainer = (props) => {
     if (state.fightWon) {
       const calculateStats = calculateLevelUp({ character, opponent });
 
-      props.changeStats(calculateStats.currentStats);
-      props.setStatusCode(1);
-      props.opponentLevelUp(calculateStats.opponent);
+      dispatch(changeStats(calculateStats.currentStats));
+      dispatch(setStatusCode(1));
+      dispatch(levelUp(calculateStats.opponent));
     } else {
-      props.gameOver();
+      dispatch({ type: GAME_OVER });
       setHighScore(character);
-      props.resetStats([
-        { name: 'attack', value: 10 },
-        { name: 'defense', value: 10 },
-        { name: 'life', value: 10 },
-      ]);
+      dispatch(
+        resetStats([
+          { name: 'attack', value: 10 },
+          { name: 'defense', value: 10 },
+          { name: 'life', value: 10 },
+        ]),
+      );
     }
 
     setIsFightIsOver(false);
@@ -153,15 +159,3 @@ const FightLogicContainer = (props) => {
     </Grid>
   );
 };
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setStatusCode: (status) => dispatch(setStatusCode(status)),
-    changeStats: (value) => dispatch(changeStats(value)),
-    opponentLevelUp: (stats) => dispatch(levelUp(stats)),
-    resetStats: (stats) => dispatch(resetStats(stats)),
-    gameOver: () => dispatch({ type: GAME_OVER }),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(FightLogicContainer);

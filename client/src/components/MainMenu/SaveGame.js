@@ -1,3 +1,8 @@
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,11 +11,6 @@ import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 
 import { getSavedGamesEffect } from '../../redux/effects/user';
 import { LoadGame } from './LoadGame';
-
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 const gameCollectionRef = collection(db, 'games');
 
