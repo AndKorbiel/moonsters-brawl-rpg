@@ -13,7 +13,7 @@ import {
 import { setStatusCode } from '../redux/actions/game';
 import { CharacterCardDisplay } from '../components/CharacterCardDisplay';
 
-export const CharacterCardContainer = (props) => {
+export const CharacterCardContainer = () => {
   const dispatch = useDispatch();
   const { character, statusCode } = useSelector((state) => ({
     character: state.character,

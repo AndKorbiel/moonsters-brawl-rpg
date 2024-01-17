@@ -1,11 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { FightLogicContainer } from '../components/FightLogicContainer';
-import { START_FIGHT } from '../redux/types/game';
-// material-ui
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { FightLogicContainer } from '../components/FightLogicContainer';
+import { START_FIGHT } from '../redux/types/game';
 
 export function FightScreenCard() {
   const dispatch = useDispatch();

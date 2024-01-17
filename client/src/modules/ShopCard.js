@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 import { useDispatch, useSelector } from 'react-redux';
+
 import { buyItem, calculateStatsFromItem } from '../redux/actions/character';
 import { removeFromShop } from '../redux/actions/shop';
 import { ShopCardItem } from '../components/ShopCardItem';
