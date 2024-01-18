@@ -28,7 +28,6 @@ export const CharacterCardContainer = () => {
   useEffect(
     (previousProps) => {
       if (previousProps?.character !== character) {
-        console.log('done???');
         setState((state) => ({
           ...state,
           ...character,

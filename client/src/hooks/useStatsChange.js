@@ -25,11 +25,8 @@ export const useStatsChange = (state, setState) => {
 
   const handleStatsChange = (e, option) => {
     const name = e.target.name;
-    let currentStat = state.stats.filter((el) => el.name === name)[0].value;
-    let currentPoints = state.points;
-
-    console.log(currentPoints);
-
+    const currentStat = state.stats.filter((el) => el.name === name)[0].value;
+    const currentPoints = state.points;
     const baseStat = character.stats.filter((el) => el.name === name)[0].value;
 
     if (option === 'increment') {
