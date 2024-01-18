@@ -52,6 +52,7 @@ export default function character(state = initialState, action) {
       return {
         ...state,
         stats: state.stats.map((stat) => {
+          console.log(action.payload);
           return stat.name === action.payload.stats[0].name
             ? {
                 ...stat,
