@@ -1,7 +1,6 @@
-import { SET_STATUS_CODE, LOAD_GAME } from '../types/game';
+import { SET_STATUS_CODE, LOAD_GAME } from '../constants/game';
 
-export function setStatusCode(statusCode) {
-  console.log(statusCode);
+export function setStatusCode(statusCode: number) {
   return {
     type: SET_STATUS_CODE,
     payload: statusCode,

@@ -1,11 +1,12 @@
-import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../types/user';
+import type { ActionType, UserState } from '../../types';
+import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../constants/user';
 
-const initialState = {
+const initialState: UserState = {
   currentUser: {},
   savedGames: {},
 };
 
-export default function user(state = initialState, action) {
+export default function user(state = initialState, action: ActionType) {
   switch (action.type) {
     case SET_CURRENT_USER:
       return {

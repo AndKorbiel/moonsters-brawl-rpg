@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FightLogicContainer } from '../components/FightLogicContainer';
-import { START_FIGHT } from '../redux/types/game';
+import { START_FIGHT } from '../redux/constants/game';
 
 export function FightScreenCard() {
   const dispatch = useDispatch();

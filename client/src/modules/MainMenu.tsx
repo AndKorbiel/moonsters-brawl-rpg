@@ -1,13 +1,15 @@
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import { useDispatch } from 'react-redux';
 import { setStatusCode } from '../redux/actions/game';
+import React from 'react';
+import { Box } from '@mui/material';
+import { MenuOption } from '../types';
 
-export function MainMenu({ options }) {
+export function MainMenu({ options }: { options: MenuOption[] }) {
   const dispatch = useDispatch();
 
   return (
@@ -22,7 +24,7 @@ export function MainMenu({ options }) {
             <MenuItem key={option.value}>
               <ListItemText>
                 <Button
-                  variant="h2"
+                  variant="text"
                   onClick={() => dispatch(setStatusCode(option.value))}
                 >
                   {option.label}

@@ -1,3 +1,4 @@
+import type { ActionType, CharacterState } from '../../types';
 import {
   HANDLE_EDIT_MODE,
   SET_NEW_NAME,
@@ -5,9 +6,9 @@ import {
   BUY_ITEM,
   DROP_ITEM,
   CALCULATE_STATS_FROM_ITEM,
-} from '../types/character';
+} from '../constants/character';
 
-const initialState = {
+const initialState: CharacterState = {
   name: 'Moonster',
   image: 'assets/images/frank.png',
   level: 1,
@@ -22,7 +23,7 @@ const initialState = {
   isEditing: false,
 };
 
-export default function character(state = initialState, action) {
+export default function character(state = initialState, action: ActionType) {
   switch (action.type) {
     case HANDLE_EDIT_MODE:
       return {
@@ -52,7 +53,6 @@ export default function character(state = initialState, action) {
       return {
         ...state,
         stats: state.stats.map((stat) => {
-          console.log(action.payload);
           return stat.name === action.payload.stats[0].name
             ? {
                 ...stat,

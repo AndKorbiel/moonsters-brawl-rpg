@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../types/user';
+import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../constants/user';
 
 export function setCurrentUser(userData) {
   return {

@@ -16,7 +16,7 @@ const gameCollectionRef = collection(db, 'games');
 
 export function SaveGame() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => {
+  const state = useSelector((state: any) => {
     return {
       game: state.game,
       userEmail: state.user.currentUser ? state.user.currentUser.email : null,
@@ -28,11 +28,11 @@ export function SaveGame() {
 
   const startDate = new Date().toLocaleDateString('en-GB');
   const [successNotification, setSuccesNotification] = useState(false);
-  const currentUser = useSelector((state) => state.user.currentUser);
+  // const currentUser = useSelector((state) => state.user.currentUser);
 
   const handleSetStatus = () => {
     setSuccesNotification(true);
-    dispatch(getSavedGamesEffect(currentUser.email));
+    getSavedGamesEffect(state.userEmail);
 
     setTimeout(() => {
       setSuccesNotification(false);
@@ -59,7 +59,7 @@ export function SaveGame() {
       <Card className="padlr">
         <h1>Save your game</h1>
 
-        {currentUser?.email ? (
+        {state.userEmail ? (
           <>
             {successNotification && (
               <Alert severity="success">Game saved</Alert>

@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { START_GAME } from './redux/types/game';
+import { START_GAME } from './redux/constants/game';
 
 import { FightScreenCard, MainMenu, OpponentCard, ShopCard } from './modules/';
 import { CharacterCardContainer } from './modules/CharacterCard';

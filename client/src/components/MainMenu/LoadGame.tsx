@@ -17,9 +17,14 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 
-export function LoadGame({ mode, action }) {
+type LoadGameProps = {
+  mode: string;
+  action: (id: string) => Promise<void>;
+};
+
+export function LoadGame({ mode, action }: LoadGameProps) {
   const dispatch = useDispatch();
-  const { currentUser, savedGames } = useSelector((state) => ({
+  const { currentUser, savedGames } = useSelector((state: any) => ({
     currentUser: state.user.currentUser,
     savedGames: state.user.savedGames,
   }));
@@ -42,11 +47,11 @@ export function LoadGame({ mode, action }) {
     const gameDoc = doc(db, 'games', id);
     await deleteDoc(gameDoc);
     handleSetStatus();
-    dispatch(getSavedGamesEffect(currentUser.email));
+    getSavedGamesEffect(currentUser.email);
   };
 
   useEffect(() => {
-    currentUser && dispatch(getSavedGamesEffect(currentUser.email));
+    currentUser && getSavedGamesEffect(currentUser.email);
   }, []);
 
   return (

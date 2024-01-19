@@ -1,11 +1,12 @@
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { setSavedGames } from '../actions/user';
+import type { Dispatch } from 'redux';
 
 const gameCollectionRef = collection(db, 'games');
 
-export const getSavedGamesEffect = (curentUser) => {
-  return async (dispatch) => {
+export const getSavedGamesEffect = (curentUserEmail: string) => {
+  return async (dispatch: Dispatch) => {
     try {
       const data = await getDocs(gameCollectionRef);
 
@@ -17,7 +18,7 @@ export const getSavedGamesEffect = (curentUser) => {
             id: doc.id,
           },
         }))
-        .filter((doc) => doc.userEmail === curentUser);
+        .filter((doc: any) => doc.userEmail === curentUserEmail);
 
       dispatch(setSavedGames(savedGames));
     } catch (error) {

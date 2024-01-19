@@ -1,6 +1,7 @@
-import { SET_STATUS_CODE, START_GAME, START_FIGHT } from '../types/game';
+import type { ActionType, GameState } from '../../types';
+import { SET_STATUS_CODE, START_GAME, START_FIGHT } from '../constants/game';
 
-const initialState = {
+const initialState: GameState = {
   statusCode: 0,
   gameStarted: false,
   menuOptions: [
@@ -15,7 +16,7 @@ const initialState = {
   currentUser: {},
 };
 
-export default function game(state = initialState, action) {
+export default function game(state = initialState, action: ActionType) {
   switch (action.type) {
     case SET_STATUS_CODE:
       return {

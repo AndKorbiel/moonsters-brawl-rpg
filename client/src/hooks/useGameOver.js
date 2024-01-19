@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setStatusCode } from '../redux/actions/game';
-import { GAME_OVER } from '../redux/types/game';
+import { GAME_OVER } from '../redux/constants/game';
 import { changeStats } from '../redux/actions/character';
 import { levelUp, resetStats } from '../redux/actions/opponent';
 

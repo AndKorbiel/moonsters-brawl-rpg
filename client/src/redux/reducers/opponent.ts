@@ -1,6 +1,12 @@
-import { LEVEL_UP, RESET_STATS, SET_NAME, SET_IMAGE } from '../types/opponent';
+import type { ActionType, OpponentState } from '../../types';
+import {
+  LEVEL_UP,
+  RESET_STATS,
+  SET_NAME,
+  SET_IMAGE,
+} from '../constants/opponent';
 
-const initialState = {
+const initialState: OpponentState = {
   name: '',
   level: 1,
   image: 'assets/images/Mons1.png',
@@ -13,7 +19,7 @@ const initialState = {
   isReady: false,
 };
 
-export default function opponent(state = initialState, action) {
+export default function opponent(state = initialState, action: ActionType) {
   switch (action.type) {
     case LEVEL_UP:
       return {
