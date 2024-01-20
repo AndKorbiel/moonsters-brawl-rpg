@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { START_GAME } from './redux/constants/game';
 
-import { FightScreenCard, MainMenu, OpponentCard, ShopCard } from './modules/';
+import { FightScreenCard, MainMenu, OpponentCard, ShopCard } from './modules';
 import { CharacterCardContainer } from './modules/CharacterCard';
 import {
   About,
@@ -16,6 +16,7 @@ import {
   Navbar,
   SaveGame,
 } from './components';
+import { AppState } from './types';
 
 const theme = createTheme({
   palette: {
@@ -30,7 +31,7 @@ const theme = createTheme({
 
 export default function App() {
   const dispatch = useDispatch();
-  const game = useSelector((state) => state.game);
+  const game = useSelector((state: AppState) => state.game);
   const { menuOptions, statusCode } = game;
 
   useEffect(() => {

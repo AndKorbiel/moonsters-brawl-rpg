@@ -1,8 +1,21 @@
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { ChangeEvent } from 'react';
+import { CharacterState } from '../../types';
+import { CharacterLocalState } from '../../modules';
 
-export const CharacterName = ({ character, validation, handleNameChange }) => {
+type CharacterNameProps = {
+  character: CharacterState;
+  handleNameChange: (newName: string) => void;
+  validation: CharacterLocalState['validation'];
+};
+
+export const CharacterName = ({
+  character,
+  validation,
+  handleNameChange,
+}: CharacterNameProps) => {
   return (
     <CardContent>
       {character.isEditing ? (
@@ -14,7 +27,9 @@ export const CharacterName = ({ character, validation, handleNameChange }) => {
           defaultValue={character.name}
           id="outlined-basic"
           label="Your name"
-          onChange={(e) => handleNameChange(e)}
+          onChange={(
+            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+          ): void => handleNameChange(event.target.value)}
           variant="outlined"
         />
       ) : (

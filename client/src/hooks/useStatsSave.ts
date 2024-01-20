@@ -5,8 +5,12 @@ import {
   setNewName,
   changeStats,
 } from '../redux/actions/character';
+import { CharacterLocalState } from '../modules';
 
-export const useStatsSave = (state, setState) => {
+export const useStatsSave = (
+  state: CharacterLocalState,
+  setState: React.Dispatch<React.SetStateAction<CharacterLocalState>>,
+) => {
   const dispatch = useDispatch();
 
   const handleSave = () => {

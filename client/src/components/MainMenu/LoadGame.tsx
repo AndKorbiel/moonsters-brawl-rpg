@@ -18,8 +18,8 @@ import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 
 type LoadGameProps = {
-  mode: string;
-  action: (id: string) => Promise<void>;
+  mode?: string;
+  action?: (id: string) => Promise<void>;
 };
 
 export function LoadGame({ mode, action }: LoadGameProps) {

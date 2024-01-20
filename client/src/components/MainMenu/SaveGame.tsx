@@ -50,10 +50,6 @@ export function SaveGame() {
     handleSetStatus();
   };
 
-  // useEffect(() => {
-  //   currentUser && dispatch(getSavedGamesEffect(currentUser.email));
-  // }, []);
-
   return (
     <Box maxWidth="xl" className="centered text-centered save">
       <Card className="padlr">

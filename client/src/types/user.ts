@@ -1,4 +1,7 @@
 export type UserState = {
-  currentUser: {};
+  currentUser: {
+    email: string;
+    uid: string;
+  } | null;
   savedGames: {};
 };

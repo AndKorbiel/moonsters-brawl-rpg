@@ -36,7 +36,7 @@ export function buyItem(item: Item) {
   };
 }
 
-export function calculateStatsFromItem(item: Item) {
+export function calculateStatsFromItem(item: Item['stats']) {
   return {
     type: CALCULATE_STATS_FROM_ITEM,
     payload: item,

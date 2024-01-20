@@ -6,13 +6,36 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-export const CharacterInventory = ({ character, handleDropItem }) => {
+import { useDispatch } from 'react-redux';
+
+import {
+  calculateStatsFromItem,
+  dropItem,
+} from '../../redux/actions/character';
+import { CharacterState, Item } from '../../types';
+
+type CharacterInventoryProps = {
+  character: CharacterState;
+};
+
+export const CharacterInventory = ({ character }: CharacterInventoryProps) => {
+  const dispatch = useDispatch();
+
   const emptySpaceInInventory = [];
   for (let n = character.items.length; n <= 2; n++) {
     emptySpaceInInventory.push(
       <Grid item xs={12} lg={4} className="inventory-box" key={n} />,
     );
   }
+
+  const handleDropItem = (item: Item) => {
+    dispatch(dropItem(item));
+    const itemWithReverseStats = [
+      { name: item.stats[0].name, value: -item.stats[0].value },
+    ];
+
+    dispatch(calculateStatsFromItem(itemWithReverseStats));
+  };
 
   return (
     <CardContent id="character-inventory">
@@ -38,6 +61,7 @@ export const CharacterInventory = ({ character, handleDropItem }) => {
             )}
           </Grid>
         ))}
+
         {emptySpaceInInventory}
       </Grid>
     </CardContent>

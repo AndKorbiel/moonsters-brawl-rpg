@@ -1,16 +1,27 @@
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import { useDispatch } from 'react-redux';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { handleEditMode } from '../../redux/actions/character';
+import { setStatusCode } from '../../redux/actions/game';
+import { AppState, CharacterState } from '../../types';
+import { CharacterLocalState } from '../../modules';
+
+type ActionButtonsProps = {
+  character: CharacterState;
+  points: CharacterLocalState['points'];
+  handleSave: () => void;
+};
 
 export const ActionButtons = ({
   character,
   points,
-  statusCode,
-  handleEditMode,
   handleSave,
-  setStatusCode,
-}) => {
+}: ActionButtonsProps) => {
   const dispatch = useDispatch();
+  const { statusCode } = useSelector((state: AppState) => ({
+    statusCode: state.game.statusCode,
+  }));
 
   return (
     <CardContent>
@@ -27,7 +38,7 @@ export const ActionButtons = ({
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => handleEditMode(true)}
+            onClick={() => dispatch(handleEditMode(true))}
           >
             Set Stats
           </Button>

@@ -1,13 +1,22 @@
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { CharacterState } from '../../types';
+import { CharacterLocalState } from '../../modules';
+
+type CharacterStatsProps = {
+  character: CharacterState;
+  handleStatsChange: (name: string, option: string) => void;
+  points: CharacterLocalState['points'];
+  stats: CharacterLocalState['stats'];
+};
 
 export const CharacterStats = ({
   character,
   points,
   stats,
   handleStatsChange,
-}) => {
+}: CharacterStatsProps) => {
   return (
     <CardActions className="stats">
       <ul>
@@ -27,7 +36,7 @@ export const CharacterStats = ({
               <Button
                 variant="contained"
                 name={el.name}
-                onClick={(e) => handleStatsChange(e, 'decrement')}
+                onClick={() => handleStatsChange(el.name, 'decrement')}
               >
                 -
               </Button>
@@ -45,7 +54,7 @@ export const CharacterStats = ({
               <Button
                 variant="contained"
                 name={el.name}
-                onClick={(e) => handleStatsChange(e, 'increment')}
+                onClick={() => handleStatsChange(el.name, 'increment')}
               >
                 +
               </Button>

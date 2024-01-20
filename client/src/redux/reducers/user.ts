@@ -2,7 +2,7 @@ import type { ActionType, UserState } from '../../types';
 import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../constants/user';
 
 const initialState: UserState = {
-  currentUser: {},
+  currentUser: null,
   savedGames: {},
 };
 

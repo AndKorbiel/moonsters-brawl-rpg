@@ -3,10 +3,11 @@ import character from './character';
 import shop from './shop';
 import opponent from './opponent';
 import user from './user';
-import { combineReducers } from 'redux';
+import { Reducer, combineReducers } from 'redux';
 import { GAME_OVER, LOAD_GAME } from '../constants/game';
+import { ActionType, AppState } from '../../types';
 
-const appReducer = combineReducers({
+const appReducer: Reducer<AppState, ActionType> = combineReducers({
   game,
   character,
   shop,
@@ -14,7 +15,7 @@ const appReducer = combineReducers({
   user,
 });
 
-export const rootReducer = (state, action) => {
+export const rootReducer = (state: AppState, action: ActionType) => {
   switch (action.type) {
     case GAME_OVER:
       state = undefined;
