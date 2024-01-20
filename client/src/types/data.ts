@@ -18,3 +18,8 @@ export type AppState = {
   shop: ShopState;
   user: UserState;
 };
+
+export type HighScoreData = CharacterState & {
+  date: string;
+  id: string;
+};

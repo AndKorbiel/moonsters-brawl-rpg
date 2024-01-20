@@ -7,19 +7,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { buyItem, calculateStatsFromItem } from '../redux/actions/character';
 import { removeFromShop } from '../redux/actions/shop';
 import { ShopCardItem } from '../components/ShopCardItem';
+import { AppState, Item } from '../types';
 
 export function ShopCard() {
   const dispatch = useDispatch();
-  const { availableItems, character } = useSelector((state) => ({
+  const { availableItems, character } = useSelector((state: AppState) => ({
     availableItems: state.shop.availableItems,
     character: state.character,
   }));
 
-  const handleBuyAction = (item) => {
+  const handleBuyAction = (item: Item) => {
     if (character.items.length <= 2 && character.gold >= item.price) {
       dispatch(buyItem(item));
       dispatch(removeFromShop(item));
-      dispatch(calculateStatsFromItem(item));
+      dispatch(calculateStatsFromItem(item.stats));
     }
   };
 

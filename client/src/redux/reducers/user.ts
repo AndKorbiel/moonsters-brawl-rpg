@@ -3,7 +3,7 @@ import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../constants/user';
 
 const initialState: UserState = {
   currentUser: null,
-  savedGames: {},
+  savedGames: null,
 };
 
 export default function user(state = initialState, action: ActionType) {

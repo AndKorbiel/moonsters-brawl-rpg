@@ -22,7 +22,9 @@ export function Login() {
   const [status, setStatus] = useState(false);
   const dispatch = useDispatch();
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     let login = credentials.login;
     let password = credentials.password;
 

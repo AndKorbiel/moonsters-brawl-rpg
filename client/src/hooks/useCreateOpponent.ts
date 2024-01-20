@@ -1,19 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect, useCallback } from 'react';
 
-import { setImage } from '../redux/actions/opponent';
+import { setImage, setName } from '../redux/actions/opponent';
 import { getNewNameEffect } from '../redux/effects/opponent';
+import { AppState, OpponentState } from '../types';
+import { randomIntFromInterval } from '../utils';
 
 export const useCreateOpponent = () => {
   const dispatch = useDispatch();
-  const { opponent } = useSelector((state) => ({
+  const { opponent } = useSelector((state: AppState) => ({
     opponent: state.opponent,
   }));
 
-  const [opponentStats, setStats] = useState();
-  const randomIntFromInterval = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  };
+  const [opponentStats, setStats] = useState<OpponentState['stats']>();
 
   const handleSetStats = useCallback(() => {
     const points = opponent.points;
@@ -42,10 +41,15 @@ export const useCreateOpponent = () => {
   }, [opponent]);
 
   useEffect(() => {
-    dispatch(getNewNameEffect());
-    dispatch(setImage(randomIntFromInterval(1, 4)));
-    handleSetStats();
-  }, []);
+    const init = async () => {
+      const name: string = await getNewNameEffect();
+      dispatch(setName(name));
+      dispatch(setImage(randomIntFromInterval(1, 4)));
+      handleSetStats();
+    };
+
+    init();
+  }, [dispatch]);
 
   return { opponent, opponentStats };
 };

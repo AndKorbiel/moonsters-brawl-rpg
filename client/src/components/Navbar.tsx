@@ -6,13 +6,15 @@ import Button from '@mui/material/Button';
 
 import { auth } from '../firebase-config';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { setCurrentUser } from '../redux/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStatusCode } from '../redux/actions/game';
 
-export function Navbar({ status }) {
+import { setCurrentUser } from '../redux/actions/user';
+import { setStatusCode } from '../redux/actions/game';
+import { AppState } from '../types';
+
+export function Navbar({ status }: { status: number }) {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const currentUser = useSelector((state: AppState) => state.user.currentUser);
 
   onAuthStateChanged(auth, (currentUser) => {
     dispatch(setCurrentUser(currentUser));

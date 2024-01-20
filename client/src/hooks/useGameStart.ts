@@ -1,12 +1,20 @@
 import { useCallback } from 'react';
 import { calculateFightStats } from '../utils/FightMath';
+import { LocalFightLogicState } from '../components';
 
-export const useGameStart = (
+type GameStartHookProps = {
+  state: LocalFightLogicState;
+  isFightOver: boolean;
+  setState: React.Dispatch<React.SetStateAction<LocalFightLogicState>>;
+  setIsFightIsOver: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const useGameStart = ({
   state,
   isFightOver,
   setState,
   setIsFightIsOver,
-) => {
+}: GameStartHookProps) => {
   const handleGameStart = useCallback(() => {
     return setTimeout(() => {
       if (!isFightOver) {
@@ -34,7 +42,7 @@ export const useGameStart = (
           } else {
             message = 'You have lost!';
           }
-          let logger = state.logger;
+          const logger = state.logger;
           logger.push(message);
 
           setState({

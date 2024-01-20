@@ -4,8 +4,14 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Item } from '../types';
 
-export function ShopCardItem({ item, action }) {
+type ShopCardItemProps = {
+  item: Item;
+  action: (item: Item) => void;
+};
+
+export function ShopCardItem({ item, action }: ShopCardItemProps) {
   return (
     <Card sx={{ maxWidth: 345 }} className="centered">
       <CardContent>
@@ -16,6 +22,7 @@ export function ShopCardItem({ item, action }) {
 
       <CardContent>
         <Typography variant="h6">Price: {item.price} gold</Typography>
+
         <Typography variant="h6">
           {item.stats.map((stat) => (
             <p key={stat.name}>

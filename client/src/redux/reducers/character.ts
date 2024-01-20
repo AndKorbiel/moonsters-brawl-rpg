@@ -53,10 +53,11 @@ export default function character(state = initialState, action: ActionType) {
       return {
         ...state,
         stats: state.stats.map((stat) => {
-          return stat.name === action.payload.stats[0].name
+          console.log(action.payload);
+          return stat.name === action.payload[0].name
             ? {
                 ...stat,
-                value: stat.value + parseInt(action.payload.stats[0].value),
+                value: stat.value + parseInt(action.payload[0].value),
               }
             : stat;
         }),

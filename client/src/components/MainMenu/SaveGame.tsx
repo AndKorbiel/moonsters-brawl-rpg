@@ -4,19 +4,19 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { db } from '../../firebase-config';
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 
 import { getSavedGamesEffect } from '../../redux/effects/user';
 import { LoadGame } from './LoadGame';
+import { AppState } from '../../types';
 
 const gameCollectionRef = collection(db, 'games');
 
 export function SaveGame() {
-  const dispatch = useDispatch();
-  const state = useSelector((state: any) => {
+  const state = useSelector((state: AppState) => {
     return {
       game: state.game,
       userEmail: state.user.currentUser ? state.user.currentUser.email : null,
@@ -28,7 +28,6 @@ export function SaveGame() {
 
   const startDate = new Date().toLocaleDateString('en-GB');
   const [successNotification, setSuccesNotification] = useState(false);
-  // const currentUser = useSelector((state) => state.user.currentUser);
 
   const handleSetStatus = () => {
     setSuccesNotification(true);
@@ -44,7 +43,7 @@ export function SaveGame() {
     handleSetStatus();
   };
 
-  const handleOverwriteGame = async (id) => {
+  const handleOverwriteGame = async (id: string) => {
     const gameDoc = doc(db, 'games', id);
     await updateDoc(gameDoc, state);
     handleSetStatus();

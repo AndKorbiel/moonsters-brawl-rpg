@@ -7,28 +7,40 @@ import { levelUp, resetStats } from '../redux/actions/opponent';
 
 import setHighScore from '../utils/HighScoreDataOperations';
 import { calculateLevelUp } from '../utils/FightMath';
+import { AppState } from '../types';
+import { LocalFightLogicState } from '../components';
 
-export const useGameOver = (
+type GameOverHookProps = {
+  iniitialState: LocalFightLogicState;
+  state: LocalFightLogicState;
+  setState: React.Dispatch<React.SetStateAction<LocalFightLogicState>>;
+  setGameIsReady: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsFightIsOver: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const useGameOver = ({
   state,
   setState,
   setGameIsReady,
   setIsFightIsOver,
   iniitialState,
-) => {
+}: GameOverHookProps) => {
   const dispatch = useDispatch();
-  const { character, currentUser, opponent } = useSelector((state) => ({
-    character: state.character,
-    currentUser: state.user.currentUser,
-    opponent: state.opponent,
-  }));
+  const { character, currentUser, opponent } = useSelector(
+    (state: AppState) => ({
+      character: state.character,
+      currentUser: state.user.currentUser,
+      opponent: state.opponent,
+    }),
+  );
 
   const handleFightOverState = () => {
     if (state.fightWon) {
-      const calculateStats = calculateLevelUp({ character, opponent });
+      const calculateStats = calculateLevelUp({ player: character, opponent });
 
-      dispatch(changeStats(calculateStats.currentStats));
+      dispatch(changeStats(calculateStats.currentPlayerStats));
       dispatch(setStatusCode(1));
-      dispatch(levelUp(calculateStats.opponent));
+      dispatch(levelUp(calculateStats.currentOpponentStats));
     } else {
       dispatch({ type: GAME_OVER });
       dispatch(

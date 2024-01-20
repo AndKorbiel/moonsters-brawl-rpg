@@ -10,13 +10,14 @@ import Card from '@mui/material/Card';
 
 import { useState, useEffect } from 'react';
 import { getHighScoreData } from '../../utils';
+import { HighScoreData } from '../../types';
 
 export function HighScore() {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
     async function init() {
-      const highScoreData = await getHighScoreData();
+      const highScoreData: HighScoreData[] = await getHighScoreData();
       setResults(highScoreData);
     }
 

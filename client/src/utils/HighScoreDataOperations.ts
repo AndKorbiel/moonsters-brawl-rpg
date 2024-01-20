@@ -1,9 +1,15 @@
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  QueryDocumentSnapshot,
+} from 'firebase/firestore';
 import { db } from '../firebase-config';
+import { CharacterState, HighScoreData } from '../types';
 
 const highScoreRef = collection(db, 'high-score');
 
-function sortTopTenData(data) {
+function sortTopTenData(data: HighScoreData[]) {
   return data
     .sort((a, b) => a.level - b.level)
     .reverse()
@@ -13,10 +19,12 @@ function sortTopTenData(data) {
 export async function getHighScoreData() {
   try {
     const data = await getDocs(highScoreRef);
-    const highScoreData = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+    const highScoreData: HighScoreData[] = data.docs.map(
+      (doc: QueryDocumentSnapshot<HighScoreData, HighScoreData>) => ({
+        ...doc.data(),
+        id: doc.id,
+      }),
+    );
 
     return sortTopTenData(highScoreData);
   } catch (error) {
@@ -24,9 +32,9 @@ export async function getHighScoreData() {
   }
 }
 
-export default function setHighScore(data) {
+export default function setHighScore(data: CharacterState) {
   const highScoreRef = collection(db, 'high-score');
-  const gameData = data;
+  const gameData: Partial<HighScoreData> = data;
   gameData.date = new Date().toLocaleDateString('en-GB');
   addDoc(highScoreRef, gameData);
 }

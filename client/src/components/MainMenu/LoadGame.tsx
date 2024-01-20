@@ -4,6 +4,8 @@ import { db } from '../../firebase-config';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { loadGame, setStatusCode } from '../../redux/actions/game';
 import { getSavedGamesEffect } from '../../redux/effects/user';
+import { AppState } from '../../types';
+import { setSavedGames } from '../../redux/actions/user';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -24,7 +26,7 @@ type LoadGameProps = {
 
 export function LoadGame({ mode, action }: LoadGameProps) {
   const dispatch = useDispatch();
-  const { currentUser, savedGames } = useSelector((state: any) => ({
+  const { currentUser, savedGames } = useSelector((state: AppState) => ({
     currentUser: state.user.currentUser,
     savedGames: state.user.savedGames,
   }));
@@ -43,7 +45,8 @@ export function LoadGame({ mode, action }: LoadGameProps) {
     }, 2000);
   };
 
-  const deleteSavedGame = async (id) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const deleteSavedGame = async (id: string) => {
     const gameDoc = doc(db, 'games', id);
     await deleteDoc(gameDoc);
     handleSetStatus();
@@ -51,8 +54,13 @@ export function LoadGame({ mode, action }: LoadGameProps) {
   };
 
   useEffect(() => {
-    currentUser && getSavedGamesEffect(currentUser.email);
-  }, []);
+    const init = async () => {
+      const savedGames = await getSavedGamesEffect(currentUser.email);
+      dispatch(setSavedGames(savedGames));
+    };
+
+    init();
+  }, [currentUser, dispatch, deleteSavedGame]);
 
   return (
     <Box maxWidth="xl" className="centered text-centered menu-table">
@@ -74,7 +82,7 @@ export function LoadGame({ mode, action }: LoadGameProps) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {savedGames.length > 1 &&
+                {savedGames?.length > 1 &&
                   savedGames.map((savedGame) => {
                     return (
                       <TableRow key={savedGame.game.id}>

@@ -7,10 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { FightLogicContainer } from '../components/FightLogicContainer';
 import { START_FIGHT } from '../redux/constants/game';
+import { AppState } from '../types';
 
 export function FightScreenCard() {
   const dispatch = useDispatch();
-  const { fightStarted } = useSelector((state) => state.game.fightStarted);
+  const { fightStarted } = useSelector((state: AppState) => ({
+    fightStarted: state.game.fightStarted,
+  }));
 
   const StartFightButton = (
     <Button
