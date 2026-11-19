@@ -28,7 +28,7 @@ export function FightScreenCard() {
   return (
     <Paper>
       <Grid container className="padlr">
-        <Grid item xs={12} spacing={2}>
+        <Grid size={12}>
           <Typography variant="h5" align="center">
             Fight for your life!
           </Typography>

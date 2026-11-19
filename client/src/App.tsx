@@ -2,21 +2,63 @@ import './styles/App.scss';
 import Grid from '@mui/material/Grid';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { START_GAME } from './redux/constants/game';
 
-import { FightScreenCard, MainMenu, OpponentCard, ShopCard } from './modules';
-import { CharacterCardContainer } from './modules/CharacterCard';
-import {
-  About,
-  HighScore,
-  LoadGame,
-  Login,
-  Navbar,
-  SaveGame,
-} from './components';
+import { MainMenu } from './modules/MainMenu';
 import { AppState } from './types';
+
+const Navbar = lazy(() =>
+  import('./components/Navbar').then(({ Navbar }) => ({
+    default: Navbar,
+  })),
+);
+const CharacterCardContainer = lazy(() =>
+  import('./modules/CharacterCard').then(({ CharacterCardContainer }) => ({
+    default: CharacterCardContainer,
+  })),
+);
+const FightScreenCard = lazy(() =>
+  import('./modules/FightScreenCard').then(({ FightScreenCard }) => ({
+    default: FightScreenCard,
+  })),
+);
+const OpponentCard = lazy(() =>
+  import('./modules/OpponentCard').then(({ OpponentCard }) => ({
+    default: OpponentCard,
+  })),
+);
+const ShopCard = lazy(() =>
+  import('./modules/ShopCard').then(({ ShopCard }) => ({
+    default: ShopCard,
+  })),
+);
+const About = lazy(() =>
+  import('./components/MainMenu/About').then(({ About }) => ({
+    default: About,
+  })),
+);
+const HighScore = lazy(() =>
+  import('./components/MainMenu/HighScore').then(({ HighScore }) => ({
+    default: HighScore,
+  })),
+);
+const LoadGame = lazy(() =>
+  import('./components/MainMenu/LoadGame').then(({ LoadGame }) => ({
+    default: LoadGame,
+  })),
+);
+const Login = lazy(() =>
+  import('./components/Login').then(({ Login }) => ({
+    default: Login,
+  })),
+);
+const SaveGame = lazy(() =>
+  import('./components/MainMenu/SaveGame').then(({ SaveGame }) => ({
+    default: SaveGame,
+  })),
+);
 
 const theme = createTheme({
   palette: {
@@ -42,51 +84,81 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Navbar status={statusCode} />
+      <Suspense fallback={null}>
+        <Navbar status={statusCode} />
+      </Suspense>
 
       <div className="App">
         <Grid
           container
-          maxWidth="xl"
+          sx={{ maxWidth: 1536 }}
           spacing={2}
           className="main-cont centered"
         >
-          {statusCode === 0 && (
-            <Grid item xs={12}>
-              <MainMenu options={menuOptions} />
-            </Grid>
-          )}
+          <Suspense
+            fallback={
+              <Grid size={12}>
+                <h1>Loading...</h1>
+              </Grid>
+            }
+          >
+            {statusCode === 0 && (
+              <Grid size={12}>
+                <MainMenu options={menuOptions} />
+              </Grid>
+            )}
 
-          {statusCode === 1 && (
-            <>
-              <Grid item xs={12} md={4} lg={3}>
-                <CharacterCardContainer />
-              </Grid>
-              <Grid item xs={12} md={8} lg={9}>
-                <ShopCard />
-              </Grid>
-            </>
-          )}
+            {statusCode === 1 && (
+              <>
+                <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+                  <CharacterCardContainer />
+                </Grid>
+                <Grid size={{ xs: 12, md: 8, lg: 9 }}>
+                  <ShopCard />
+                </Grid>
+              </>
+            )}
 
-          {statusCode === 2 && (
-            <>
-              <Grid item xs={12} md={4} lg={3}>
-                <CharacterCardContainer />
-              </Grid>
-              <Grid item xs={12} md={4} lg={6}>
-                <FightScreenCard />
-              </Grid>
-              <Grid item xs={12} md={4} lg={3}>
-                <OpponentCard />
-              </Grid>
-            </>
-          )}
+            {statusCode === 2 && (
+              <>
+                <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+                  <CharacterCardContainer />
+                </Grid>
+                <Grid size={{ xs: 12, md: 4, lg: 6 }}>
+                  <FightScreenCard />
+                </Grid>
+                <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+                  <OpponentCard />
+                </Grid>
+              </>
+            )}
 
-          {statusCode === 5 && <SaveGame />}
-          {statusCode === 6 && <LoadGame />}
-          {statusCode === 7 && <About />}
-          {statusCode === 8 && <HighScore />}
-          {statusCode === 9 && <Login />}
+            {statusCode === 5 && (
+              <Grid size={12}>
+                <SaveGame />
+              </Grid>
+            )}
+            {statusCode === 6 && (
+              <Grid size={12}>
+                <LoadGame />
+              </Grid>
+            )}
+            {statusCode === 7 && (
+              <Grid size={12}>
+                <About />
+              </Grid>
+            )}
+            {statusCode === 8 && (
+              <Grid size={12}>
+                <HighScore />
+              </Grid>
+            )}
+            {statusCode === 9 && (
+              <Grid size={12}>
+                <Login />
+              </Grid>
+            )}
+          </Suspense>
         </Grid>
       </div>
     </ThemeProvider>

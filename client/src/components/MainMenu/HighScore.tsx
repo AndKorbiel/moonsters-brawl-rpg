@@ -25,7 +25,7 @@ export function HighScore() {
   }, []);
 
   return (
-    <Box maxWidth="xl" className="centered text-centered menu-table">
+    <Box sx={{ maxWidth: 1536 }} className="centered text-centered menu-table">
       <Card className="padlr">
         <h1>High score</h1>
 

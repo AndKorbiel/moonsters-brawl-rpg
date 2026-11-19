@@ -16,40 +16,36 @@ export const useCreateOpponent = () => {
 
   const handleSetStats = useCallback(() => {
     const points = opponent.points;
-    const stats = opponent.stats.map((el) => el);
+    const stats = opponent.stats.map((el) => ({ ...el }));
+    const statNames = ['attack', 'defense', 'life'];
 
     for (let n = points; n > 0; n--) {
       const random = randomIntFromInterval(0, 2);
-      switch (random) {
-        case 0:
-          stats.filter((el) => el.name === 'attack')[0].value =
-            stats.filter((el) => el.name === 'attack')[0].value + 1;
-          break;
-        case 1:
-          stats.filter((el) => el.name === 'defense')[0].value =
-            stats.filter((el) => el.name === 'defense')[0].value + 1;
-          break;
-        case 2:
-          stats.filter((el) => el.name === 'life')[0].value =
-            stats.filter((el) => el.name === 'life')[0].value + 1;
-          break;
-        default:
-          break;
-      }
+      const stat = stats.find((el) => el.name === statNames[random]);
+      if (stat) stat.value += 1;
     }
     setStats(stats);
-  }, [opponent]);
+  }, [opponent.points, opponent.stats]);
 
   useEffect(() => {
+    if (opponent.isReady) return;
+
+    let cancelled = false;
     const init = async () => {
-      const name: string = await getNewNameEffect();
+      const name: string = await getNewNameEffect().catch(() => 'MooNsterOpp');
+      if (cancelled) return;
+
       dispatch(setName(name));
       dispatch(setImage(randomIntFromInterval(1, 4)));
       handleSetStats();
     };
 
-    init();
-  }, [dispatch]);
+    void init();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dispatch, handleSetStats, opponent.isReady]);
 
   return { opponent, opponentStats };
 };

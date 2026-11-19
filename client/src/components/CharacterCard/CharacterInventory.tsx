@@ -24,7 +24,7 @@ export const CharacterInventory = ({ character }: CharacterInventoryProps) => {
   const emptySpaceInInventory = [];
   for (let n = character.items.length; n <= 2; n++) {
     emptySpaceInInventory.push(
-      <Grid item xs={12} lg={4} className="inventory-box" key={n} />,
+      <Grid size={{ xs: 12, lg: 4 }} className="inventory-box" key={n} />,
     );
   }
 
@@ -45,7 +45,7 @@ export const CharacterInventory = ({ character }: CharacterInventoryProps) => {
 
       <Grid container spacing={2} className="inventory-cont">
         {character.items.map((item) => (
-          <Grid item xs={4} className="inventory-box" key={item.id}>
+          <Grid size={4} className="inventory-box" key={item.id}>
             <CardMedia component="img" image={item.image} />
             {character.isEditing && (
               <CardActions>

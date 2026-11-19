@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 
 export function About() {
   return (
-    <Box maxWidth="md" className="centered text-centered">
+    <Box sx={{ maxWidth: 900 }} className="centered text-centered">
       <Card className="padlrextra">
         <h1>Game rules</h1>
 

@@ -10,7 +10,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { auth } from '../firebase-config';
+import { auth } from '../firebase-auth';
 import { useDispatch } from 'react-redux';
 
 import { setStatusCode } from '../redux/actions/game';
@@ -68,7 +68,7 @@ export function Login() {
   };
 
   return (
-    <Box maxWidth="md" className="centered text-centered font-white">
+    <Box sx={{ maxWidth: 900 }} className="centered text-centered font-white">
       <Card className="padlrextra">
         <h1>{showRegisterForm ? 'Register' : 'Login'}</h1>
         <TextField

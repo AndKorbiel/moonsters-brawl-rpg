@@ -4,9 +4,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import { auth } from '../firebase-config';
+import { auth } from '../firebase-auth';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 import { setCurrentUser } from '../redux/actions/user';
 import { setStatusCode } from '../redux/actions/game';
@@ -16,9 +17,11 @@ export function Navbar({ status }: { status: number }) {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: AppState) => state.user.currentUser);
 
-  onAuthStateChanged(auth, (currentUser) => {
-    dispatch(setCurrentUser(currentUser));
-  });
+  useEffect(() => {
+    return onAuthStateChanged(auth, (currentUser) => {
+      dispatch(setCurrentUser(currentUser));
+    });
+  }, [dispatch]);
 
   const CurrentUserInfoLabel = (
     <>

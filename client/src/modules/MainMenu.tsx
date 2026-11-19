@@ -14,7 +14,7 @@ export function MainMenu({ options }: { options: MenuOption[] }) {
 
   return (
     <Box
-      maxWidth="sm"
+      sx={{ maxWidth: 600 }}
       className="centered text-centered main-menu"
       data-testid="main-menu"
     >

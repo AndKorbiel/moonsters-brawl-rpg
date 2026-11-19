@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { db } from '../../firebase-config';
+import { db } from '../../firebase-db';
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 
 import { getSavedGamesEffect } from '../../redux/effects/user';
@@ -50,7 +50,7 @@ export function SaveGame() {
   };
 
   return (
-    <Box maxWidth="xl" className="centered text-centered save">
+    <Box sx={{ maxWidth: 1536 }} className="centered text-centered save">
       <Card className="padlr">
         <h1>Save your game</h1>
 

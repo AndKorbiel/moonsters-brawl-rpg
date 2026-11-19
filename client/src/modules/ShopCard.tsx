@@ -26,26 +26,28 @@ export function ShopCard() {
 
   return (
     <Paper className="topbot">
-      <Grid item xs={12}>
-        <Typography variant="h4" align="center" gutterBottom={true}>
-          Welcome in the Magic Shop
-        </Typography>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Grid container>
-          {availableItems.map((item) => (
-            <Grid item xs={12} md={4} key={item.id}>
-              <ShopCardItem item={item} action={handleBuyAction} />
-            </Grid>
-          ))}
+      <Grid container>
+        <Grid size={12}>
+          <Typography variant="h4" align="center" gutterBottom={true}>
+            Welcome in the Magic Shop
+          </Typography>
         </Grid>
 
-        {availableItems.length === 0 && (
-          <Typography variant="h6" align="center">
-            All item have been sold. Come back later.
-          </Typography>
-        )}
+        <Grid size={12}>
+          <Grid container>
+            {availableItems.map((item) => (
+              <Grid size={{ xs: 12, md: 4 }} key={item.id}>
+                <ShopCardItem item={item} action={handleBuyAction} />
+              </Grid>
+            ))}
+          </Grid>
+
+          {availableItems.length === 0 && (
+            <Typography variant="h6" align="center">
+              All item have been sold. Come back later.
+            </Typography>
+          )}
+        </Grid>
       </Grid>
     </Paper>
   );

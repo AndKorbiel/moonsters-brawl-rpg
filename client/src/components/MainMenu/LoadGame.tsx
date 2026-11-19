@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { db } from '../../firebase-config';
+import { db } from '../../firebase-db';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { loadGame, setStatusCode } from '../../redux/actions/game';
 import { getSavedGamesEffect } from '../../redux/effects/user';
@@ -63,7 +63,7 @@ export function LoadGame({ mode, action }: LoadGameProps) {
   }, [currentUser, dispatch, deleteSavedGame]);
 
   return (
-    <Box maxWidth="xl" className="centered text-centered menu-table">
+    <Box sx={{ maxWidth: 1536 }} className="centered text-centered menu-table">
       <Card className="padlr">
         {mode !== 'save' && <h1>Load game</h1>}
 

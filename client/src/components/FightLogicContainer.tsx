@@ -68,13 +68,13 @@ export const FightLogicContainer = () => {
       setGameIsReady(true);
       const starting = Math.round(Math.random());
 
-      setLocalState({
-        ...localState,
+      setLocalState((currentState) => ({
+        ...currentState,
         hero: { ...character },
         opponent: { ...opponent },
         heroIsStarting: starting,
         activePlayer: starting ? true : false,
-      });
+      }));
     }
   }, [character, opponent, opponentIsReaady]);
 
@@ -97,18 +97,18 @@ export const FightLogicContainer = () => {
   if (!gameIsReady) return <h1>Loading...</h1>;
 
   return (
-    <Grid container maxWidth="xl" spacing={2} className="centered">
-      <Grid item xs={6}>
+    <Grid container sx={{ maxWidth: 1536 }} spacing={2} className="centered">
+      <Grid size={6}>
         <p>
           <b>Your life points: {getLifePoints(localState.hero)}</b>
         </p>
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <p>
           <b>Your opponent life points: {getLifePoints(localState.opponent)}</b>
         </p>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         {willAttackFristLabel}
         {localState.logger.map((el, index) => {
           return <p key={index}>{el}</p>;

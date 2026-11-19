@@ -54,7 +54,7 @@ export const useGameStart = ({
         }
       }
     }, 300);
-  }, [state]);
+  }, [isFightOver, setIsFightIsOver, setState, state]);
 
   return { handleGameStart };
 };

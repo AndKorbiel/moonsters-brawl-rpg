@@ -4,7 +4,7 @@ import {
   getDocs,
   QueryDocumentSnapshot,
 } from 'firebase/firestore';
-import { db } from '../firebase-config';
+import { db } from '../firebase-db';
 import { CharacterState, HighScoreData } from '../types';
 
 const highScoreRef = collection(db, 'high-score');
