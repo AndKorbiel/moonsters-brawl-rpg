@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { calculateFightStats } from '../utils/FightMath';
+import { calculateFightStats, calculateLevelUp } from '../utils/FightMath';
 import { LocalFightLogicState } from '../components/FightLogicContainer';
 
 const fightState: LocalFightLogicState = {
@@ -129,4 +129,20 @@ describe('calculateFightStats', () => {
 
     expect(result.logger.at(-1)).toBe('Hero has attacked for 15');
   });
+});
+
+describe('calculateLevelUp', () => {
+  it.each([1, 4, 9])(
+    'awards 6 opponent stat points after level %i',
+    (opponentLevel) => {
+      const player = structuredClone(fightState.hero!);
+      const opponent = structuredClone(fightState.opponent!);
+      opponent.level = opponentLevel;
+
+      const { currentOpponentStats } = calculateLevelUp({ player, opponent });
+
+      expect(currentOpponentStats.level).toBe(opponentLevel + 1);
+      expect(currentOpponentStats.points).toBe(6);
+    },
+  );
 });

@@ -1,14 +1,15 @@
 import { CharacterState } from './character';
 import { OpponentState } from './opponent';
 import { ShopState } from './shop';
+import type { GameStatusCode } from '../redux/constants/game';
 
 export type MenuOption = {
   label: string;
-  value: number;
+  value: GameStatusCode;
 };
 
 export type GameState = {
-  statusCode: number;
+  statusCode: GameStatusCode;
   gameStarted: boolean;
   menuOptions: MenuOption[];
   fightStarted: boolean;

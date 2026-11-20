@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LoadGame } from '../components/MainMenu/LoadGame';
 import { setCurrentUser } from '../redux/actions/user';
 import { rootReducer } from '../redux/reducers';
+import { GAME_STATUS } from '../redux/constants/game';
 import { SavedGame } from '../types';
 
 const { getSavedGamesEffect } = vi.hoisted(() => ({
@@ -18,7 +19,7 @@ vi.mock('../firebase-db', () => ({ db: {} }));
 const savedGame: SavedGame = {
   game: {
     id: 'save-1',
-    statusCode: 1,
+    statusCode: GAME_STATUS.CHARACTER_SCREEN,
     gameStarted: true,
     menuOptions: [],
     fightStarted: false,

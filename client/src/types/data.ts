@@ -22,6 +22,7 @@ import {
   START_FIGHT,
   START_GAME,
 } from '../redux/constants/game';
+import type { GameStatusCode } from '../redux/constants/game';
 import {
   LEVEL_UP,
   RESET_STATS,
@@ -34,7 +35,7 @@ type EmptyAction<T extends string> = { type: T };
 type PayloadAction<T extends string, P> = { type: T; payload: P };
 
 export type ActionType =
-  | PayloadAction<typeof SET_STATUS_CODE, number>
+  | PayloadAction<typeof SET_STATUS_CODE, GameStatusCode>
   | EmptyAction<typeof START_GAME>
   | EmptyAction<typeof START_FIGHT>
   | EmptyAction<typeof GAME_OVER>

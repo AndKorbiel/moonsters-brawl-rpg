@@ -9,23 +9,24 @@ export function About() {
         <h1>Game rules</h1>
 
         <Typography variant="subtitle1" gutterBottom>
-          <b>Attack points</b> are responsible for the amount of damage a
-          monster can inflict. Damage can be in range - from Attack points
-          multiplied by 1 to Attack points multiplied by 1.4. In example: if
-          your Attack is equal 10, than possible damage will be from range: 10
-          (10x1) to 14 (10x1.4).
+          <b>Attack points</b> determine how much damage an attacker can deal.
+          The minimum damage is the Attack value rounded up; the maximum is 1.4
+          times the Attack value, rounded down. Each hit deals a random
+          whole-number amount between those limits, inclusive. For example, an
+          attacker with 10 Attack deals between 10 and 14 damage.
         </Typography>
 
         <Typography variant="subtitle1" gutterBottom>
-          <b>Defence points</b> determine the chance of blocking the attack. The
-          chance is calculated as Defence divided by Defence plus incoming
-          damage. For example, 5 Defence against 10 damage gives a 33% chance to
-          block: 5 / (5 + 10) = 0.33.
+          <b>Defense points</b> determine the chance of blocking an incoming
+          hit. The defender's block chance is Defense divided by Defense plus
+          incoming damage. For example, 5 Defense against 10 damage gives about
+          a 33% chance to block: 5 / (5 + 10) = 0.33.
         </Typography>
 
         <Typography variant="subtitle1" gutterBottom>
-          <b>Life points</b> determine how much damage you can take. The player
-          which life points gets to 0 or less, losses the brawl.
+          <b>Life points</b> determine how much damage the player or monster can
+          take. The player or monster whose Life reaches 0 or less loses the
+          brawl.
         </Typography>
       </Card>
     </Box>

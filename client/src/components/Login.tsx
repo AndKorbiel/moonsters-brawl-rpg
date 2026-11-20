@@ -14,6 +14,7 @@ import { auth } from '../firebase-auth';
 import { useDispatch } from 'react-redux';
 
 import { setStatusCode } from '../redux/actions/game';
+import { GAME_STATUS } from '../redux/constants/game';
 
 const authErrorMessages: Record<string, string> = {
   'auth/email-already-in-use': 'An account with this email already exists.',
@@ -104,7 +105,7 @@ export function Login() {
         credentials.login,
         credentials.password,
       );
-      dispatch(setStatusCode(0));
+      dispatch(setStatusCode(GAME_STATUS.MAIN_MENU));
     } catch (error) {
       setErrorMessage(getAuthErrorMessage(error, 'login'));
     } finally {

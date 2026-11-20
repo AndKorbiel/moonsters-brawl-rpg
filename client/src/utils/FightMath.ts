@@ -90,7 +90,7 @@ export const calculateLevelUp = ({
     currentPlayerStats.gold + 10 * currentPlayerStats.level;
   currentPlayerStats.points = 5;
 
-  currentOpponentStats.points = 5 * currentOpponentStats.level;
+  currentOpponentStats.points = 6;
   currentOpponentStats.level = currentOpponentStats.level + 1;
 
   return { currentPlayerStats, currentOpponentStats };

@@ -20,13 +20,14 @@ vi.mock('firebase/firestore', () => ({
 vi.mock('../firebase-db', () => ({ db: {} }));
 
 import { getSavedGamesEffect } from '../redux/effects/user';
+import { GAME_STATUS } from '../redux/constants/game';
 
 const savedDocument = (id: string, userId: string) => ({
   id,
   data: () => ({
     userId,
     character: { name: id },
-    game: { statusCode: 1 },
+    game: { statusCode: GAME_STATUS.CHARACTER_SCREEN },
   }),
 });
 

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../firebase-db';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { loadGame, setStatusCode } from '../../redux/actions/game';
+import { GAME_STATUS } from '../../redux/constants/game';
 import { getSavedGamesEffect } from '../../redux/effects/user';
 import { AppState } from '../../types';
 import { setSavedGames } from '../../redux/actions/user';
@@ -37,7 +38,7 @@ export function LoadGame({ mode, action, actionLoading }: LoadGameProps) {
 
   const handleLoadGame = (savedGame) => {
     dispatch(loadGame(savedGame));
-    dispatch(setStatusCode(1));
+    dispatch(setStatusCode(GAME_STATUS.CHARACTER_SCREEN));
   };
 
   const handleSetStatus = () => {

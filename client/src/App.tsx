@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import { lazy, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { START_GAME } from './redux/constants/game';
+import { GAME_STATUS, START_GAME } from './redux/constants/game';
 
 import { MainMenu } from './modules/MainMenu';
 import { AppState } from './types';
@@ -77,7 +77,9 @@ export default function App() {
   const { menuOptions, statusCode } = game;
 
   useEffect(() => {
-    if (statusCode === 1) dispatch({ type: START_GAME });
+    if (statusCode === GAME_STATUS.CHARACTER_SCREEN) {
+      dispatch({ type: START_GAME });
+    }
   }, [dispatch, statusCode]);
 
   if (!menuOptions) return <h1>Loading...</h1>;
@@ -102,13 +104,13 @@ export default function App() {
               </Grid>
             }
           >
-            {statusCode === 0 && (
+            {statusCode === GAME_STATUS.MAIN_MENU && (
               <Grid size={12}>
                 <MainMenu options={menuOptions} />
               </Grid>
             )}
 
-            {statusCode === 1 && (
+            {statusCode === GAME_STATUS.CHARACTER_SCREEN && (
               <>
                 <Grid size={{ xs: 12, md: 4, lg: 3 }}>
                   <CharacterCardContainer />
@@ -119,7 +121,7 @@ export default function App() {
               </>
             )}
 
-            {statusCode === 2 && (
+            {statusCode === GAME_STATUS.FIGHT_SCREEN && (
               <>
                 <Grid size={{ xs: 12, md: 4, lg: 3 }}>
                   <CharacterCardContainer />
@@ -133,27 +135,27 @@ export default function App() {
               </>
             )}
 
-            {statusCode === 5 && (
+            {statusCode === GAME_STATUS.SAVE_GAME && (
               <Grid size={12}>
                 <SaveGame />
               </Grid>
             )}
-            {statusCode === 6 && (
+            {statusCode === GAME_STATUS.LOAD_GAME && (
               <Grid size={12}>
                 <LoadGame />
               </Grid>
             )}
-            {statusCode === 7 && (
+            {statusCode === GAME_STATUS.ABOUT && (
               <Grid size={12}>
                 <About />
               </Grid>
             )}
-            {statusCode === 8 && (
+            {statusCode === GAME_STATUS.HIGH_SCORE && (
               <Grid size={12}>
                 <HighScore />
               </Grid>
             )}
-            {statusCode === 9 && (
+            {statusCode === GAME_STATUS.LOGIN && (
               <Grid size={12}>
                 <Login />
               </Grid>

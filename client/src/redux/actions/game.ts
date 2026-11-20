@@ -1,7 +1,8 @@
 import type { ActionType, SavedGame } from '../../types';
 import { SET_STATUS_CODE, LOAD_GAME } from '../constants/game';
+import type { GameStatusCode } from '../constants/game';
 
-export function setStatusCode(statusCode: number) {
+export function setStatusCode(statusCode: GameStatusCode) {
   return {
     type: SET_STATUS_CODE,
     payload: statusCode,
