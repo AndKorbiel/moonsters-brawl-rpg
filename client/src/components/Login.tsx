@@ -15,11 +15,43 @@ import { useDispatch } from 'react-redux';
 
 import { setStatusCode } from '../redux/actions/game';
 
+const authErrorMessages: Record<string, string> = {
+  'auth/email-already-in-use': 'An account with this email already exists.',
+  'auth/invalid-email': 'Enter a valid email address.',
+  'auth/invalid-credential': 'The email or password is incorrect.',
+  'auth/user-not-found': 'The email or password is incorrect.',
+  'auth/wrong-password': 'The email or password is incorrect.',
+  'auth/user-disabled': 'This account has been disabled. Contact support.',
+  'auth/too-many-requests': 'Too many attempts. Please try again later.',
+  'auth/network-request-failed':
+    'A network error occurred. Check your connection and try again.',
+  'auth/weak-password': 'Choose a stronger password.',
+  'auth/missing-password': 'Enter your password.',
+  'auth/operation-not-allowed':
+    'Email and password authentication is unavailable. Please try again later.',
+};
+
+function getAuthErrorMessage(error: unknown, action: 'login' | 'register') {
+  const code =
+    typeof error === 'object' && error !== null && 'code' in error
+      ? error.code
+      : undefined;
+
+  if (typeof code === 'string' && authErrorMessages[code]) {
+    return authErrorMessages[code];
+  }
+
+  return action === 'login'
+    ? 'Unable to log in. Please try again.'
+    : 'Unable to create your account. Please try again.';
+}
+
 export function Login() {
   const [showRegisterForm, switchForm] = useState(false);
   const [credentials, setCredentials] = useState({ login: '', password: '' });
-  const [errorMessage, setMessage] = useState('');
-  const [status, setStatus] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
 
   const handleChange = (
@@ -38,33 +70,52 @@ export function Login() {
       login: login,
       password: password,
     });
+    setErrorMessage('');
+    setSuccessMessage('');
   };
 
   const register = async () => {
+    setIsSubmitting(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
     try {
       await createUserWithEmailAndPassword(
         auth,
         credentials.login,
         credentials.password,
       );
-      setStatus(true);
+      setSuccessMessage('Account created successfully.');
     } catch (error) {
-      setMessage(error.message);
+      setErrorMessage(getAuthErrorMessage(error, 'register'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const login = async () => {
+    setIsSubmitting(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
     try {
       await signInWithEmailAndPassword(
         auth,
         credentials.login,
         credentials.password,
       );
-      setStatus(true);
       dispatch(setStatusCode(0));
     } catch (error) {
-      setMessage(error.message);
+      setErrorMessage(getAuthErrorMessage(error, 'login'));
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  const toggleForm = () => {
+    switchForm(!showRegisterForm);
+    setErrorMessage('');
+    setSuccessMessage('');
   };
 
   return (
@@ -76,6 +127,7 @@ export function Login() {
           margin="dense"
           id="login"
           label="User email"
+          type="email"
           variant="standard"
           className="custom-input"
           onChange={(e) => handleChange(e)}
@@ -97,19 +149,20 @@ export function Login() {
           fullWidth={true}
           sx={{ marginTop: 5 }}
           onClick={showRegisterForm ? register : login}
+          disabled={isSubmitting}
         >
           Submit
         </Button>
 
-        {errorMessage && status === false && (
+        {errorMessage && (
           <Alert severity="error" sx={{ marginTop: 2 }}>
             {errorMessage}
           </Alert>
         )}
 
-        {status === true && (
+        {successMessage && (
           <Alert severity="success" sx={{ marginTop: 2 }}>
-            New user registered
+            {successMessage}
           </Alert>
         )}
 
@@ -117,7 +170,7 @@ export function Login() {
           sx={{ marginTop: 5 }}
           component="button"
           variant="body2"
-          onClick={() => switchForm(!showRegisterForm)}
+          onClick={toggleForm}
         >
           {showRegisterForm
             ? 'Already registered? Login here'
