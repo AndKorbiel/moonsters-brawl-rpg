@@ -3,19 +3,21 @@ import Card from '@mui/material/Card';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { db } from '../../firebase-db';
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 
 import { getSavedGamesEffect } from '../../redux/effects/user';
+import { setSavedGames } from '../../redux/actions/user';
 import { LoadGame } from './LoadGame';
 import { AppState } from '../../types';
 
 const gameCollectionRef = collection(db, 'games');
 
 export function SaveGame() {
+  const dispatch = useDispatch();
   const state = useSelector((state: AppState) => {
     return {
       game: state.game,
@@ -26,27 +28,62 @@ export function SaveGame() {
     };
   });
 
-  const startDate = new Date().toLocaleDateString('en-GB');
-  const [successNotification, setSuccesNotification] = useState(false);
+  const [successNotification, setSuccessNotification] = useState(false);
+  const [errorNotification, setErrorNotification] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSetStatus = () => {
-    setSuccesNotification(true);
-    getSavedGamesEffect(state.userEmail);
+  useEffect(() => {
+    if (!successNotification) return;
 
-    setTimeout(() => {
-      setSuccesNotification(false);
-    }, 2000);
-  };
+    const timeout = setTimeout(() => setSuccessNotification(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [successNotification]);
 
   const saveGame = async () => {
-    await addDoc(gameCollectionRef, { ...state, date: startDate });
-    handleSetStatus();
+    setIsSaving(true);
+    setSuccessNotification(false);
+    setErrorNotification(false);
+
+    try {
+      await addDoc(gameCollectionRef, {
+        ...state,
+        date: new Date().toLocaleDateString('en-GB'),
+      });
+      if (state.userEmail) {
+        const savedGames = await getSavedGamesEffect(state.userEmail);
+        dispatch(setSavedGames(savedGames));
+      }
+      setSuccessNotification(true);
+    } catch (error) {
+      console.error('Failed to save game', error);
+      setErrorNotification(true);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleOverwriteGame = async (id: string) => {
-    const gameDoc = doc(db, 'games', id);
-    await updateDoc(gameDoc, state);
-    handleSetStatus();
+    setIsSaving(true);
+    setSuccessNotification(false);
+    setErrorNotification(false);
+
+    try {
+      const gameDoc = doc(db, 'games', id);
+      await updateDoc(gameDoc, {
+        ...state,
+        date: new Date().toLocaleDateString('en-GB'),
+      });
+      if (state.userEmail) {
+        const savedGames = await getSavedGamesEffect(state.userEmail);
+        dispatch(setSavedGames(savedGames));
+      }
+      setSuccessNotification(true);
+    } catch (error) {
+      console.error('Failed to overwrite saved game', error);
+      setErrorNotification(true);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -59,10 +96,24 @@ export function SaveGame() {
             {successNotification && (
               <Alert severity="success">Game saved</Alert>
             )}
+            {errorNotification && (
+              <Alert severity="error">
+                Unable to save game. Please try again.
+              </Alert>
+            )}
 
-            <LoadGame mode="save" action={handleOverwriteGame} />
+            <LoadGame
+              mode="save"
+              action={handleOverwriteGame}
+              actionLoading={isSaving}
+            />
 
-            <Button variant="contained" color="secondary" onClick={saveGame}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={saveGame}
+              disabled={isSaving}
+            >
               Save new game
             </Button>
           </>

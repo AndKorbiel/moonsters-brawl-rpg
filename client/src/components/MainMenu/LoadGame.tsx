@@ -22,9 +22,10 @@ import Card from '@mui/material/Card';
 type LoadGameProps = {
   mode?: string;
   action?: (id: string) => Promise<void>;
+  actionLoading?: boolean;
 };
 
-export function LoadGame({ mode, action }: LoadGameProps) {
+export function LoadGame({ mode, action, actionLoading }: LoadGameProps) {
   const dispatch = useDispatch();
   const { currentUser, savedGames } = useSelector((state: AppState) => ({
     currentUser: state.user.currentUser,
@@ -32,6 +33,7 @@ export function LoadGame({ mode, action }: LoadGameProps) {
   }));
 
   const [successNotification, setSuccesNotification] = useState(false);
+  const currentUserEmail = currentUser?.email;
 
   const handleLoadGame = (savedGame) => {
     dispatch(loadGame(savedGame));
@@ -45,22 +47,32 @@ export function LoadGame({ mode, action }: LoadGameProps) {
     }, 2000);
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const deleteSavedGame = async (id: string) => {
     const gameDoc = doc(db, 'games', id);
     await deleteDoc(gameDoc);
     handleSetStatus();
-    getSavedGamesEffect(currentUser.email);
+    if (currentUserEmail) {
+      const savedGames = await getSavedGamesEffect(currentUserEmail);
+      dispatch(setSavedGames(savedGames));
+    }
   };
 
   useEffect(() => {
-    const init = async () => {
-      const savedGames = await getSavedGamesEffect(currentUser.email);
-      dispatch(setSavedGames(savedGames));
-    };
+    let active = true;
 
-    init();
-  }, [currentUser, dispatch, deleteSavedGame]);
+    if (!currentUserEmail) {
+      dispatch(setSavedGames([]));
+      return;
+    }
+
+    getSavedGamesEffect(currentUserEmail).then((games) => {
+      if (active) dispatch(setSavedGames(games));
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [currentUserEmail, dispatch]);
 
   return (
     <Box sx={{ maxWidth: 1536 }} className="centered text-centered menu-table">
@@ -82,7 +94,7 @@ export function LoadGame({ mode, action }: LoadGameProps) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {savedGames?.length > 1 &&
+                {savedGames?.length > 0 &&
                   savedGames.map((savedGame) => {
                     return (
                       <TableRow key={savedGame.game.id}>
@@ -94,7 +106,8 @@ export function LoadGame({ mode, action }: LoadGameProps) {
                           {mode === 'save' ? (
                             <Button
                               variant="contained"
-                              onClick={() => action(savedGame.game.id)}
+                              disabled={!action || actionLoading}
+                              onClick={() => action?.(savedGame.game.id)}
                             >
                               Overwrite game
                             </Button>

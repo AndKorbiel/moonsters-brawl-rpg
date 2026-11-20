@@ -1,74 +1,34 @@
-# Getting Started with Create React App
+# Moonster Brawl RPG
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A browser-based turn-based RPG built with React, TypeScript, Redux, Material UI, and Firebase.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- Node.js `^20.19.0`, `^22.13.0`, or `>=24.0.0`
+- Yarn 1
 
-### `yarn start`
+## Run locally
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```powershell
+cd client
+yarn install
+yarn start
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Vite serves the development app at `http://localhost:5173`.
 
-### `yarn test`
+## Validate and build
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run these commands from `client`:
 
-### `yarn build`
+```powershell
+yarn typecheck
+yarn test
+yarn build
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The production build is written to `client/build`, which is the Firebase Hosting directory configured in `firebase.json`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Firebase settings are read from the client `.env` file using `REACT_APP_API_KEY`, `REACT_APP_FIREBASE_ID`, and `REACT_APP_SENDER_ID`. The previous `RECAT_APP_SENDER_ID` spelling is also accepted for compatibility.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-
-Moonster images credits:
-<a href='https://pl.freepik.com/wektory/zielony'>Zielony plik wektorowy utworzone przez brgfx - pl.freepik.com</a>
+Moonster images credit: [Freepik](https://pl.freepik.com/wektory/zielony).
