@@ -21,7 +21,7 @@ export function SaveGame() {
   const state = useSelector((state: AppState) => {
     return {
       game: state.game,
-      userEmail: state.user.currentUser ? state.user.currentUser.email : null,
+      userId: state.user.currentUser ? state.user.currentUser.uid : null,
       opponent: state.opponent,
       shop: state.shop,
       character: state.character,
@@ -49,8 +49,8 @@ export function SaveGame() {
         ...state,
         date: new Date().toLocaleDateString('en-GB'),
       });
-      if (state.userEmail) {
-        const savedGames = await getSavedGamesEffect(state.userEmail);
+      if (state.userId) {
+        const savedGames = await getSavedGamesEffect(state.userId);
         dispatch(setSavedGames(savedGames));
       }
       setSuccessNotification(true);
@@ -73,8 +73,8 @@ export function SaveGame() {
         ...state,
         date: new Date().toLocaleDateString('en-GB'),
       });
-      if (state.userEmail) {
-        const savedGames = await getSavedGamesEffect(state.userEmail);
+      if (state.userId) {
+        const savedGames = await getSavedGamesEffect(state.userId);
         dispatch(setSavedGames(savedGames));
       }
       setSuccessNotification(true);
@@ -91,7 +91,7 @@ export function SaveGame() {
       <Card className="padlr">
         <h1>Save your game</h1>
 
-        {state.userEmail ? (
+        {state.userId ? (
           <>
             {successNotification && (
               <Alert severity="success">Game saved</Alert>

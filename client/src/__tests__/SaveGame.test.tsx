@@ -27,12 +27,6 @@ vi.mock('../firebase-db', () => ({ db: {} }));
 vi.mock('../redux/effects/user', () => ({ getSavedGamesEffect }));
 
 const savedGame: SavedGame = {
-  statusCode: 1,
-  gameStarted: true,
-  menuOptions: [],
-  fightStarted: false,
-  playerHasWon: false,
-  currentUser: {},
   game: {
     id: 'save-1',
     statusCode: 1,
@@ -52,8 +46,17 @@ const savedGame: SavedGame = {
     items: [],
     isEditing: false,
   },
+  opponent: {
+    name: 'Opponent',
+    level: 1,
+    image: 'assets/images/Mons1.png',
+    points: 0,
+    stats: [],
+    isReady: true,
+  },
+  shop: { availableItems: [] },
   date: '01/01/2020',
-  userEmail: 'player@example.com',
+  userId: 'player-1',
 };
 
 const renderSaveGame = () => {
@@ -86,6 +89,7 @@ describe('SaveGame', () => {
     expect(addDoc.mock.calls[0][1].date).toBe(
       new Date().toLocaleDateString('en-GB'),
     );
+    expect(addDoc.mock.calls[0][1].userId).toBe('player-1');
     expect(await screen.findByText('Game saved')).toBeInTheDocument();
   });
 

@@ -1,4 +1,6 @@
 import { CharacterState } from './character';
+import { OpponentState } from './opponent';
+import { ShopState } from './shop';
 
 export type MenuOption = {
   label: string;
@@ -14,9 +16,11 @@ export type GameState = {
   currentUser: {};
 };
 
-export type SavedGame = GameState & {
-  character: CharacterState;
+export type SavedGame = {
   game: GameState & { id: string };
+  character: CharacterState;
+  opponent: OpponentState;
+  shop: ShopState;
   date: string;
-  userEmail: string;
+  userId: string;
 };

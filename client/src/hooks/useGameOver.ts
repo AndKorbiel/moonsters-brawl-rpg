@@ -51,7 +51,11 @@ export const useGameOver = ({
         ]),
       );
 
-      if (currentUser?.email) setHighScore(character);
+      if (currentUser?.email) {
+        setHighScore(character).catch((error: unknown) => {
+          console.error('Failed to save high score', error);
+        });
+      }
     }
 
     setIsFightIsOver(false);

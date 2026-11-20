@@ -16,12 +16,6 @@ vi.mock('../redux/effects/user', () => ({ getSavedGamesEffect }));
 vi.mock('../firebase-db', () => ({ db: {} }));
 
 const savedGame: SavedGame = {
-  statusCode: 1,
-  gameStarted: true,
-  menuOptions: [],
-  fightStarted: false,
-  playerHasWon: false,
-  currentUser: {},
   game: {
     id: 'save-1',
     statusCode: 1,
@@ -41,8 +35,17 @@ const savedGame: SavedGame = {
     items: [],
     isEditing: false,
   },
+  opponent: {
+    name: 'Opponent',
+    level: 1,
+    image: 'assets/images/Mons1.png',
+    points: 0,
+    stats: [],
+    isReady: true,
+  },
+  shop: { availableItems: [] },
   date: '20/11/2026',
-  userEmail: 'player@example.com',
+  userId: 'player-1',
 };
 
 describe('LoadGame', () => {
@@ -69,5 +72,6 @@ describe('LoadGame', () => {
     await waitFor(() => {
       expect(getSavedGamesEffect).toHaveBeenCalledTimes(1);
     });
+    expect(getSavedGamesEffect).toHaveBeenCalledWith('player-1');
   });
 });

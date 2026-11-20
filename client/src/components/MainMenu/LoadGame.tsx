@@ -33,7 +33,7 @@ export function LoadGame({ mode, action, actionLoading }: LoadGameProps) {
   }));
 
   const [successNotification, setSuccesNotification] = useState(false);
-  const currentUserEmail = currentUser?.email;
+  const currentUserId = currentUser?.uid;
 
   const handleLoadGame = (savedGame) => {
     dispatch(loadGame(savedGame));
@@ -51,8 +51,8 @@ export function LoadGame({ mode, action, actionLoading }: LoadGameProps) {
     const gameDoc = doc(db, 'games', id);
     await deleteDoc(gameDoc);
     handleSetStatus();
-    if (currentUserEmail) {
-      const savedGames = await getSavedGamesEffect(currentUserEmail);
+    if (currentUserId) {
+      const savedGames = await getSavedGamesEffect(currentUserId);
       dispatch(setSavedGames(savedGames));
     }
   };
@@ -60,19 +60,19 @@ export function LoadGame({ mode, action, actionLoading }: LoadGameProps) {
   useEffect(() => {
     let active = true;
 
-    if (!currentUserEmail) {
+    if (!currentUserId) {
       dispatch(setSavedGames([]));
       return;
     }
 
-    getSavedGamesEffect(currentUserEmail).then((games) => {
+    getSavedGamesEffect(currentUserId).then((games) => {
       if (active) dispatch(setSavedGames(games));
     });
 
     return () => {
       active = false;
     };
-  }, [currentUserEmail, dispatch]);
+  }, [currentUserId, dispatch]);
 
   return (
     <Box sx={{ maxWidth: 1536 }} className="centered text-centered menu-table">
