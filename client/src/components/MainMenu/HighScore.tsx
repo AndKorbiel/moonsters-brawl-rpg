@@ -7,27 +7,44 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
+import Alert from '@mui/material/Alert';
 
 import { useState, useEffect } from 'react';
 import { getHighScoreData } from '../../utils';
 import { HighScoreData } from '../../types';
 
 export function HighScore() {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<HighScoreData[]>([]);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
+    let active = true;
+
     async function init() {
-      const highScoreData: HighScoreData[] = await getHighScoreData();
-      setResults(highScoreData);
+      try {
+        const highScoreData = await getHighScoreData();
+        if (active) setResults(highScoreData);
+      } catch {
+        if (active) setHasError(true);
+      }
     }
 
     init();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   return (
     <Box sx={{ maxWidth: 1536 }} className="centered text-centered menu-table">
       <Card className="padlr">
         <h1>High score</h1>
+        {hasError && (
+          <Alert severity="error">
+            Unable to load high scores. Please try again later.
+          </Alert>
+        )}
 
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">

@@ -7,82 +7,71 @@ export const randomIntFromInterval = (min: number, max: number) => {
 
 const damageMath = (
   calculateDamage: number,
-  tempOpponentStats: OpponentState['stats'],
+  defenderStats: CharacterState['stats'],
 ) => {
-  const defensePoints = tempOpponentStats.filter(
-    (el) => el.name === 'defense',
-  )[0].value;
-
-  const lifePoints = tempOpponentStats.filter((el) => el.name === 'life')[0]
-    .value;
-
-  const blockChance = defensePoints / calculateDamage / 1.4;
-  const random = Math.random();
-
-  if (random > blockChance) {
-    return {
-      userTempLifePoints: lifePoints - calculateDamage,
-      defensePoints: defensePoints,
-      block: false,
-    };
-  }
-
-  return {
-    userTempDefencePoints: defensePoints,
-    lifePoints: lifePoints,
-    block: true,
-  };
+  const defensePoints =
+    defenderStats.find((stat) => stat.name === 'defense')?.value ?? 0;
+  const blockChance = defensePoints / (defensePoints + calculateDamage);
+  return Math.random() <= blockChance;
 };
 
-const calculateLifePoints = (
+function applyDamage(
+  currentPlayer: CharacterState,
+  calculateDamage: number,
+): CharacterState;
+function applyDamage(
+  currentPlayer: OpponentState,
+  calculateDamage: number,
+): OpponentState;
+function applyDamage(
   currentPlayer: CharacterState | OpponentState,
   calculateDamage: number,
-) => {
-  currentPlayer.stats = currentPlayer.stats.map((el) => {
-    if (el.name === 'life') {
-      return { name: 'life', value: el.value - calculateDamage };
-    } else {
-      return el;
-    }
-  });
-};
+): CharacterState | OpponentState {
+  return {
+    ...currentPlayer,
+    stats: currentPlayer.stats.map((stat) =>
+      stat.name === 'life'
+        ? { ...stat, value: stat.value - calculateDamage }
+        : stat,
+    ),
+  };
+}
 
 export const calculateFightStats = (state: LocalFightLogicState) => {
-  const hero = state.hero;
-  const opponent = state.opponent;
-  const currentPlayer =
-    state.activePlayer === true ? state.hero : state.opponent;
+  if (!state.hero || !state.opponent) return state;
 
-  const currentAttackPoints = currentPlayer.stats.filter(
-    (el) => el.name === 'attack',
-  )[0].value;
+  const currentPlayer = state.activePlayer ? state.hero : state.opponent;
+
+  const currentAttackPoints =
+    currentPlayer.stats.find((stat) => stat.name === 'attack')?.value ?? 0;
 
   const calculateDamage = randomIntFromInterval(
-    currentAttackPoints / 1,
-    currentAttackPoints * 1.4,
+    Math.ceil(currentAttackPoints),
+    Math.floor(currentAttackPoints * 1.4),
   );
-  const damageDone = damageMath(calculateDamage, opponent.stats);
-  const logger = state.logger;
+  const defender = state.activePlayer ? state.opponent : state.hero;
+  const damageWasBlocked = damageMath(calculateDamage, defender.stats);
   let message: string;
 
-  if (damageDone.block) {
+  let hero = state.hero;
+  let opponent = state.opponent;
+
+  if (damageWasBlocked) {
     message = `${currentPlayer.name} has been blocked`;
   } else {
-    if (currentPlayer === state.hero) {
-      calculateLifePoints(opponent, calculateDamage);
+    if (state.activePlayer) {
+      opponent = applyDamage(opponent, calculateDamage);
     } else {
-      calculateLifePoints(hero, calculateDamage);
+      hero = applyDamage(hero, calculateDamage);
     }
     message = `${currentPlayer.name} has attacked for ${calculateDamage}`;
   }
 
-  logger.push(message);
-
   return {
     activePlayer: !state.activePlayer,
-    hero: hero,
-    opponent: opponent,
-    logger,
+    hero,
+    opponent,
+    logger: [...state.logger, message],
   };
 };
 
@@ -101,7 +90,7 @@ export const calculateLevelUp = ({
     currentPlayerStats.gold + 10 * currentPlayerStats.level;
   currentPlayerStats.points = 5;
 
-  currentOpponentStats.points = 5 * currentOpponentStats.level;
+  currentOpponentStats.points = 6;
   currentOpponentStats.level = currentOpponentStats.level + 1;
 
   return { currentPlayerStats, currentOpponentStats };

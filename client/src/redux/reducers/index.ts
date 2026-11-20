@@ -18,14 +18,16 @@ const appReducer: Reducer<AppState, ActionType> = combineReducers({
 export const rootReducer = (state: AppState, action: ActionType) => {
   switch (action.type) {
     case GAME_OVER:
-      state = undefined;
-      break;
+      return appReducer(undefined, action);
     case LOAD_GAME:
       return {
-        ...action.payload,
+        ...state,
+        game: action.payload.game,
+        character: action.payload.character,
+        opponent: action.payload.opponent,
+        shop: action.payload.shop,
       };
     default:
+      return appReducer(state, action);
   }
-
-  return appReducer(state, action);
 };

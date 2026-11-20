@@ -50,14 +50,14 @@ export default function character(state = initialState, action: ActionType) {
         items: [...state.items, action.payload],
       };
     case CALCULATE_STATS_FROM_ITEM:
+      if (action.payload.length === 0) return state;
       return {
         ...state,
         stats: state.stats.map((stat) => {
-          console.log(action.payload);
           return stat.name === action.payload[0].name
             ? {
                 ...stat,
-                value: stat.value + parseInt(action.payload[0].value),
+                value: stat.value + action.payload[0].value,
               }
             : stat;
         }),

@@ -43,7 +43,7 @@ export const CharacterCardContainer = () => {
   };
 
   const { handleStatsChange } = useStatsChange(localState, setLocalState);
-  const { handleSave } = useStatsSave(localState, setLocalState);
+  const { handleCancel, handleSave } = useStatsSave(localState, setLocalState);
 
   return (
     <Card>
@@ -64,6 +64,7 @@ export const CharacterCardContainer = () => {
 
       <ActionButtons
         character={character}
+        handleCancel={handleCancel}
         handleSave={handleSave}
         points={localState.points}
       />

@@ -44,5 +44,16 @@ export const useStatsSave = (
     }
   };
 
-  return { handleSave };
+  const handleCancel = () => {
+    setState((state) => ({
+      ...state,
+      validation: {
+        ...state.validation,
+        name: false,
+      },
+    }));
+    dispatch(handleEditMode(false));
+  };
+
+  return { handleCancel, handleSave };
 };

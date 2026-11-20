@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { useCreateOpponent } from '../hooks';
 
 export function OpponentCard() {
-  const { opponent, opponentStats } = useCreateOpponent();
+  const { opponent } = useCreateOpponent();
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -24,16 +24,13 @@ export function OpponentCard() {
           <li>
             <Typography variant="h6">Level: {opponent.level}</Typography>
           </li>
-          {opponentStats &&
-            opponentStats.map((el) => {
-              return (
-                <li key={el.name}>
-                  <Typography variant="h6">
-                    {el.name}: {el.value}
-                  </Typography>
-                </li>
-              );
-            })}
+          {opponent.stats.map((stat) => (
+            <li key={stat.name}>
+              <Typography variant="h6">
+                {stat.name}: {stat.value}
+              </Typography>
+            </li>
+          ))}
         </ul>
       </CardActions>
     </Card>

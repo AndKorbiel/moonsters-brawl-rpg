@@ -11,9 +11,11 @@ import { useEffect } from 'react';
 
 import { setCurrentUser } from '../redux/actions/user';
 import { setStatusCode } from '../redux/actions/game';
-import { AppState } from '../types';
+import { GAME_STATUS } from '../redux/constants/game';
+import type { AppState } from '../types';
+import type { GameStatusCode } from '../redux/constants/game';
 
-export function Navbar({ status }: { status: number }) {
+export function Navbar({ status }: { status: GameStatusCode }) {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: AppState) => state.user.currentUser);
 
@@ -49,11 +51,11 @@ export function Navbar({ status }: { status: number }) {
             Moonster Brawl RPG
           </Typography>
 
-          {status !== 2 && (
+          {status !== GAME_STATUS.FIGHT_SCREEN && (
             <>
               <Button
                 color="inherit"
-                onClick={() => dispatch(setStatusCode(0))}
+                onClick={() => dispatch(setStatusCode(GAME_STATUS.MAIN_MENU))}
               >
                 MENU
               </Button>
@@ -62,7 +64,7 @@ export function Navbar({ status }: { status: number }) {
               ) : (
                 <Button
                   color="inherit"
-                  onClick={() => dispatch(setStatusCode(9))}
+                  onClick={() => dispatch(setStatusCode(GAME_STATUS.LOGIN))}
                 >
                   Login
                 </Button>
