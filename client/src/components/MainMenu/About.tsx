@@ -18,11 +18,9 @@ export function About() {
 
         <Typography variant="subtitle1" gutterBottom>
           <b>Defence points</b> determine the chance of blocking the attack. The
-          chance is calc based on percentage calculation: (damage to be done by
-          the opponent divided by Defence points) divided by 1.4. In example: if
-          your Defence is equal 5 and your opponent is attacking for 10 points
-          of damage, thank you've got 35% chance to block the damage (becasue:
-          (5 / 10) / 1.4 = 0.35).
+          chance is calculated as Defence divided by Defence plus incoming
+          damage. For example, 5 Defence against 10 damage gives a 33% chance to
+          block: 5 / (5 + 10) = 0.33.
         </Typography>
 
         <Typography variant="subtitle1" gutterBottom>

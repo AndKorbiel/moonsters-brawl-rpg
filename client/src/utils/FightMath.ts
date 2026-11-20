@@ -7,11 +7,11 @@ export const randomIntFromInterval = (min: number, max: number) => {
 
 const damageMath = (
   calculateDamage: number,
-  tempOpponentStats: OpponentState['stats'],
+  defenderStats: CharacterState['stats'],
 ) => {
   const defensePoints =
-    tempOpponentStats.find((stat) => stat.name === 'defense')?.value ?? 0;
-  const blockChance = defensePoints / calculateDamage / 1.4;
+    defenderStats.find((stat) => stat.name === 'defense')?.value ?? 0;
+  const blockChance = defensePoints / (defensePoints + calculateDamage);
   return Math.random() <= blockChance;
 };
 
@@ -46,10 +46,11 @@ export const calculateFightStats = (state: LocalFightLogicState) => {
     currentPlayer.stats.find((stat) => stat.name === 'attack')?.value ?? 0;
 
   const calculateDamage = randomIntFromInterval(
-    currentAttackPoints / 1,
-    currentAttackPoints * 1.4,
+    Math.ceil(currentAttackPoints),
+    Math.floor(currentAttackPoints * 1.4),
   );
-  const damageWasBlocked = damageMath(calculateDamage, state.opponent.stats);
+  const defender = state.activePlayer ? state.opponent : state.hero;
+  const damageWasBlocked = damageMath(calculateDamage, defender.stats);
   let message: string;
 
   let hero = state.hero;

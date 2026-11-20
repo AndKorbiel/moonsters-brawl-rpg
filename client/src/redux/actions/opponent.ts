@@ -1,9 +1,8 @@
-import type { ActionType, OpponentProps } from '../../types';
+import type { ActionType, OpponentProps, OpponentState } from '../../types';
 import {
   LEVEL_UP,
   RESET_STATS,
-  SET_NAME,
-  SET_IMAGE,
+  SET_OPPONENT,
 } from '../constants/opponent';
 
 export function levelUp(stats: OpponentProps) {
@@ -20,16 +19,9 @@ export function resetStats(stats: OpponentProps['stats']) {
   } satisfies ActionType;
 }
 
-export function setName(name: string) {
+export function setOpponent(opponent: OpponentState) {
   return {
-    type: SET_NAME,
-    payload: name,
-  } satisfies ActionType;
-}
-
-export function setImage(imageNumber: number) {
-  return {
-    type: SET_IMAGE,
-    payload: imageNumber,
+    type: SET_OPPONENT,
+    payload: opponent,
   } satisfies ActionType;
 }

@@ -25,8 +25,7 @@ import {
 import {
   LEVEL_UP,
   RESET_STATS,
-  SET_IMAGE,
-  SET_NAME,
+  SET_OPPONENT,
 } from '../redux/constants/opponent';
 import { REMOVE_FROM_SHOP } from '../redux/constants/shop';
 import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../redux/constants/user';
@@ -48,8 +47,7 @@ export type ActionType =
   | PayloadAction<typeof CALCULATE_STATS_FROM_ITEM, CharacterStat[]>
   | PayloadAction<typeof LEVEL_UP, OpponentProps>
   | PayloadAction<typeof RESET_STATS, CharacterStat[]>
-  | PayloadAction<typeof SET_NAME, string>
-  | PayloadAction<typeof SET_IMAGE, number>
+  | PayloadAction<typeof SET_OPPONENT, OpponentState>
   | PayloadAction<typeof REMOVE_FROM_SHOP, Item>
   | PayloadAction<typeof SET_CURRENT_USER, UserState['currentUser']>
   | PayloadAction<typeof SET_SAVED_GAMES, SavedGame[]>;
