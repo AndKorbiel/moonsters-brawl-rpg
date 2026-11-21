@@ -16,9 +16,13 @@ import { CharacterState, Item } from '../../types';
 
 type CharacterInventoryProps = {
   character: CharacterState;
+  allowDrop: boolean;
 };
 
-export const CharacterInventory = ({ character }: CharacterInventoryProps) => {
+export const CharacterInventory = ({
+  character,
+  allowDrop,
+}: CharacterInventoryProps) => {
   const dispatch = useDispatch();
 
   const emptySpaceInInventory = [];
@@ -45,10 +49,34 @@ export const CharacterInventory = ({ character }: CharacterInventoryProps) => {
 
       <Grid container spacing={2} className="inventory-cont">
         {character.items.map((item) => (
-          <Grid size={4} className="inventory-box" key={item.id}>
+          <Grid
+            size={4}
+            className="inventory-box"
+            key={item.id}
+            sx={{
+              position: 'relative',
+              '&:hover .inventory-drop-actions, &:focus-within .inventory-drop-actions':
+                {
+                  opacity: 1,
+                  pointerEvents: 'auto',
+                },
+            }}
+          >
             <CardMedia component="img" image={item.image} />
-            {character.isEditing && (
-              <CardActions>
+            {allowDrop && (
+              <CardActions
+                className="inventory-drop-actions"
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                  opacity: 0,
+                  pointerEvents: 'none',
+                  transition: 'opacity 150ms ease-in-out',
+                }}
+              >
                 <Button
                   variant="contained"
                   color="error"

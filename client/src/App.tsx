@@ -1,61 +1,66 @@
-import './styles/App.scss';
-import Grid from '@mui/material/Grid';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import "./styles/App.scss";
+import Grid from "@mui/material/Grid";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-import { lazy, Suspense, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { GAME_STATUS, START_GAME } from './redux/constants/game';
+import { lazy, Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GAME_STATUS, START_GAME } from "./redux/constants/game";
 
-import { MainMenu } from './modules/MainMenu';
-import { AppState } from './types';
+import { MainMenu } from "./modules/MainMenu";
+import { AppState } from "./types";
 
 const Navbar = lazy(() =>
-  import('./components/Navbar').then(({ Navbar }) => ({
+  import("./components/Navbar").then(({ Navbar }) => ({
     default: Navbar,
   })),
 );
 const CharacterCardContainer = lazy(() =>
-  import('./modules/CharacterCard').then(({ CharacterCardContainer }) => ({
+  import("./modules/CharacterCard").then(({ CharacterCardContainer }) => ({
     default: CharacterCardContainer,
   })),
 );
+const InventoryCard = lazy(() =>
+  import("./modules/InventoryCard").then(({ InventoryCard }) => ({
+    default: InventoryCard,
+  })),
+);
 const FightScreenCard = lazy(() =>
-  import('./modules/FightScreenCard').then(({ FightScreenCard }) => ({
+  import("./modules/FightScreenCard").then(({ FightScreenCard }) => ({
     default: FightScreenCard,
   })),
 );
 const OpponentCard = lazy(() =>
-  import('./modules/OpponentCard').then(({ OpponentCard }) => ({
+  import("./modules/OpponentCard").then(({ OpponentCard }) => ({
     default: OpponentCard,
   })),
 );
 const ShopCard = lazy(() =>
-  import('./modules/ShopCard').then(({ ShopCard }) => ({
+  import("./modules/ShopCard").then(({ ShopCard }) => ({
     default: ShopCard,
   })),
 );
 const About = lazy(() =>
-  import('./components/MainMenu/About').then(({ About }) => ({
+  import("./components/MainMenu/About").then(({ About }) => ({
     default: About,
   })),
 );
 const HighScore = lazy(() =>
-  import('./components/MainMenu/HighScore').then(({ HighScore }) => ({
+  import("./components/MainMenu/HighScore").then(({ HighScore }) => ({
     default: HighScore,
   })),
 );
 const LoadGame = lazy(() =>
-  import('./components/MainMenu/LoadGame').then(({ LoadGame }) => ({
+  import("./components/MainMenu/LoadGame").then(({ LoadGame }) => ({
     default: LoadGame,
   })),
 );
 const Login = lazy(() =>
-  import('./components/Login').then(({ Login }) => ({
+  import("./components/Login").then(({ Login }) => ({
     default: Login,
   })),
 );
 const SaveGame = lazy(() =>
-  import('./components/MainMenu/SaveGame').then(({ SaveGame }) => ({
+  import("./components/MainMenu/SaveGame").then(({ SaveGame }) => ({
     default: SaveGame,
   })),
 );
@@ -63,10 +68,10 @@ const SaveGame = lazy(() =>
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2c0f23',
+      main: "#2c0f23",
     },
     secondary: {
-      main: '#fe7800',
+      main: "#fe7800",
     },
   },
 });
@@ -115,7 +120,10 @@ export default function App() {
                 <Grid size={{ xs: 12, md: 4, lg: 3 }}>
                   <CharacterCardContainer />
                 </Grid>
-                <Grid size={{ xs: 12, md: 8, lg: 9 }}>
+                <Grid size={{ xs: 12, md: 2, lg: 3 }}>
+                  <InventoryCard />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6, lg: 6 }}>
                   <ShopCard />
                 </Grid>
               </>

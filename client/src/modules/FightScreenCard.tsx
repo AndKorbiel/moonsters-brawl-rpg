@@ -28,7 +28,7 @@ export function FightScreenCard() {
   );
 
   return (
-    <Paper>
+    <Paper sx={{ height: '100%' }}>
       <Grid container className="padlr">
         <Grid size={12}>
           <Typography variant="h5" align="center">

@@ -25,16 +25,21 @@ export function ShopCard() {
   };
 
   return (
-    <Paper className="topbot">
-      <Grid container>
+    <Paper sx={{ height: "100%" }}>
+      <Grid container spacing={2} sx={{ p: 2 }}>
         <Grid size={12}>
-          <Typography variant="h4" align="center" gutterBottom={true}>
+          <Typography
+            variant="h4"
+            align="center"
+            gutterBottom={true}
+            sx={{ mt: 2 }}
+          >
             Welcome to the Magic Shop
           </Typography>
         </Grid>
 
         <Grid size={12}>
-          <Grid container>
+          <Grid container spacing={2}>
             {availableItems.map((item) => (
               <Grid size={{ xs: 12, md: 4 }} key={item.id}>
                 <ShopCardItem item={item} action={handleBuyAction} />

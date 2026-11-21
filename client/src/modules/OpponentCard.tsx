@@ -11,7 +11,7 @@ export function OpponentCard() {
   const { opponent } = useCreateOpponent();
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, height: '100%' }}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {opponent.name}

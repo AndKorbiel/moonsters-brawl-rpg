@@ -59,7 +59,7 @@ export const CharacterCardContainer = () => {
       false);
 
   return (
-    <Card>
+    <Card sx={{ height: '100%' }}>
       <CharacterName
         character={character}
         handleNameChange={handleNameChange}
@@ -85,7 +85,9 @@ export const CharacterCardContainer = () => {
         points={localState.points}
       />
 
-      <CharacterInventory character={character} />
+      {statusCode === GAME_STATUS.FIGHT_SCREEN && (
+        <CharacterInventory character={character} allowDrop={false} />
+      )}
     </Card>
   );
 };

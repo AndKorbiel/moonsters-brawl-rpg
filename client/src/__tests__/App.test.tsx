@@ -32,6 +32,7 @@ describe("App", () => {
     expect(
       await screen.findByText("Welcome to the Magic Shop"),
     ).toBeInTheDocument();
+    expect(screen.getByText("Inventory")).toBeInTheDocument();
   });
 
   it("returns to the main menu from the menu button", async () => {

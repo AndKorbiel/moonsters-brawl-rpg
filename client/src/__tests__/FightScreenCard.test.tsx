@@ -16,10 +16,10 @@ describe('FightScreenCard', () => {
       </Provider>,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Fight' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Start the brawl' }));
 
     expect(
-      screen.queryByRole('button', { name: 'Fight' }),
+      screen.queryByRole('button', { name: 'Start the brawl' }),
     ).not.toBeInTheDocument();
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
