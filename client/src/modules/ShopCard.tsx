@@ -1,13 +1,13 @@
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import { buyItem, calculateStatsFromItem } from '../redux/actions/character';
-import { removeFromShop } from '../redux/actions/shop';
-import { ShopCardItem } from '../components/ShopCardItem';
-import { AppState, Item } from '../types';
+import { buyItem, calculateStatsFromItem } from "../redux/actions/character";
+import { removeFromShop } from "../redux/actions/shop";
+import { ShopCardItem } from "../components/ShopCardItem";
+import { AppState, Item } from "../types";
 
 export function ShopCard() {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export function ShopCard() {
       <Grid container>
         <Grid size={12}>
           <Typography variant="h4" align="center" gutterBottom={true}>
-            Welcome in the Magic Shop
+            Welcome to the Magic Shop
           </Typography>
         </Grid>
 

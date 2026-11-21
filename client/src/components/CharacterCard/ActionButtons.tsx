@@ -11,6 +11,7 @@ import { CharacterLocalState } from '../../modules';
 type ActionButtonsProps = {
   character: CharacterState;
   points: CharacterLocalState['points'];
+  hasChanges: boolean;
   handleCancel: () => void;
   handleSave: () => void;
 };
@@ -18,6 +19,7 @@ type ActionButtonsProps = {
 export const ActionButtons = ({
   character,
   points,
+  hasChanges,
   handleCancel,
   handleSave,
 }: ActionButtonsProps) => {
@@ -41,19 +43,22 @@ export const ActionButtons = ({
           <Button
             variant="contained"
             color="secondary"
+            disabled={!hasChanges}
             onClick={handleSave}
           >
             Save
           </Button>
         </>
       ) : (
-        statusCode === GAME_STATUS.CHARACTER_SCREEN && (
+        statusCode === GAME_STATUS.CHARACTER_SCREEN &&
+        points !== undefined &&
+        points > 0 && (
           <Button
             variant="contained"
             color="secondary"
             onClick={() => dispatch(handleEditMode(true))}
           >
-            Set Stats
+            {character.level === 1 ? 'Create Character' : 'Level Up'}
           </Button>
         )
       )}

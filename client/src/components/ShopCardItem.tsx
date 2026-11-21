@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Item } from '../types';
+import { STAT_LABELS } from '../constants/statLabels';
 
 type ShopCardItemProps = {
   item: Item;
@@ -26,7 +27,7 @@ export function ShopCardItem({ item, action }: ShopCardItemProps) {
         <Typography variant="h6">
           {item.stats.map((stat) => (
             <p key={stat.name}>
-              +{stat.value} {stat.name}
+              +{stat.value} {STAT_LABELS[stat.name]}
             </p>
           ))}
         </Typography>

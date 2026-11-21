@@ -1,17 +1,18 @@
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import { FightLogicContainer } from '../components/FightLogicContainer';
-import { START_FIGHT } from '../redux/constants/game';
-import { AppState } from '../types';
+import { FightLogicContainer } from "../components/FightLogicContainer";
+import { START_FIGHT } from "../redux/constants/game";
+import { AppState } from "../types";
 
 export function FightScreenCard() {
   const dispatch = useDispatch();
-  const { fightStarted } = useSelector((state: AppState) => ({
+  const { currentLevel, fightStarted } = useSelector((state: AppState) => ({
+    currentLevel: state.character.level,
     fightStarted: state.game.fightStarted,
   }));
 
@@ -19,9 +20,10 @@ export function FightScreenCard() {
     <Button
       variant="contained"
       color="error"
+      sx={{ display: "block", mx: "auto", mt: 4 }}
       onClick={() => dispatch({ type: START_FIGHT })}
     >
-      Fight
+      Start the brawl
     </Button>
   );
 
@@ -30,10 +32,10 @@ export function FightScreenCard() {
       <Grid container className="padlr">
         <Grid size={12}>
           <Typography variant="h5" align="center">
-            Fight for your life!
+            Level {currentLevel} - Fight for your life!
           </Typography>
 
-          {fightStarted ? StartFightButton : <FightLogicContainer />}
+          {fightStarted ? <FightLogicContainer /> : StartFightButton}
         </Grid>
       </Grid>
     </Paper>

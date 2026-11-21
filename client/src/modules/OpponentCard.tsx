@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
 import { useCreateOpponent } from '../hooks';
+import { STAT_LABELS } from '../constants/statLabels';
 
 export function OpponentCard() {
   const { opponent } = useCreateOpponent();
@@ -21,13 +22,10 @@ export function OpponentCard() {
 
       <CardActions className="stats">
         <ul>
-          <li>
-            <Typography variant="h6">Level: {opponent.level}</Typography>
-          </li>
           {opponent.stats.map((stat) => (
             <li key={stat.name}>
               <Typography variant="h6">
-                {stat.name}: {stat.value}
+                {STAT_LABELS[stat.name]}: {stat.value}
               </Typography>
             </li>
           ))}
