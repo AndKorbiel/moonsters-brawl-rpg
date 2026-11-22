@@ -6,13 +6,14 @@ import { describe, expect, it } from 'vitest';
 import { CharacterInventory } from '../components/CharacterCard/CharacterInventory';
 import { buyItem, calculateStatsFromItem } from '../redux/actions/character';
 import { rootReducer } from '../redux/reducers';
-import { Item } from '../types';
+import { Item, ItemType } from '../types';
 
 const sword: Item = {
   id: 1,
   name: 'Sword',
   image: 'sword.png',
   price: 99,
+  type: ItemType.WEAPON,
   stats: [{ name: 'attack', value: 10 }],
 };
 
