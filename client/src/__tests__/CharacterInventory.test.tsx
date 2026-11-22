@@ -18,6 +18,83 @@ const sword: Item = {
 };
 
 describe('CharacterInventory', () => {
+  it('shows the weapon placeholder in the first slot by default', () => {
+    const store = createStore(rootReducer);
+    const character = store.getState().character;
+
+    const { container } = render(
+      <Provider store={store}>
+        <CharacterInventory character={character} allowDrop={false} />
+      </Provider>,
+    );
+
+    const placeholder = container.querySelector(
+      '.inventory-placeholder img',
+    );
+    expect(placeholder).toHaveAttribute(
+      'src',
+      'assets/images/wepon_placeholder.svg',
+    );
+  });
+
+  it('shows a weapon in the first slot instead of the placeholder', () => {
+    const store = createStore(rootReducer);
+    const character = {
+      ...store.getState().character,
+      items: [sword],
+    };
+
+    const { container } = render(
+      <Provider store={store}>
+        <CharacterInventory character={character} allowDrop={false} />
+      </Provider>,
+    );
+
+    expect(
+      container.querySelector('.inventory-placeholder-weapon'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('shows the correct placeholders for all empty item types', () => {
+    const store = createStore(rootReducer);
+    const character = store.getState().character;
+
+    const { container } = render(
+      <Provider store={store}>
+        <CharacterInventory character={character} allowDrop={false} />
+      </Provider>,
+    );
+
+    expect(
+      container.querySelector('.inventory-placeholder-weapon img'),
+    ).toHaveAttribute('src', 'assets/images/wepon_placeholder.svg');
+    expect(
+      container.querySelector('.inventory-placeholder-off-hand img'),
+    ).toHaveAttribute('src', 'assets/images/off_hand_placeholder.svg');
+    expect(
+      container.querySelector('.inventory-placeholder-armor img'),
+    ).toHaveAttribute('src', 'assets/images/armor_placeholder.svg');
+    expect(
+      container.querySelector('.inventory-placeholder-magic img'),
+    ).toHaveAttribute('src', 'assets/images/magic_item_placeholder.svg');
+  });
+
+  it('renders four inventory slots with two slots per row', () => {
+    const store = createStore(rootReducer);
+    const character = {
+      ...store.getState().character,
+      items: [sword],
+    };
+
+    const { container } = render(
+      <Provider store={store}>
+        <CharacterInventory character={character} allowDrop={false} />
+      </Provider>,
+    );
+
+    expect(container.querySelectorAll('.inventory-box')).toHaveLength(4);
+  });
+
   it('only offers item removal when dropping is enabled', () => {
     const store = createStore(rootReducer);
     const character = {

@@ -15,7 +15,7 @@ export function ShopCard() {
   }));
 
   const handleBuyAction = (item: Item) => {
-    if (character.items.length <= 2 && character.gold >= item.price) {
+    if (character.items.length < 4 && character.gold >= item.price) {
       dispatch(buyItem(item));
       dispatch(removeFromShop(item));
       dispatch(calculateStatsFromItem(item.stats));
