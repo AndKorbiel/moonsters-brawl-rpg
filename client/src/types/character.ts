@@ -1,9 +1,11 @@
 import { Item } from './shop';
 
 export type CharacterStat = {
-  name: string;
+  name: CharacterStatName;
   value: number;
 };
+
+export type CharacterStatName = 'attack' | 'defense' | 'life';
 
 export type CharacterState = {
   name: string;

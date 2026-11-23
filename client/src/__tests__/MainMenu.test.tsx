@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '../redux/store';
-import { GAME_OVER } from '../redux/constants/game';
+import { GAME_OVER, GAME_STATUS } from '../redux/constants/game';
 import { MainMenu } from '../modules/MainMenu';
 
 const menuOptions = [
-  { value: 1, label: 'New Game' },
-  { value: 5, label: 'Save Game' },
+  { value: GAME_STATUS.CHARACTER_SCREEN, label: 'New Game' },
+  { value: GAME_STATUS.SAVE_GAME, label: 'Save Game' },
 ];
 
 describe('MainMenu', () => {
@@ -35,6 +35,8 @@ describe('MainMenu', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'New Game' }));
 
-    expect(store.getState().game.statusCode).toBe(1);
+    expect(store.getState().game.statusCode).toBe(
+      GAME_STATUS.CHARACTER_SCREEN,
+    );
   });
 });

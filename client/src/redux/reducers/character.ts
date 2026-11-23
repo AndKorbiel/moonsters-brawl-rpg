@@ -18,7 +18,7 @@ const initialState: CharacterState = {
     { name: 'defense', value: 10 },
     { name: 'life', value: 20 },
   ],
-  gold: 100,
+  gold: 20,
   items: [],
   isEditing: false,
 };
@@ -44,22 +44,28 @@ export default function character(state = initialState, action: ActionType) {
         gold: action.payload.gold,
       };
     case BUY_ITEM:
+      if (
+        state.gold < action.payload.price ||
+        state.items.some((item) => item.type === action.payload.type)
+      ) {
+        return state;
+      }
       return {
         ...state,
         gold: state.gold - action.payload.price,
         items: [...state.items, action.payload],
       };
     case CALCULATE_STATS_FROM_ITEM:
+      if (action.payload.length === 0) return state;
       return {
         ...state,
         stats: state.stats.map((stat) => {
-          console.log(action.payload);
-          return stat.name === action.payload[0].name
-            ? {
-                ...stat,
-                value: stat.value + parseInt(action.payload[0].value),
-              }
-            : stat;
+          const valueToAdd = action.payload
+            .filter((itemStat) => itemStat.name === stat.name)
+            .reduce((total, itemStat) => total + itemStat.value, 0);
+          return valueToAdd === 0
+            ? stat
+            : { ...stat, value: stat.value + valueToAdd };
         }),
       };
     case DROP_ITEM:

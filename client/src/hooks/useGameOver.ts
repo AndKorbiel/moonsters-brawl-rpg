@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setStatusCode } from '../redux/actions/game';
-import { GAME_OVER } from '../redux/constants/game';
+import { GAME_OVER, GAME_STATUS } from '../redux/constants/game';
 import { changeStats } from '../redux/actions/character';
 import { levelUp, resetStats } from '../redux/actions/opponent';
+import { restockShop } from '../redux/actions/shop';
 
 import setHighScore from '../utils/HighScoreDataOperations';
 import { calculateLevelUp } from '../utils/FightMath';
@@ -26,11 +27,12 @@ export const useGameOver = ({
   iniitialState,
 }: GameOverHookProps) => {
   const dispatch = useDispatch();
-  const { character, currentUser, opponent } = useSelector(
+  const { character, currentUser, opponent, shop } = useSelector(
     (state: AppState) => ({
       character: state.character,
       currentUser: state.user.currentUser,
       opponent: state.opponent,
+      shop: state.shop,
     }),
   );
 
@@ -39,7 +41,8 @@ export const useGameOver = ({
       const calculateStats = calculateLevelUp({ player: character, opponent });
 
       dispatch(changeStats(calculateStats.currentPlayerStats));
-      dispatch(setStatusCode(1));
+      dispatch(restockShop(shop));
+      dispatch(setStatusCode(GAME_STATUS.CHARACTER_SCREEN));
       dispatch(levelUp(calculateStats.currentOpponentStats));
     } else {
       dispatch({ type: GAME_OVER });
@@ -51,7 +54,11 @@ export const useGameOver = ({
         ]),
       );
 
-      if (currentUser?.email) setHighScore(character);
+      if (currentUser?.email) {
+        setHighScore(character).catch((error: unknown) => {
+          console.error('Failed to save high score', error);
+        });
+      }
     }
 
     setIsFightIsOver(false);

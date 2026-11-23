@@ -19,8 +19,12 @@ export const useGameStart = ({
     return setTimeout(() => {
       if (!isFightOver) {
         if (
-          state.hero.stats.filter((el) => el.name === 'life')[0].value > 0 &&
-          state.opponent.stats.filter((el) => el.name === 'life')[0].value > 0
+          state.hero &&
+          state.opponent &&
+          (state.hero.stats.find((stat) => stat.name === 'life')?.value ?? 0) >
+            0 &&
+          (state.opponent.stats.find((stat) => stat.name === 'life')?.value ??
+            0) > 0
         ) {
           const results = calculateFightStats(state);
 
@@ -42,12 +46,9 @@ export const useGameStart = ({
           } else {
             message = 'You have lost!';
           }
-          const logger = state.logger;
-          logger.push(message);
-
           setState({
             ...state,
-            logger: logger,
+            logger: [...state.logger, message],
             isFighting: false,
             fightWon: fightWon,
           });

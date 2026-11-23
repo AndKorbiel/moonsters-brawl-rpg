@@ -1,24 +1,31 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase-db';
+import { GameState, SavedGame } from '../../types';
 
 const gameCollectionRef = collection(db, 'games');
+type StoredSavedGame = Omit<SavedGame, 'game'> & {
+  game: GameState;
+};
 
-export const getSavedGamesEffect = async (curentUserEmail: string) => {
+export const getSavedGamesEffect = async (userId: string) => {
   try {
-    const data = await getDocs(gameCollectionRef);
-    const savedGames = data.docs
-      .map((doc: any) => ({
-        ...doc.data(),
+    const data = await getDocs(
+      query(gameCollectionRef, where('userId', '==', userId)),
+    );
+    const savedGames: SavedGame[] = data.docs.map((savedDoc) => {
+      const savedData = savedDoc.data() as StoredSavedGame;
+      return {
+        ...savedData,
         game: {
-          ...doc.data().game,
-          id: doc.id,
+          ...savedData.game,
+          id: savedDoc.id,
         },
-      }))
-      .filter((doc: any) => doc.userEmail === curentUserEmail);
+      };
+    });
 
     return savedGames;
   } catch (error) {
-    console.log(error);
+    console.error('Failed to retrieve saved games', error);
     return [];
   }
 };

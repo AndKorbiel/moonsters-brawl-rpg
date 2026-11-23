@@ -1,0 +1,718 @@
+[
+  {
+    "id": 0,
+    "name": "Sword",
+    "image": "assets/images/items/sword.jpg",
+    "price": 10,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 5
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 1,
+    "name": "Shield",
+    "image": "assets/images/items/shield.jpg",
+    "price": 10,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 5
+      }
+    ],
+    "type": "off-hand"
+  },
+  {
+    "id": 2,
+    "name": "Life potion",
+    "image": "assets/images/items/lifepotion.jpg",
+    "price": 10,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "life",
+        "value": 5
+      }
+    ],
+    "type": "magic"
+  },
+  {
+    "id": 3,
+    "name": "Knife",
+    "image": "assets/images/items/sword.jpg",
+    "price": 5,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 2
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 4,
+    "name": "Hatchet",
+    "image": "assets/images/items/sword.jpg",
+    "price": 7,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 4
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 5,
+    "name": "Mace",
+    "image": "assets/images/items/sword.jpg",
+    "price": 9,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 6
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 6,
+    "name": "Spear",
+    "image": "assets/images/items/sword.jpg",
+    "price": 11,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 8
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 7,
+    "name": "Rapier",
+    "image": "assets/images/items/sword.jpg",
+    "price": 12,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 10
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 8,
+    "name": "Axe",
+    "image": "assets/images/items/sword.jpg",
+    "price": 14,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 12
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 9,
+    "name": "Katana",
+    "image": "assets/images/items/sword.jpg",
+    "price": 16,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 14
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 10,
+    "name": "Polearm",
+    "image": "assets/images/items/sword.jpg",
+    "price": 17,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 16
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 11,
+    "name": "Battle Axe",
+    "image": "assets/images/items/sword.jpg",
+    "price": 19,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 18
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 12,
+    "name": "Greatsword",
+    "image": "assets/images/items/sword.jpg",
+    "price": 20,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 20
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 13,
+    "name": "Old Shirt",
+    "image": "assets/images/items/shield.jpg",
+    "price": 5,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 2
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 14,
+    "name": "Leather Jacket",
+    "image": "assets/images/items/shield.jpg",
+    "price": 8,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 4
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 15,
+    "name": "Leather Armor",
+    "image": "assets/images/items/shield.jpg",
+    "price": 11,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 6
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 16,
+    "name": "Chainmail",
+    "image": "assets/images/items/shield.jpg",
+    "price": 15,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 8
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 17,
+    "name": "Plate Armor",
+    "image": "assets/images/items/shield.jpg",
+    "price": 20,
+    "rarity": "common",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 10
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 18,
+    "name": "Shadow Leather",
+    "image": "assets/images/items/shield.jpg",
+    "price": 13,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 10
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 19,
+    "name": "Runed Chainmail",
+    "image": "assets/images/items/shield.jpg",
+    "price": 31,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 15
+      },
+      {
+        "name": "life",
+        "value": 10
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 20,
+    "name": "Dragonplate Armor",
+    "image": "assets/images/items/shield.jpg",
+    "price": 38,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 20
+      },
+      {
+        "name": "attack",
+        "value": 10
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 21,
+    "name": "Shield of Fire",
+    "image": "assets/images/items/shield.jpg",
+    "price": 13,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 10
+      }
+    ],
+    "type": "off-hand"
+  },
+  {
+    "id": 22,
+    "name": "Stormguard Buckler",
+    "image": "assets/images/items/shield.jpg",
+    "price": 31,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 15
+      },
+      {
+        "name": "attack",
+        "value": 10
+      }
+    ],
+    "type": "off-hand"
+  },
+  {
+    "id": 23,
+    "name": "Aegis of Dawn",
+    "image": "assets/images/items/shield.jpg",
+    "price": 38,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 20
+      },
+      {
+        "name": "life",
+        "value": 10
+      }
+    ],
+    "type": "off-hand"
+  },
+  {
+    "id": 24,
+    "name": "Dark Battle-Axe",
+    "image": "assets/images/items/sword.jpg",
+    "price": 13,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 10
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 25,
+    "name": "Infernal Greatsword",
+    "image": "assets/images/items/sword.jpg",
+    "price": 31,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 15
+      },
+      {
+        "name": "defense",
+        "value": 10
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 26,
+    "name": "Stormpiercer Polearm",
+    "image": "assets/images/items/sword.jpg",
+    "price": 38,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 20
+      },
+      {
+        "name": "life",
+        "value": 10
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 27,
+    "name": "Soulfire Elixir",
+    "image": "assets/images/items/lifepotion.jpg",
+    "price": 13,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "life",
+        "value": 10
+      }
+    ],
+    "type": "magic"
+  },
+  {
+    "id": 28,
+    "name": "Arcane Tonic",
+    "image": "assets/images/items/lifepotion.jpg",
+    "price": 31,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "life",
+        "value": 15
+      },
+      {
+        "name": "attack",
+        "value": 10
+      }
+    ],
+    "type": "magic"
+  },
+  {
+    "id": 29,
+    "name": "Phoenix Draught",
+    "image": "assets/images/items/lifepotion.jpg",
+    "price": 38,
+    "rarity": "magic",
+    "stats": [
+      {
+        "name": "life",
+        "value": 20
+      },
+      {
+        "name": "defense",
+        "value": 10
+      }
+    ],
+    "type": "magic"
+  },
+  {
+    "id": 30,
+    "name": "Dark Magic Plate Armor",
+    "image": "assets/images/items/shield.jpg",
+    "price": 100,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 50
+      },
+      {
+        "name": "life",
+        "value": 30
+      },
+      {
+        "name": "attack",
+        "value": 10
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 31,
+    "name": "Wyrm-King's Scale Armor",
+    "image": "assets/images/items/shield.jpg",
+    "price": 122,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 60
+      },
+      {
+        "name": "life",
+        "value": 35
+      },
+      {
+        "name": "attack",
+        "value": 15
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 32,
+    "name": "Aegis of the Eternal Throne",
+    "image": "assets/images/items/shield.jpg",
+    "price": 144,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 70
+      },
+      {
+        "name": "life",
+        "value": 40
+      },
+      {
+        "name": "attack",
+        "value": 20
+      }
+    ],
+    "type": "armor"
+  },
+  {
+    "id": 33,
+    "name": "Saint's Mirror Shield",
+    "image": "assets/images/items/shield.jpg",
+    "price": 94,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 45
+      },
+      {
+        "name": "life",
+        "value": 25
+      },
+      {
+        "name": "attack",
+        "value": 15
+      }
+    ],
+    "type": "off-hand"
+  },
+  {
+    "id": 34,
+    "name": "Titan's Bastion",
+    "image": "assets/images/items/shield.jpg",
+    "price": 117,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 55
+      },
+      {
+        "name": "life",
+        "value": 30
+      },
+      {
+        "name": "attack",
+        "value": 20
+      }
+    ],
+    "type": "off-hand"
+  },
+  {
+    "id": 35,
+    "name": "Crown of the First Guardian",
+    "image": "assets/images/items/shield.jpg",
+    "price": 139,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "defense",
+        "value": 65
+      },
+      {
+        "name": "life",
+        "value": 35
+      },
+      {
+        "name": "attack",
+        "value": 25
+      }
+    ],
+    "type": "off-hand"
+  },
+  {
+    "id": 36,
+    "name": "King Arthur's Sword",
+    "image": "assets/images/items/sword.jpg",
+    "price": 83,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 50
+      },
+      {
+        "name": "defense",
+        "value": 10
+      },
+      {
+        "name": "life",
+        "value": 15
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 37,
+    "name": "The Ashen Crownblade",
+    "image": "assets/images/items/sword.jpg",
+    "price": 111,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 65
+      },
+      {
+        "name": "defense",
+        "value": 15
+      },
+      {
+        "name": "life",
+        "value": 20
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 38,
+    "name": "Worldender's Edge",
+    "image": "assets/images/items/sword.jpg",
+    "price": 139,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "attack",
+        "value": 80
+      },
+      {
+        "name": "defense",
+        "value": 20
+      },
+      {
+        "name": "life",
+        "value": 25
+      }
+    ],
+    "type": "weapon"
+  },
+  {
+    "id": 39,
+    "name": "Angel's Staff of Heaven",
+    "image": "assets/images/items/lifepotion.jpg",
+    "price": 83,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "life",
+        "value": 50
+      },
+      {
+        "name": "attack",
+        "value": 15
+      },
+      {
+        "name": "defense",
+        "value": 10
+      }
+    ],
+    "type": "magic"
+  },
+  {
+    "id": 40,
+    "name": "Oracle's Starfire Grimoire",
+    "image": "assets/images/items/lifepotion.jpg",
+    "price": 111,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "life",
+        "value": 65
+      },
+      {
+        "name": "attack",
+        "value": 20
+      },
+      {
+        "name": "defense",
+        "value": 15
+      }
+    ],
+    "type": "magic"
+  },
+  {
+    "id": 41,
+    "name": "Phoenix Sovereign's Tear",
+    "image": "assets/images/items/lifepotion.jpg",
+    "price": 139,
+    "rarity": "rare",
+    "stats": [
+      {
+        "name": "life",
+        "value": 80
+      },
+      {
+        "name": "attack",
+        "value": 25
+      },
+      {
+        "name": "defense",
+        "value": 20
+      }
+    ],
+    "type": "magic"
+  }
+]

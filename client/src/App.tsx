@@ -1,61 +1,67 @@
-import './styles/App.scss';
-import Grid from '@mui/material/Grid';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import "./styles/App.scss";
+import Grid from "@mui/material/Grid";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-import { lazy, Suspense, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { START_GAME } from './redux/constants/game';
+import { lazy, Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { initializeShop } from "./redux/actions/shop";
+import { GAME_STATUS, START_GAME } from "./redux/constants/game";
 
-import { MainMenu } from './modules/MainMenu';
-import { AppState } from './types';
+import { MainMenu } from "./modules/MainMenu";
+import { AppState } from "./types";
 
 const Navbar = lazy(() =>
-  import('./components/Navbar').then(({ Navbar }) => ({
+  import("./components/Navbar").then(({ Navbar }) => ({
     default: Navbar,
   })),
 );
 const CharacterCardContainer = lazy(() =>
-  import('./modules/CharacterCard').then(({ CharacterCardContainer }) => ({
+  import("./modules/CharacterCard").then(({ CharacterCardContainer }) => ({
     default: CharacterCardContainer,
   })),
 );
+const InventoryCard = lazy(() =>
+  import("./modules/InventoryCard").then(({ InventoryCard }) => ({
+    default: InventoryCard,
+  })),
+);
 const FightScreenCard = lazy(() =>
-  import('./modules/FightScreenCard').then(({ FightScreenCard }) => ({
+  import("./modules/FightScreenCard").then(({ FightScreenCard }) => ({
     default: FightScreenCard,
   })),
 );
 const OpponentCard = lazy(() =>
-  import('./modules/OpponentCard').then(({ OpponentCard }) => ({
+  import("./modules/OpponentCard").then(({ OpponentCard }) => ({
     default: OpponentCard,
   })),
 );
 const ShopCard = lazy(() =>
-  import('./modules/ShopCard').then(({ ShopCard }) => ({
+  import("./modules/ShopCard").then(({ ShopCard }) => ({
     default: ShopCard,
   })),
 );
 const About = lazy(() =>
-  import('./components/MainMenu/About').then(({ About }) => ({
+  import("./components/MainMenu/About").then(({ About }) => ({
     default: About,
   })),
 );
 const HighScore = lazy(() =>
-  import('./components/MainMenu/HighScore').then(({ HighScore }) => ({
+  import("./components/MainMenu/HighScore").then(({ HighScore }) => ({
     default: HighScore,
   })),
 );
 const LoadGame = lazy(() =>
-  import('./components/MainMenu/LoadGame').then(({ LoadGame }) => ({
+  import("./components/MainMenu/LoadGame").then(({ LoadGame }) => ({
     default: LoadGame,
   })),
 );
 const Login = lazy(() =>
-  import('./components/Login').then(({ Login }) => ({
+  import("./components/Login").then(({ Login }) => ({
     default: Login,
   })),
 );
 const SaveGame = lazy(() =>
-  import('./components/MainMenu/SaveGame').then(({ SaveGame }) => ({
+  import("./components/MainMenu/SaveGame").then(({ SaveGame }) => ({
     default: SaveGame,
   })),
 );
@@ -63,10 +69,24 @@ const SaveGame = lazy(() =>
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2c0f23',
+      main: "#2c0f23",
     },
     secondary: {
-      main: '#fe7800',
+      main: "#fe7800",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-disabled": {
+            backgroundColor: "#666",
+            borderColor: "#666",
+            color: "#f5f5f5",
+            opacity: 1,
+          },
+        },
+      },
     },
   },
 });
@@ -77,8 +97,14 @@ export default function App() {
   const { menuOptions, statusCode } = game;
 
   useEffect(() => {
-    if (statusCode === 1) dispatch({ type: START_GAME });
-  }, [dispatch, statusCode]);
+    if (
+      statusCode === GAME_STATUS.CHARACTER_SCREEN &&
+      !game.gameStarted
+    ) {
+      dispatch(initializeShop());
+      dispatch({ type: START_GAME });
+    }
+  }, [dispatch, game.gameStarted, statusCode]);
 
   if (!menuOptions) return <h1>Loading...</h1>;
 
@@ -102,24 +128,27 @@ export default function App() {
               </Grid>
             }
           >
-            {statusCode === 0 && (
+            {statusCode === GAME_STATUS.MAIN_MENU && (
               <Grid size={12}>
                 <MainMenu options={menuOptions} />
               </Grid>
             )}
 
-            {statusCode === 1 && (
+            {statusCode === GAME_STATUS.CHARACTER_SCREEN && (
               <>
                 <Grid size={{ xs: 12, md: 4, lg: 3 }}>
                   <CharacterCardContainer />
                 </Grid>
-                <Grid size={{ xs: 12, md: 8, lg: 9 }}>
+                <Grid size={{ xs: 12, md: 2, lg: 3 }}>
+                  <InventoryCard />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6, lg: 6 }}>
                   <ShopCard />
                 </Grid>
               </>
             )}
 
-            {statusCode === 2 && (
+            {statusCode === GAME_STATUS.FIGHT_SCREEN && (
               <>
                 <Grid size={{ xs: 12, md: 4, lg: 3 }}>
                   <CharacterCardContainer />
@@ -133,27 +162,27 @@ export default function App() {
               </>
             )}
 
-            {statusCode === 5 && (
+            {statusCode === GAME_STATUS.SAVE_GAME && (
               <Grid size={12}>
                 <SaveGame />
               </Grid>
             )}
-            {statusCode === 6 && (
+            {statusCode === GAME_STATUS.LOAD_GAME && (
               <Grid size={12}>
                 <LoadGame />
               </Grid>
             )}
-            {statusCode === 7 && (
+            {statusCode === GAME_STATUS.ABOUT && (
               <Grid size={12}>
                 <About />
               </Grid>
             )}
-            {statusCode === 8 && (
+            {statusCode === GAME_STATUS.HIGH_SCORE && (
               <Grid size={12}>
                 <HighScore />
               </Grid>
             )}
-            {statusCode === 9 && (
+            {statusCode === GAME_STATUS.LOGIN && (
               <Grid size={12}>
                 <Login />
               </Grid>

@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 
-import { setImage, setName } from '../redux/actions/opponent';
+import { setOpponent } from '../redux/actions/opponent';
 import { getNewNameEffect } from '../redux/effects/opponent';
-import { AppState, OpponentState } from '../types';
+import { AppState } from '../types';
 import { randomIntFromInterval } from '../utils';
 
 export const useCreateOpponent = () => {
@@ -11,21 +11,6 @@ export const useCreateOpponent = () => {
   const { opponent } = useSelector((state: AppState) => ({
     opponent: state.opponent,
   }));
-
-  const [opponentStats, setStats] = useState<OpponentState['stats']>();
-
-  const handleSetStats = useCallback(() => {
-    const points = opponent.points;
-    const stats = opponent.stats.map((el) => ({ ...el }));
-    const statNames = ['attack', 'defense', 'life'];
-
-    for (let n = points; n > 0; n--) {
-      const random = randomIntFromInterval(0, 2);
-      const stat = stats.find((el) => el.name === statNames[random]);
-      if (stat) stat.value += 1;
-    }
-    setStats(stats);
-  }, [opponent.points, opponent.stats]);
 
   useEffect(() => {
     if (opponent.isReady) return;
@@ -35,9 +20,24 @@ export const useCreateOpponent = () => {
       const name: string = await getNewNameEffect().catch(() => 'MooNsterOpp');
       if (cancelled) return;
 
-      dispatch(setName(name));
-      dispatch(setImage(randomIntFromInterval(1, 4)));
-      handleSetStats();
+      const stats = opponent.stats.map((stat) => ({ ...stat }));
+      const statNames = ['attack', 'defense', 'life'];
+
+      for (let n = opponent.points; n > 0; n--) {
+        const random = randomIntFromInterval(0, statNames.length - 1);
+        const stat = stats.find((entry) => entry.name === statNames[random]);
+        if (stat) stat.value += 1;
+      }
+
+      dispatch(
+        setOpponent({
+          ...opponent,
+          name,
+          image: `assets/images/Mons${randomIntFromInterval(1, 4)}.png`,
+          stats,
+          isReady: true,
+        }),
+      );
     };
 
     void init();
@@ -45,7 +45,7 @@ export const useCreateOpponent = () => {
     return () => {
       cancelled = true;
     };
-  }, [dispatch, handleSetStats, opponent.isReady]);
+  }, [dispatch, opponent]);
 
-  return { opponent, opponentStats };
+  return { opponent };
 };

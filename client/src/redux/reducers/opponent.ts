@@ -2,8 +2,7 @@ import type { ActionType, OpponentState } from '../../types';
 import {
   LEVEL_UP,
   RESET_STATS,
-  SET_NAME,
-  SET_IMAGE,
+  SET_OPPONENT,
 } from '../constants/opponent';
 
 const initialState: OpponentState = {
@@ -34,16 +33,10 @@ export default function opponent(state = initialState, action: ActionType) {
         ...state,
         stats: action.payload,
       };
-    case SET_NAME:
+    case SET_OPPONENT:
       return {
-        ...state,
-        name: action.payload,
+        ...action.payload,
         isReady: true,
-      };
-    case SET_IMAGE:
-      return {
-        ...state,
-        image: `assets/images/Mons${action.payload}.png`,
       };
     default:
       return state;
