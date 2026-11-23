@@ -26,6 +26,24 @@ describe('character reducer', () => {
     );
   });
 
+  it('applies all stat bonuses from a multi-stat item', () => {
+    const initialState = character(undefined, calculateStatsFromItem([]));
+    const boostedState = character(
+      initialState,
+      calculateStatsFromItem([
+        { name: 'attack', value: 10 },
+        { name: 'defense', value: 5 },
+      ]),
+    );
+
+    expect(boostedState.stats.find((stat) => stat.name === 'attack')?.value).toBe(
+      20,
+    );
+    expect(
+      boostedState.stats.find((stat) => stat.name === 'defense')?.value,
+    ).toBe(15);
+  });
+
   it('starts with 20 gold and rejects a second item of the same type', () => {
     const initialState = character(undefined, calculateStatsFromItem([]));
     const afterFirstPurchase = character(initialState, buyItem(sword));

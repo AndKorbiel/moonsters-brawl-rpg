@@ -18,6 +18,19 @@ const sword: Item = {
   stats: [{ name: 'attack', value: 5 }],
 };
 
+const multiStatArmor: Item = {
+  id: 2,
+  name: 'Arcane Guard',
+  image: 'guard.png',
+  price: 10,
+  rarity: ItemRarity.MAGIC,
+  type: ItemType.ARMOR,
+  stats: [
+    { name: 'defense', value: 10 },
+    { name: 'life', value: 5 },
+  ],
+};
+
 describe('CharacterInventory', () => {
   it('shows the weapon placeholder in the first slot by default', () => {
     const store = createStore(rootReducer);
@@ -170,5 +183,33 @@ describe('CharacterInventory', () => {
         .getState()
         .character.stats.find((stat) => stat.name === 'attack')?.value,
     ).toBe(10);
+  });
+
+  it('reverses all stat bonuses when dropping a multi-stat item', () => {
+    const store = createStore(rootReducer);
+    store.dispatch(buyItem(multiStatArmor));
+    store.dispatch(calculateStatsFromItem(multiStatArmor.stats));
+
+    render(
+      <Provider store={store}>
+        <CharacterInventory
+          character={store.getState().character}
+          allowDrop
+        />
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Drop item' }));
+
+    expect(
+      store
+        .getState()
+        .character.stats.find((stat) => stat.name === 'defense')?.value,
+    ).toBe(10);
+    expect(
+      store
+        .getState()
+        .character.stats.find((stat) => stat.name === 'life')?.value,
+    ).toBe(20);
   });
 });

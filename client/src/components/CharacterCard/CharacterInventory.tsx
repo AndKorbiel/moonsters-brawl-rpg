@@ -47,9 +47,10 @@ export const CharacterInventory = ({
 
   const handleDropItem = (item: Item) => {
     dispatch(dropItem(item));
-    const itemWithReverseStats = [
-      { name: item.stats[0].name, value: -item.stats[0].value },
-    ];
+    const itemWithReverseStats = item.stats.map((stat) => ({
+      ...stat,
+      value: -stat.value,
+    }));
 
     dispatch(calculateStatsFromItem(itemWithReverseStats));
   };

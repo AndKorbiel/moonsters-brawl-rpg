@@ -68,4 +68,31 @@ describe('CharacterStats', () => {
     expect(screen.queryByText('Gold: 100')).not.toBeInTheDocument();
     expect(screen.queryByText('Level: 1')).not.toBeInTheDocument();
   });
+
+  it('shows the gold coin icon beside the character gold amount', () => {
+    const { container } = render(
+      <CharacterStats
+        character={character}
+        handleStatsChange={vi.fn()}
+        showGold
+        showLevel={false}
+        points={0}
+        stats={character.stats}
+      />,
+    );
+
+    const goldIcon = container.querySelector(
+      'img[src="assets/images/gold-coins.svg"]',
+    );
+    const goldAmount = screen.getByRole('heading', { name: '100' });
+
+    expect(goldIcon).toBeInTheDocument();
+    expect(goldIcon).toHaveStyle({
+      height: '18px',
+      verticalAlign: 'bottom',
+    });
+    expect(goldAmount).toBeInTheDocument();
+    expect(goldAmount).toHaveStyle({ lineHeight: '18px' });
+    expect(screen.queryByText(/Gold:/)).not.toBeInTheDocument();
+  });
 });

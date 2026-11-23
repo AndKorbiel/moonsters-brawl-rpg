@@ -16,7 +16,21 @@ export const itemSchema = z.strictObject({
         value: z.number(),
       }),
     )
-    .min(1),
+    .min(1)
+    .max(3)
+    .superRefine((stats, context) => {
+      const names = new Set<string>();
+      stats.forEach((stat, index) => {
+        if (names.has(stat.name)) {
+          context.addIssue({
+            code: "custom",
+            path: [index, "name"],
+            message: `Duplicate item stat: ${stat.name}`,
+          });
+        }
+        names.add(stat.name);
+      });
+    }),
 });
 
 export const itemCatalogSchema = z

@@ -1,5 +1,6 @@
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { CharacterState } from '../../types';
 import { CharacterLocalState } from '../../modules';
@@ -32,7 +33,16 @@ export const CharacterStats = ({
         )}
         {showGold && (
           <li>
-            <Typography variant="h6">Gold: {character.gold}</Typography>
+            <Typography variant="h6" sx={{ lineHeight: '18px' }}>
+              <Box
+                component="img"
+                src="assets/images/gold-coins.svg"
+                alt=""
+                aria-hidden="true"
+                sx={{ width: 18, height: 18, verticalAlign: 'bottom' }}
+              />{' '}
+              {character.gold}
+            </Typography>
           </li>
         )}
         {character.isEditing && (

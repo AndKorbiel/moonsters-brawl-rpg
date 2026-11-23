@@ -60,12 +60,12 @@ export default function character(state = initialState, action: ActionType) {
       return {
         ...state,
         stats: state.stats.map((stat) => {
-          return stat.name === action.payload[0].name
-            ? {
-                ...stat,
-                value: stat.value + action.payload[0].value,
-              }
-            : stat;
+          const valueToAdd = action.payload
+            .filter((itemStat) => itemStat.name === stat.name)
+            .reduce((total, itemStat) => total + itemStat.value, 0);
+          return valueToAdd === 0
+            ? stat
+            : { ...stat, value: stat.value + valueToAdd };
         }),
       };
     case DROP_ITEM:

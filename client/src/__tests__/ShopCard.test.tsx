@@ -11,7 +11,7 @@ describe("ShopCard", () => {
     const store = createStore(rootReducer);
     store.dispatch(initializeShop(() => 0));
 
-    render(
+    const { container } = render(
       <Provider store={store}>
         <ShopCard />
       </Provider>,
@@ -26,6 +26,18 @@ describe("ShopCard", () => {
     expect(screen.getByText("Type: Magic")).toBeInTheDocument();
     expect(screen.getByText(/^Type: (Weapon|Off-hand)$/)).toBeInTheDocument();
     expect(screen.getAllByText("Rarity: Common")).toHaveLength(3);
+    const goldIcons = container.querySelectorAll(
+      'img[src="assets/images/gold-coins.svg"]',
+    );
+    expect(goldIcons).toHaveLength(3);
+    expect(screen.queryByText(/Price:/)).not.toBeInTheDocument();
+    goldIcons.forEach((icon) => {
+      expect(icon).toHaveStyle({
+        height: '18px',
+        verticalAlign: 'bottom',
+      });
+      expect(icon.parentElement).toHaveStyle({ lineHeight: '18px' });
+    });
     fireEvent.click(
       screen.getAllByRole("button", { name: "Buy this item" })[0],
     );
