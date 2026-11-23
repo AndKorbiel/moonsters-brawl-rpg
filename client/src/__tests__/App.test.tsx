@@ -33,6 +33,11 @@ describe("App", () => {
       await screen.findByText("Welcome to the Magic Shop"),
     ).toBeInTheDocument();
     expect(screen.getByText("Inventory")).toBeInTheDocument();
+    expect(store.getState().shop.slots).toHaveLength(3);
+    expect(
+      store.getState().shop.slots.every((slot) => slot.item !== null),
+    ).toBe(true);
+    expect(store.getState().character.gold).toBe(20);
   });
 
   it("returns to the main menu from the menu button", async () => {
@@ -40,8 +45,17 @@ describe("App", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /new game/i }));
     await screen.findByText("Welcome to the Magic Shop");
+    const stockBeforeMenu = store
+      .getState()
+      .shop.slots.map((slot) => slot.item?.id);
     fireEvent.click(await screen.findByRole("button", { name: /menu/i }));
 
     expect(screen.getByTestId("main-menu")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /resume/i }));
+    await screen.findByText("Welcome to the Magic Shop");
+    expect(store.getState().shop.slots.map((slot) => slot.item?.id)).toEqual(
+      stockBeforeMenu,
+    );
   });
 });

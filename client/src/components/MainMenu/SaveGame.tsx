@@ -23,7 +23,7 @@ export function SaveGame() {
       game: state.game,
       userId: state.user.currentUser ? state.user.currentUser.uid : null,
       opponent: state.opponent,
-      shop: state.shop,
+      shop: { slots: state.shop.slots },
       character: state.character,
     };
   });

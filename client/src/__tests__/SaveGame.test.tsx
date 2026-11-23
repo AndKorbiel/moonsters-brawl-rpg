@@ -55,7 +55,7 @@ const savedGame: SavedGame = {
     stats: [],
     isReady: true,
   },
-  shop: { availableItems: [] },
+  shop: { slots: [] },
   date: '01/01/2020',
   userId: 'player-1',
 };
@@ -91,6 +91,8 @@ describe('SaveGame', () => {
       new Date().toLocaleDateString('en-GB'),
     );
     expect(addDoc.mock.calls[0][1].userId).toBe('player-1');
+    expect(addDoc.mock.calls[0][1].shop).toHaveProperty('slots');
+    expect(addDoc.mock.calls[0][1].shop).not.toHaveProperty('itemCatalog');
     expect(await screen.findByText('Game saved')).toBeInTheDocument();
   });
 

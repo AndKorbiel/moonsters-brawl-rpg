@@ -2,25 +2,28 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
-import { buyItem, calculateStatsFromItem } from "../redux/actions/character";
-import { removeFromShop } from "../redux/actions/shop";
+import { buyFromShop } from "../redux/actions/shop";
 import { ShopCardItem } from "../components/ShopCardItem";
-import { AppState, Item } from "../types";
+import { AppState, Item, ShopSlot } from "../types";
 
 export function ShopCard() {
   const dispatch = useDispatch();
-  const { availableItems, character } = useSelector((state: AppState) => ({
-    availableItems: state.shop.availableItems,
+  const { slots, character } = useSelector((state: AppState) => ({
+    slots: state.shop.slots,
     character: state.character,
   }));
 
-  const handleBuyAction = (item: Item) => {
-    if (character.items.length < 4 && character.gold >= item.price) {
-      dispatch(buyItem(item));
-      dispatch(removeFromShop(item));
-      dispatch(calculateStatsFromItem(item.stats));
+  const canBuyItem = (item: Item) =>
+    character.gold >= item.price &&
+    !character.items.some((ownedItem) => ownedItem.type === item.type);
+
+  const handleBuyAction = (slot: ShopSlot, item: Item) => {
+    if (canBuyItem(item)) {
+      dispatch(buyFromShop(slot.id, item));
     }
   };
+
+  const emptyShop = slots.every((slot) => slot.item === null);
 
   return (
     <Paper sx={{ height: "100%" }}>
@@ -38,16 +41,22 @@ export function ShopCard() {
 
         <Grid size={12}>
           <Grid container spacing={2}>
-            {availableItems.map((item) => (
-              <Grid size={{ xs: 12, md: 4 }} key={item.id}>
-                <ShopCardItem item={item} action={handleBuyAction} />
+            {slots.map((slot) => (
+              <Grid size={{ xs: 12, md: 4 }} key={slot.id}>
+                {slot.item && (
+                  <ShopCardItem
+                    item={slot.item}
+                    action={(item) => handleBuyAction(slot, item)}
+                    disabled={!canBuyItem(slot.item)}
+                  />
+                )}
               </Grid>
             ))}
           </Grid>
 
-          {availableItems.length === 0 && (
+          {emptyShop && (
             <Typography variant="h6" align="center">
-              All item have been sold. Come back later.
+              All items have been sold. Win the next fight to restock.
             </Typography>
           )}
         </Grid>

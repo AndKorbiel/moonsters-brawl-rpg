@@ -10,7 +10,24 @@ describe("item catalog", () => {
           name: "Unknown",
           image: "unknown.png",
           price: 1,
+          rarity: "common",
           type: "unknown",
+          stats: [{ name: "attack", value: 1 }],
+        },
+      ]),
+    ).toThrow("Invalid item catalog");
+  });
+
+  it("rejects unknown item rarities", () => {
+    expect(() =>
+      parseItemCatalog([
+        {
+          id: 0,
+          name: "Unknown",
+          image: "unknown.png",
+          price: 1,
+          rarity: "legendary",
+          type: "weapon",
           stats: [{ name: "attack", value: 1 }],
         },
       ]),
@@ -23,6 +40,7 @@ describe("item catalog", () => {
       name: "Sword",
       image: "sword.png",
       price: 1,
+      rarity: "common",
       type: "weapon",
       stats: [{ name: "attack", value: 1 }],
     };

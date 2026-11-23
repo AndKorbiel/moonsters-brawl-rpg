@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import { lazy, Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { initializeShop } from "./redux/actions/shop";
 import { GAME_STATUS, START_GAME } from "./redux/constants/game";
 
 import { MainMenu } from "./modules/MainMenu";
@@ -82,10 +83,14 @@ export default function App() {
   const { menuOptions, statusCode } = game;
 
   useEffect(() => {
-    if (statusCode === GAME_STATUS.CHARACTER_SCREEN) {
+    if (
+      statusCode === GAME_STATUS.CHARACTER_SCREEN &&
+      !game.gameStarted
+    ) {
+      dispatch(initializeShop());
       dispatch({ type: START_GAME });
     }
-  }, [dispatch, statusCode]);
+  }, [dispatch, game.gameStarted, statusCode]);
 
   if (!menuOptions) return <h1>Loading...</h1>;
 

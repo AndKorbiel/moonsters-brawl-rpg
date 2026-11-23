@@ -3,7 +3,7 @@ import type {
   CharacterStat,
   CharacterState,
 } from './character';
-import type { Item, ShopState } from './shop';
+import type { Item, ShopSlot, ShopSlotId, ShopState } from './shop';
 import type { GameState, SavedGame } from './game';
 import type { OpponentProps, OpponentState } from './opponent';
 import type { UserState } from './user';
@@ -28,7 +28,12 @@ import {
   RESET_STATS,
   SET_OPPONENT,
 } from '../redux/constants/opponent';
-import { REMOVE_FROM_SHOP } from '../redux/constants/shop';
+import {
+  BUY_FROM_SHOP,
+  INITIALIZE_SHOP,
+  REMOVE_FROM_SHOP,
+  RESTOCK_SHOP,
+} from '../redux/constants/shop';
 import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../redux/constants/user';
 
 type EmptyAction<T extends string> = { type: T };
@@ -49,9 +54,15 @@ export type ActionType =
   | PayloadAction<typeof LEVEL_UP, OpponentProps>
   | PayloadAction<typeof RESET_STATS, CharacterStat[]>
   | PayloadAction<typeof SET_OPPONENT, OpponentState>
-  | PayloadAction<typeof REMOVE_FROM_SHOP, Item>
   | PayloadAction<typeof SET_CURRENT_USER, UserState['currentUser']>
-  | PayloadAction<typeof SET_SAVED_GAMES, SavedGame[]>;
+  | PayloadAction<typeof SET_SAVED_GAMES, SavedGame[]>
+  | PayloadAction<typeof INITIALIZE_SHOP, ShopSlot[]>
+  | PayloadAction<typeof RESTOCK_SHOP, ShopSlot[]>
+  | PayloadAction<typeof REMOVE_FROM_SHOP, ShopSlotId>
+  | PayloadAction<
+      typeof BUY_FROM_SHOP,
+      { slotId: ShopSlotId; item: Item }
+    >;
 
 export type AppState = {
   character: CharacterState;

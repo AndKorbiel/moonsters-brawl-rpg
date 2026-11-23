@@ -1,12 +1,13 @@
 import { z } from "zod";
 import itemCatalog from "./items.json";
-import { ItemType, type Item } from "../types";
+import { ItemRarity, ItemType, type Item } from "../types";
 
 export const itemSchema = z.strictObject({
   id: z.number().int().nonnegative(),
   name: z.string().trim().min(1),
   image: z.string().trim().min(1),
   price: z.number().int().nonnegative(),
+  rarity: z.nativeEnum(ItemRarity),
   type: z.nativeEnum(ItemType),
   stats: z
     .array(

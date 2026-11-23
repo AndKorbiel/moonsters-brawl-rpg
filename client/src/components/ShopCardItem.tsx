@@ -10,9 +10,10 @@ import { STAT_LABELS } from '../constants/statLabels';
 type ShopCardItemProps = {
   item: Item;
   action: (item: Item) => void;
+  disabled: boolean;
 };
 
-export function ShopCardItem({ item, action }: ShopCardItemProps) {
+export function ShopCardItem({ item, action, disabled }: ShopCardItemProps) {
   return (
     <Card sx={{ maxWidth: 345 }} className="centered">
       <CardContent>
@@ -37,6 +38,7 @@ export function ShopCardItem({ item, action }: ShopCardItemProps) {
         <Button
           variant="outlined"
           color="secondary"
+          disabled={disabled}
           onClick={() => action(item)}
         >
           Buy this item

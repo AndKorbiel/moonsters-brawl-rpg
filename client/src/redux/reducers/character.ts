@@ -18,7 +18,7 @@ const initialState: CharacterState = {
     { name: 'defense', value: 10 },
     { name: 'life', value: 20 },
   ],
-  gold: 100,
+  gold: 20,
   items: [],
   isEditing: false,
 };
@@ -44,6 +44,12 @@ export default function character(state = initialState, action: ActionType) {
         gold: action.payload.gold,
       };
     case BUY_ITEM:
+      if (
+        state.gold < action.payload.price ||
+        state.items.some((item) => item.type === action.payload.type)
+      ) {
+        return state;
+      }
       return {
         ...state,
         gold: state.gold - action.payload.price,

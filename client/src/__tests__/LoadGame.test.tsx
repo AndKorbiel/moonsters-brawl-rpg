@@ -44,7 +44,7 @@ const savedGame: SavedGame = {
     stats: [],
     isReady: true,
   },
-  shop: { availableItems: [] },
+  shop: { slots: [] },
   date: '20/11/2026',
   userId: 'player-1',
 };

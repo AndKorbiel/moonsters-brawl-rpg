@@ -6,6 +6,10 @@ import user from './user';
 import { Reducer, combineReducers } from 'redux';
 import { GAME_OVER, LOAD_GAME } from '../constants/game';
 import { ActionType, AppState } from '../../types';
+import { normalizeShopState } from '../../data/shopStock';
+import { buyItem, calculateStatsFromItem } from '../actions/character';
+import { removeFromShop } from '../actions/shop';
+import { BUY_FROM_SHOP } from '../constants/shop';
 
 const appReducer: Reducer<AppState, ActionType> = combineReducers({
   game,
@@ -17,6 +21,31 @@ const appReducer: Reducer<AppState, ActionType> = combineReducers({
 
 export const rootReducer = (state: AppState, action: ActionType) => {
   switch (action.type) {
+    case BUY_FROM_SHOP: {
+      const { slotId, item } = action.payload;
+      const slot = state.shop.slots.find((shopSlot) => shopSlot.id === slotId);
+      const alreadyOwnsType = state.character.items.some(
+        (ownedItem) => ownedItem.type === item.type,
+      );
+      if (
+        !slot ||
+        slot.item?.id !== item.id ||
+        state.character.gold < item.price ||
+        alreadyOwnsType
+      ) {
+        return state;
+      }
+
+      const boughtItemState = appReducer(state, buyItem(item));
+      const clearedSlotState = appReducer(
+        boughtItemState,
+        removeFromShop(slotId),
+      );
+      return appReducer(
+        clearedSlotState,
+        calculateStatsFromItem(item.stats),
+      );
+    }
     case GAME_OVER:
       return appReducer(undefined, action);
     case LOAD_GAME:
@@ -25,7 +54,7 @@ export const rootReducer = (state: AppState, action: ActionType) => {
         game: action.payload.game,
         character: action.payload.character,
         opponent: action.payload.opponent,
-        shop: action.payload.shop,
+        shop: normalizeShopState(action.payload.shop),
       };
     default:
       return appReducer(state, action);
