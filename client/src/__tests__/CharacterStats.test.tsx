@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { CharacterStats } from '../components/CharacterCard/CharacterStats';
@@ -33,6 +33,65 @@ describe('CharacterStats', () => {
     );
 
     expect(screen.getByText('Points to spend: 5')).toBeInTheDocument();
+  });
+
+  it('places five-point controls outside the single-point controls', () => {
+    const editingCharacter = { ...character, isEditing: true };
+    render(
+      <CharacterStats
+        character={editingCharacter}
+        handleStatsChange={vi.fn()}
+        showGold
+        showLevel
+        points={5}
+        stats={[
+          { name: 'attack', value: 15 },
+          { name: 'defense', value: 10 },
+          { name: 'life', value: 20 },
+        ]}
+      />,
+    );
+    const attackRow = screen.getByText('Attack: 15').closest('li');
+
+    expect(attackRow).not.toBeNull();
+    expect(
+      within(attackRow!)
+        .getAllByRole('button')
+        .map((button) => button.textContent),
+    ).toEqual(['<<', '-', '+', '>>']);
+    expect(
+      screen.getByRole('button', { name: 'Remove 5 Attack points' }),
+    ).toBeEnabled();
+    expect(
+      screen.getByRole('button', { name: 'Add 5 Attack points' }),
+    ).toBeEnabled();
+  });
+
+  it('disables five-point controls when there are not enough points to change', () => {
+    render(
+      <CharacterStats
+        character={{ ...character, isEditing: true }}
+        handleStatsChange={vi.fn()}
+        showGold={false}
+        showLevel={false}
+        points={4}
+        stats={[
+          { name: 'attack', value: 14 },
+          { name: 'defense', value: 10 },
+          { name: 'life', value: 20 },
+        ]}
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Remove 5 Attack points' }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: 'Add 5 Attack points' }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: 'Remove 5 Defense points' }),
+    ).toBeDisabled();
   });
 
   it('hides points to spend outside character creation or level-up', () => {

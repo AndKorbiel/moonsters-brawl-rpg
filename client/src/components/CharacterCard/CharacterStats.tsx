@@ -8,7 +8,7 @@ import { STAT_LABELS } from '../../constants/statLabels';
 
 type CharacterStatsProps = {
   character: CharacterState;
-  handleStatsChange: (name: string, option: string) => void;
+  handleStatsChange: (name: string, amount: number) => void;
   showGold: boolean;
   showLevel: boolean;
   points: CharacterLocalState['points'];
@@ -54,13 +54,29 @@ export const CharacterStats = ({
         {character.stats.map((el) => (
           <li key={el.name}>
             {character.isEditing && (
-              <Button
-                variant="contained"
-                name={el.name}
-                onClick={() => handleStatsChange(el.name, 'decrement')}
-              >
-                -
-              </Button>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  aria-label={`Remove 5 ${STAT_LABELS[el.name]} points`}
+                  disabled={
+                    (stats?.find((stat) => stat.name === el.name)?.value ??
+                      el.value) -
+                      el.value <
+                    5
+                  }
+                  onClick={() => handleStatsChange(el.name, -5)}
+                >
+                  {'<<'}
+                </Button>
+                <Button
+                  variant="contained"
+                  name={el.name}
+                  onClick={() => handleStatsChange(el.name, -1)}
+                >
+                  -
+                </Button>
+              </Box>
             )}
 
             <Typography variant="h6">
@@ -72,13 +88,24 @@ export const CharacterStats = ({
             </Typography>
 
             {character.isEditing && (
-              <Button
-                variant="contained"
-                name={el.name}
-                onClick={() => handleStatsChange(el.name, 'increment')}
-              >
-                +
-              </Button>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Button
+                  variant="contained"
+                  name={el.name}
+                  onClick={() => handleStatsChange(el.name, 1)}
+                >
+                  +
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  aria-label={`Add 5 ${STAT_LABELS[el.name]} points`}
+                  disabled={(points ?? 0) < 5}
+                  onClick={() => handleStatsChange(el.name, 5)}
+                >
+                  {'>>'}
+                </Button>
+              </Box>
             )}
           </li>
         ))}

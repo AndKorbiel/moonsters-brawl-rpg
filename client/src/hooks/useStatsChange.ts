@@ -3,48 +3,40 @@ import { CharacterLocalState } from '../modules';
 import { AppState } from '../types';
 
 export const useStatsChange = (
-  state: CharacterLocalState,
   setState: React.Dispatch<React.SetStateAction<CharacterLocalState>>,
 ) => {
   const { character } = useSelector((state: AppState) => ({
     character: state.character,
   }));
 
-  const updateState = (
-    option: string,
-    currentStat: number,
-    currentPoints: number,
-    name: string,
-  ) => {
-    const action = option === 'decrement' ? '-' : '+';
+  const handleStatsChange = (name: string, amount: number) => {
+    const baseStat = character.stats.find((stat) => stat.name === name);
+    if (!baseStat) return;
 
-    setState((state) => ({
-      ...state,
-      stats: [
-        ...state.stats.map((el) => {
-          if (el.name === name) {
-            return { name, value: currentStat + parseFloat(action + 1) };
-          } else {
-            return el;
-          }
-        }),
-      ],
-      points: currentPoints - parseFloat(action + 1),
-    }));
-  };
+    setState((currentState) => {
+      const currentStat = currentState.stats?.find(
+        (stat) => stat.name === name,
+      );
+      const currentPoints = currentState.points;
+      if (!currentStat || currentPoints === undefined) return currentState;
 
-  const handleStatsChange = (name: string, option: string) => {
-    const currentStat = state.stats.filter((el) => el.name === name)[0].value;
-    const currentPoints = state.points;
-    const baseStat = character.stats.filter((el) => el.name === name)[0].value;
-
-    if (option === 'increment') {
-      if (currentPoints > 0) {
-        updateState(option, currentStat, currentPoints, name);
+      if (
+        (amount > 0 && currentPoints < amount) ||
+        (amount < 0 && currentStat.value + amount < baseStat.value)
+      ) {
+        return currentState;
       }
-    } else if (currentStat > baseStat) {
-      updateState(option, currentStat, currentPoints, name);
-    }
+
+      return {
+        ...currentState,
+        stats: currentState.stats?.map((stat) =>
+          stat.name === name
+            ? { ...stat, value: stat.value + amount }
+            : stat,
+        ),
+        points: currentPoints - amount,
+      };
+    });
   };
 
   return { handleStatsChange };
