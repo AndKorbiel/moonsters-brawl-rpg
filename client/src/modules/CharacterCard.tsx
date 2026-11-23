@@ -44,7 +44,7 @@ export const CharacterCardContainer = () => {
     }));
   };
 
-  const { handleStatsChange } = useStatsChange(localState, setLocalState);
+  const { handleStatsChange } = useStatsChange(setLocalState);
   const { handleCancel, handleSave } = useStatsSave(localState, setLocalState);
   const hasChanges =
     (localState.name !== undefined && localState.name !== character.name) ||
