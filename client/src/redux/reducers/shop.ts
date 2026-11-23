@@ -1,4 +1,5 @@
 import {
+  ItemRarity,
   ShopSlotId,
   type ActionType,
   type ShopState,
@@ -11,11 +12,17 @@ import {
   REROLL_SHOP,
   RESTOCK_SHOP,
 } from "../constants/shop";
+import { DROP_ITEM } from "../constants/character";
 
 const initialState: ShopState = {
   itemCatalog: items,
   rerollUsedThisRound: false,
   purchaseMadeThisRound: false,
+  round: 1,
+  magicAppearances: 0,
+  magicAppearedThisRound: false,
+  lastRareAppearanceRound: null,
+  retiredRareItemIds: [],
   slots: [
     { id: ShopSlotId.ARMOR, item: null, soldItem: null },
     { id: ShopSlotId.MAGIC, item: null, soldItem: null },
@@ -28,14 +35,14 @@ export default function shop(state = initialState, action: ActionType) {
     case INITIALIZE_SHOP:
       return {
         ...state,
-        slots: action.payload,
+        ...action.payload,
         rerollUsedThisRound: false,
         purchaseMadeThisRound: false,
       };
     case RESTOCK_SHOP:
       return {
         ...state,
-        slots: action.payload,
+        ...action.payload,
         rerollUsedThisRound: false,
         purchaseMadeThisRound: false,
       };
@@ -45,7 +52,7 @@ export default function shop(state = initialState, action: ActionType) {
       }
       return {
         ...state,
-        slots: action.payload,
+        ...action.payload,
         rerollUsedThisRound: true,
       };
     case BUY_FROM_SHOP:
@@ -58,6 +65,16 @@ export default function shop(state = initialState, action: ActionType) {
             ? { ...slot, item: null, soldItem: slot.item }
             : slot,
         ),
+      };
+    case DROP_ITEM:
+      if (action.payload.rarity !== ItemRarity.RARE) return state;
+      return {
+        ...state,
+        retiredRareItemIds: state.retiredRareItemIds.includes(
+          action.payload.id,
+        )
+          ? state.retiredRareItemIds
+          : [...state.retiredRareItemIds, action.payload.id],
       };
     default: {
       return state;

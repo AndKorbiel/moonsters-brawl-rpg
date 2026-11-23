@@ -55,7 +55,10 @@ export const rootReducer = (state: AppState, action: ActionType) => {
         game: action.payload.game,
         character: action.payload.character,
         opponent: action.payload.opponent,
-        shop: normalizeShopState(action.payload.shop),
+        shop: normalizeShopState(
+          action.payload.shop,
+          action.payload.character.level,
+        ),
       };
     default:
       return appReducer(state, action);

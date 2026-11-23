@@ -255,7 +255,7 @@
     "id": 18,
     "name": "Shadow Leather",
     "image": "assets/images/items/shield.jpg",
-    "price": 25,
+    "price": 13,
     "rarity": "magic",
     "stats": [
       {
@@ -269,7 +269,7 @@
     "id": 19,
     "name": "Runed Chainmail",
     "image": "assets/images/items/shield.jpg",
-    "price": 35,
+    "price": 31,
     "rarity": "magic",
     "stats": [
       {
@@ -287,7 +287,7 @@
     "id": 20,
     "name": "Dragonplate Armor",
     "image": "assets/images/items/shield.jpg",
-    "price": 45,
+    "price": 38,
     "rarity": "magic",
     "stats": [
       {
@@ -305,7 +305,7 @@
     "id": 21,
     "name": "Shield of Fire",
     "image": "assets/images/items/shield.jpg",
-    "price": 25,
+    "price": 13,
     "rarity": "magic",
     "stats": [
       {
@@ -319,7 +319,7 @@
     "id": 22,
     "name": "Stormguard Buckler",
     "image": "assets/images/items/shield.jpg",
-    "price": 35,
+    "price": 31,
     "rarity": "magic",
     "stats": [
       {
@@ -337,7 +337,7 @@
     "id": 23,
     "name": "Aegis of Dawn",
     "image": "assets/images/items/shield.jpg",
-    "price": 45,
+    "price": 38,
     "rarity": "magic",
     "stats": [
       {
@@ -355,7 +355,7 @@
     "id": 24,
     "name": "Dark Battle-Axe",
     "image": "assets/images/items/sword.jpg",
-    "price": 25,
+    "price": 13,
     "rarity": "magic",
     "stats": [
       {
@@ -369,7 +369,7 @@
     "id": 25,
     "name": "Infernal Greatsword",
     "image": "assets/images/items/sword.jpg",
-    "price": 35,
+    "price": 31,
     "rarity": "magic",
     "stats": [
       {
@@ -387,7 +387,7 @@
     "id": 26,
     "name": "Stormpiercer Polearm",
     "image": "assets/images/items/sword.jpg",
-    "price": 45,
+    "price": 38,
     "rarity": "magic",
     "stats": [
       {
@@ -405,7 +405,7 @@
     "id": 27,
     "name": "Soulfire Elixir",
     "image": "assets/images/items/lifepotion.jpg",
-    "price": 25,
+    "price": 13,
     "rarity": "magic",
     "stats": [
       {
@@ -419,7 +419,7 @@
     "id": 28,
     "name": "Arcane Tonic",
     "image": "assets/images/items/lifepotion.jpg",
-    "price": 35,
+    "price": 31,
     "rarity": "magic",
     "stats": [
       {
@@ -437,7 +437,7 @@
     "id": 29,
     "name": "Phoenix Draught",
     "image": "assets/images/items/lifepotion.jpg",
-    "price": 45,
+    "price": 38,
     "rarity": "magic",
     "stats": [
       {
@@ -455,7 +455,7 @@
     "id": 30,
     "name": "Dark Magic Plate Armor",
     "image": "assets/images/items/shield.jpg",
-    "price": 60,
+    "price": 100,
     "rarity": "rare",
     "stats": [
       {
@@ -477,7 +477,7 @@
     "id": 31,
     "name": "Wyrm-King's Scale Armor",
     "image": "assets/images/items/shield.jpg",
-    "price": 75,
+    "price": 122,
     "rarity": "rare",
     "stats": [
       {
@@ -499,7 +499,7 @@
     "id": 32,
     "name": "Aegis of the Eternal Throne",
     "image": "assets/images/items/shield.jpg",
-    "price": 90,
+    "price": 144,
     "rarity": "rare",
     "stats": [
       {
@@ -521,7 +521,7 @@
     "id": 33,
     "name": "Saint's Mirror Shield",
     "image": "assets/images/items/shield.jpg",
-    "price": 60,
+    "price": 94,
     "rarity": "rare",
     "stats": [
       {
@@ -543,7 +543,7 @@
     "id": 34,
     "name": "Titan's Bastion",
     "image": "assets/images/items/shield.jpg",
-    "price": 75,
+    "price": 117,
     "rarity": "rare",
     "stats": [
       {
@@ -565,7 +565,7 @@
     "id": 35,
     "name": "Crown of the First Guardian",
     "image": "assets/images/items/shield.jpg",
-    "price": 90,
+    "price": 139,
     "rarity": "rare",
     "stats": [
       {
@@ -587,7 +587,7 @@
     "id": 36,
     "name": "King Arthur's Sword",
     "image": "assets/images/items/sword.jpg",
-    "price": 60,
+    "price": 83,
     "rarity": "rare",
     "stats": [
       {
@@ -609,7 +609,7 @@
     "id": 37,
     "name": "The Ashen Crownblade",
     "image": "assets/images/items/sword.jpg",
-    "price": 75,
+    "price": 111,
     "rarity": "rare",
     "stats": [
       {
@@ -631,7 +631,7 @@
     "id": 38,
     "name": "Worldender's Edge",
     "image": "assets/images/items/sword.jpg",
-    "price": 90,
+    "price": 139,
     "rarity": "rare",
     "stats": [
       {
@@ -653,7 +653,7 @@
     "id": 39,
     "name": "Angel's Staff of Heaven",
     "image": "assets/images/items/lifepotion.jpg",
-    "price": 60,
+    "price": 83,
     "rarity": "rare",
     "stats": [
       {
@@ -675,7 +675,7 @@
     "id": 40,
     "name": "Oracle's Starfire Grimoire",
     "image": "assets/images/items/lifepotion.jpg",
-    "price": 75,
+    "price": 111,
     "rarity": "rare",
     "stats": [
       {
@@ -697,7 +697,7 @@
     "id": 41,
     "name": "Phoenix Sovereign's Tear",
     "image": "assets/images/items/lifepotion.jpg",
-    "price": 90,
+    "price": 139,
     "rarity": "rare",
     "stats": [
       {

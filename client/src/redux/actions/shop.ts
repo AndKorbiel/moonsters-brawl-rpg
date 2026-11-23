@@ -1,7 +1,7 @@
 import {
-  createInitialShopSlots,
-  rerollShopSlots,
-  restockEmptyShopSlots,
+  createInitialShopStock,
+  rerollShopStock,
+  restockShopStock,
 } from "../../data/shopStock";
 import type { ActionType, Item, ShopSlotId, ShopState } from "../../types";
 import {
@@ -15,7 +15,7 @@ import {
 export function initializeShop(random: () => number = Math.random) {
   return {
     type: INITIALIZE_SHOP,
-    payload: createInitialShopSlots(random),
+    payload: createInitialShopStock(random),
   } satisfies ActionType;
 }
 
@@ -25,7 +25,7 @@ export function restockShop(
 ) {
   return {
     type: RESTOCK_SHOP,
-    payload: restockEmptyShopSlots(shop, random),
+    payload: restockShopStock(shop, random),
   } satisfies ActionType;
 }
 
@@ -35,7 +35,7 @@ export function rerollShop(
 ) {
   return {
     type: REROLL_SHOP,
-    payload: rerollShopSlots(shop, random),
+    payload: rerollShopStock(shop, random),
   } satisfies ActionType;
 }
 

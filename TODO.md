@@ -6,3 +6,8 @@ Ideas to implement:
 - allow to set combat speed
 - 3 lives per player
 - item drop ratio
+  od razu 5 stat
+  kolory w fight log
+  rzadkie przedmioty od 20 lvl i kupa kasy
+  rzadie i magiczne sie nie powtarzaja
+  kolory w nazwach mg i rare albo ramki albo kolor tla

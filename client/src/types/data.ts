@@ -3,7 +3,7 @@ import type {
   CharacterStat,
   CharacterState,
 } from './character';
-import type { Item, ShopSlot, ShopSlotId, ShopState } from './shop';
+import type { Item, ShopSlotId, ShopState, ShopStockResult } from './shop';
 import type { GameState, SavedGame } from './game';
 import type { OpponentProps, OpponentState } from './opponent';
 import type { UserState } from './user';
@@ -57,9 +57,9 @@ export type ActionType =
   | PayloadAction<typeof SET_OPPONENT, OpponentState>
   | PayloadAction<typeof SET_CURRENT_USER, UserState['currentUser']>
   | PayloadAction<typeof SET_SAVED_GAMES, SavedGame[]>
-  | PayloadAction<typeof INITIALIZE_SHOP, ShopSlot[]>
-  | PayloadAction<typeof RESTOCK_SHOP, ShopSlot[]>
-  | PayloadAction<typeof REROLL_SHOP, ShopSlot[]>
+  | PayloadAction<typeof INITIALIZE_SHOP, ShopStockResult>
+  | PayloadAction<typeof RESTOCK_SHOP, ShopStockResult>
+  | PayloadAction<typeof REROLL_SHOP, ShopStockResult>
   | PayloadAction<typeof REMOVE_FROM_SHOP, ShopSlotId>
   | PayloadAction<
       typeof BUY_FROM_SHOP,

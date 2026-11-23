@@ -27,6 +27,11 @@ export function SaveGame() {
         slots: state.shop.slots,
         rerollUsedThisRound: state.shop.rerollUsedThisRound,
         purchaseMadeThisRound: state.shop.purchaseMadeThisRound,
+        round: state.shop.round,
+        magicAppearances: state.shop.magicAppearances,
+        magicAppearedThisRound: state.shop.magicAppearedThisRound,
+        lastRareAppearanceRound: state.shop.lastRareAppearanceRound,
+        retiredRareItemIds: state.shop.retiredRareItemIds,
       },
       character: state.character,
     };

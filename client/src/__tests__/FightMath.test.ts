@@ -132,6 +132,25 @@ describe('calculateFightStats', () => {
 });
 
 describe('calculateLevelUp', () => {
+  it.each([
+    { currentLevel: 1, expectedReward: 10 },
+    { currentLevel: 5, expectedReward: 30 },
+    { currentLevel: 10, expectedReward: 30 },
+  ])(
+    'awards capped gold when reaching level $currentLevel + 1',
+    ({ currentLevel, expectedReward }) => {
+      const player = structuredClone(fightState.hero!);
+      const opponent = structuredClone(fightState.opponent!);
+      player.level = currentLevel;
+      player.gold = 20;
+
+      const { currentPlayerStats } = calculateLevelUp({ player, opponent });
+
+      expect(currentPlayerStats.level).toBe(currentLevel + 1);
+      expect(currentPlayerStats.gold).toBe(20 + expectedReward);
+    },
+  );
+
   it.each([1, 4, 9])(
     'awards 6 opponent stat points after level %i',
     (opponentLevel) => {

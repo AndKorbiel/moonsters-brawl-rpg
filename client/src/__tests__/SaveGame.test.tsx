@@ -92,6 +92,13 @@ describe('SaveGame', () => {
     );
     expect(addDoc.mock.calls[0][1].userId).toBe('player-1');
     expect(addDoc.mock.calls[0][1].shop).toHaveProperty('slots');
+    expect(addDoc.mock.calls[0][1].shop).toMatchObject({
+      round: 1,
+      magicAppearances: 0,
+      magicAppearedThisRound: false,
+      lastRareAppearanceRound: null,
+      retiredRareItemIds: [],
+    });
     expect(addDoc.mock.calls[0][1].shop).not.toHaveProperty('itemCatalog');
     expect(await screen.findByText('Game saved')).toBeInTheDocument();
   });

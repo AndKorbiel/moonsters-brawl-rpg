@@ -1,14 +1,21 @@
 import { createStore } from "redux";
 import { describe, expect, it } from "vitest";
-import { dropItem, calculateStatsFromItem } from "../redux/actions/character";
+import {
+  buyItem,
+  changeStats,
+  dropItem,
+  calculateStatsFromItem,
+} from "../redux/actions/character";
 import {
   buyFromShop,
   initializeShop,
   rerollShop,
   restockShop,
 } from "../redux/actions/shop";
+import { rerollShopStock } from "../data/shopStock";
+import { items } from "../data/items";
 import { rootReducer } from "../redux/reducers";
-import { ShopSlotId } from "../types";
+import { ItemRarity, ItemType, ShopSlotId } from "../types";
 
 describe("shop reducer flow", () => {
   it("clears a purchased slot and lets the dropped item be bought again after restocking", () => {
@@ -84,5 +91,40 @@ describe("shop reducer flow", () => {
 
     store.dispatch(rerollShop(afterPurchase.shop, () => 0));
     expect(store.getState()).toBe(afterPurchase);
+  });
+
+  it("retires a rare item after purchase and drop", () => {
+    const store = createStore(rootReducer);
+    const rareItem = items.find(
+      (item) => item.rarity === ItemRarity.RARE && item.type === ItemType.ARMOR,
+    )!;
+    const { character } = store.getState();
+
+    store.dispatch(
+      changeStats({
+        level: character.level,
+        points: character.points,
+        stats: character.stats,
+        gold: rareItem.price,
+      }),
+    );
+    store.dispatch(buyItem(rareItem));
+    store.dispatch(dropItem(rareItem));
+
+    expect(store.getState().character.items).toHaveLength(0);
+    expect(store.getState().shop.retiredRareItemIds).toContain(rareItem.id);
+
+    const shopForRareRound = {
+      ...store.getState().shop,
+      round: 10,
+      magicAppearances: 3,
+      magicAppearedThisRound: false,
+      lastRareAppearanceRound: null,
+    };
+    const rerolled = rerollShopStock(shopForRareRound, () => 0);
+
+    expect(rerolled.slots.some((slot) => slot.item?.id === rareItem.id)).toBe(
+      false,
+    );
   });
 });

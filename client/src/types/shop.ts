@@ -40,11 +40,34 @@ export type ShopState = {
   slots: ShopSlot[];
   rerollUsedThisRound: boolean;
   purchaseMadeThisRound: boolean;
+  round?: number;
+  magicAppearances?: number;
+  magicAppearedThisRound?: boolean;
+  lastRareAppearanceRound?: number | null;
+  retiredRareItemIds?: number[];
+};
+
+export type ShopStockResult = {
+  slots: ShopSlot[];
+  round: number;
+  magicAppearances: number;
+  magicAppearedThisRound: boolean;
+  lastRareAppearanceRound: number | null;
+  retiredRareItemIds: number[];
 };
 
 export type PersistedShopState =
   | (Pick<ShopState, "slots"> &
       Partial<
-        Pick<ShopState, "rerollUsedThisRound" | "purchaseMadeThisRound">
+        Pick<
+          ShopState,
+          | "rerollUsedThisRound"
+          | "purchaseMadeThisRound"
+          | "round"
+          | "magicAppearances"
+          | "magicAppearedThisRound"
+          | "lastRareAppearanceRound"
+          | "retiredRareItemIds"
+        >
       >)
   | { availableItems: Item[] };
