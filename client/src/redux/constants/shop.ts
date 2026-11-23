@@ -2,3 +2,4 @@ export const REMOVE_FROM_SHOP = 'REMOVE_FROM_SHOP';
 export const INITIALIZE_SHOP = 'INITIALIZE_SHOP';
 export const RESTOCK_SHOP = 'RESTOCK_SHOP';
 export const BUY_FROM_SHOP = 'BUY_FROM_SHOP';
+export const REROLL_SHOP = 'REROLL_SHOP';

@@ -22,6 +22,10 @@ describe("ShopCard", () => {
     expect(
       screen.getAllByRole("button", { name: "Buy this item" }),
     ).toHaveLength(3);
+    expect(screen.getByText("Type: Armor")).toBeInTheDocument();
+    expect(screen.getByText("Type: Magic")).toBeInTheDocument();
+    expect(screen.getByText(/^Type: (Weapon|Off-hand)$/)).toBeInTheDocument();
+    expect(screen.getAllByText("Rarity: Common")).toHaveLength(3);
     fireEvent.click(
       screen.getAllByRole("button", { name: "Buy this item" })[0],
     );
@@ -33,5 +37,45 @@ describe("ShopCard", () => {
       store.getState().shop.slots.filter((slot) => slot.item !== null),
     ).toHaveLength(2);
     expect(store.getState().character.items).toHaveLength(1);
+  });
+
+  it("allows one reroll per round and disables it after a purchase", () => {
+    const store = createStore(rootReducer);
+    store.dispatch(initializeShop(() => 0));
+
+    render(
+      <Provider store={store}>
+        <ShopCard />
+      </Provider>,
+    );
+
+    const rerollButton = screen.getByRole("button", { name: "Reroll stock" });
+    expect(rerollButton).toBeEnabled();
+    fireEvent.click(rerollButton);
+    expect(rerollButton).toBeDisabled();
+
+    fireEvent.click(
+      screen.getAllByRole("button", { name: "Buy this item" })[0],
+    );
+    expect(rerollButton).toBeDisabled();
+  });
+
+  it("disables reroll after an item is bought", () => {
+    const store = createStore(rootReducer);
+    store.dispatch(initializeShop(() => 0));
+
+    render(
+      <Provider store={store}>
+        <ShopCard />
+      </Provider>,
+    );
+
+    fireEvent.click(
+      screen.getAllByRole("button", { name: "Buy this item" })[0],
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Reroll stock" }),
+    ).toBeDisabled();
   });
 });

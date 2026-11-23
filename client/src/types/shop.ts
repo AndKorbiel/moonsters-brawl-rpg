@@ -32,13 +32,19 @@ export enum ShopSlotId {
 export type ShopSlot = {
   id: ShopSlotId;
   item: Item | null;
+  soldItem?: Item | null;
 };
 
 export type ShopState = {
   itemCatalog: Item[];
   slots: ShopSlot[];
+  rerollUsedThisRound: boolean;
+  purchaseMadeThisRound: boolean;
 };
 
 export type PersistedShopState =
-  | Pick<ShopState, "slots">
+  | (Pick<ShopState, "slots"> &
+      Partial<
+        Pick<ShopState, "rerollUsedThisRound" | "purchaseMadeThisRound">
+      >)
   | { availableItems: Item[] };

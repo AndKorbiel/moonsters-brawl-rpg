@@ -103,7 +103,7 @@ describe('CharacterInventory', () => {
       items: [sword],
     };
 
-    const { rerender } = render(
+    const { container, rerender } = render(
       <Provider store={store}>
         <CharacterInventory character={character} allowDrop={false} />
       </Provider>,
@@ -119,7 +119,33 @@ describe('CharacterInventory', () => {
       </Provider>,
     );
 
-    expect(screen.getByRole('button', { name: 'Drop item' })).toBeInTheDocument();
+    const dropButton = screen.getByRole('button', { name: 'Drop item' });
+    expect(dropButton).toBeInTheDocument();
+    expect(
+      container.querySelector('.inventory-drop-actions')?.lastElementChild,
+    ).toBe(dropButton);
+  });
+
+  it('shows item details when dropping is disabled', () => {
+    const store = createStore(rootReducer);
+    const character = {
+      ...store.getState().character,
+      items: [sword],
+    };
+
+    render(
+      <Provider store={store}>
+        <CharacterInventory character={character} allowDrop={false} />
+      </Provider>,
+    );
+
+    expect(screen.getByText('Sword')).toBeInTheDocument();
+    expect(screen.getByText('Price: 10 gold')).toBeInTheDocument();
+    expect(screen.getByText('Rarity: Common')).toBeInTheDocument();
+    expect(screen.getByText('+5 Attack')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Drop item' }),
+    ).not.toBeInTheDocument();
   });
 
   it('drops the item and reverses its stat bonus when selected', () => {

@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { createInitialShopSlots, normalizeShopState, restockEmptyShopSlots } from "../data/shopStock";
+import {
+  createInitialShopSlots,
+  normalizeShopState,
+  rerollShopSlots,
+  restockEmptyShopSlots,
+} from "../data/shopStock";
 import { items } from "../data/items";
 import { ItemType, ShopSlotId } from "../types";
 
@@ -26,13 +31,31 @@ describe("shop stock selection", () => {
       index === 2 ? { ...slot, item: null } : slot,
     );
     const restocked = restockEmptyShopSlots(
-      { itemCatalog: items, slots: emptiedSlots },
+      {
+        itemCatalog: items,
+        slots: emptiedSlots,
+        rerollUsedThisRound: false,
+        purchaseMadeThisRound: false,
+      },
       () => 0,
     );
 
     expect(restocked[0].item).toBe(initialSlots[0].item);
     expect(restocked[1].item).toBe(initialSlots[1].item);
     expect(restocked[2].item?.id).toBe(initialSlots[2].item?.id);
+  });
+
+  it("rerolls slot items when alternatives exist", () => {
+    const shop = {
+      itemCatalog: items,
+      slots: createInitialShopSlots(() => 0),
+      rerollUsedThisRound: false,
+      purchaseMadeThisRound: false,
+    };
+    const rerolled = rerollShopSlots(shop, () => 0);
+
+    expect(rerolled[0].item?.id).not.toBe(shop.slots[0].item?.id);
+    expect(rerolled[2].item?.id).not.toBe(shop.slots[2].item?.id);
   });
 
   it("converts legacy saved shop stock to the three-slot format", () => {

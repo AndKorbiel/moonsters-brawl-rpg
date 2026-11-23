@@ -75,6 +75,20 @@ const theme = createTheme({
       main: "#fe7800",
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-disabled": {
+            backgroundColor: "#666",
+            borderColor: "#666",
+            color: "#f5f5f5",
+            opacity: 1,
+          },
+        },
+      },
+    },
+  },
 });
 
 export default function App() {

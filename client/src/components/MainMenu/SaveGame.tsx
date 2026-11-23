@@ -23,7 +23,11 @@ export function SaveGame() {
       game: state.game,
       userId: state.user.currentUser ? state.user.currentUser.uid : null,
       opponent: state.opponent,
-      shop: { slots: state.shop.slots },
+      shop: {
+        slots: state.shop.slots,
+        rerollUsedThisRound: state.shop.rerollUsedThisRound,
+        purchaseMadeThisRound: state.shop.purchaseMadeThisRound,
+      },
       character: state.character,
     };
   });

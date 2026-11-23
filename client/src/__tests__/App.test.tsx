@@ -40,6 +40,22 @@ describe("App", () => {
     expect(store.getState().character.gold).toBe(20);
   });
 
+  it("keeps disabled shop buttons filled and visibly grey", async () => {
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: /new game/i }));
+    await screen.findByText("Welcome to the Magic Shop");
+
+    const rerollButton = screen.getByRole("button", { name: "Reroll stock" });
+    fireEvent.click(rerollButton);
+
+    expect(rerollButton).toBeDisabled();
+    expect(rerollButton).toHaveClass("MuiButton-contained");
+    expect(window.getComputedStyle(rerollButton).backgroundColor).toBe(
+      "rgb(102, 102, 102)",
+    );
+  });
+
   it("returns to the main menu from the menu button", async () => {
     renderApp();
 

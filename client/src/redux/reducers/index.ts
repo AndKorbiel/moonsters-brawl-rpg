@@ -36,7 +36,8 @@ export const rootReducer = (state: AppState, action: ActionType) => {
         return state;
       }
 
-      const boughtItemState = appReducer(state, buyItem(item));
+      const purchaseState = appReducer(state, action);
+      const boughtItemState = appReducer(purchaseState, buyItem(item));
       const clearedSlotState = appReducer(
         boughtItemState,
         removeFromShop(slotId),

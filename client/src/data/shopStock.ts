@@ -14,7 +14,7 @@ const slotIds = [
 ];
 
 function emptySlots(): ShopSlot[] {
-  return slotIds.map((id) => ({ id, item: null }));
+  return slotIds.map((id) => ({ id, item: null, soldItem: null }));
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -46,8 +46,14 @@ function pickItem(
   slotId: ShopSlotId,
   random: () => number,
   catalog: Item[] = items,
+  previousItemId?: number,
 ) {
-  const candidates = getItemsForSlot(slotId, catalog);
+  const allCandidates = getItemsForSlot(slotId, catalog);
+  const alternatives = allCandidates.filter(
+    (item) => item.id !== previousItemId,
+  );
+  const candidates =
+    alternatives.length > 0 ? alternatives : allCandidates;
   if (candidates.length === 0) {
     throw new Error(`No items available for shop slot: ${slotId}`);
   }
@@ -66,7 +72,27 @@ function pickItem(
 export function createInitialShopSlots(
   random: () => number = Math.random,
 ): ShopSlot[] {
-  return slotIds.map((id) => ({ id, item: pickItem(id, random) }));
+  return slotIds.map((id) => ({
+    id,
+    item: pickItem(id, random),
+    soldItem: null,
+  }));
+}
+
+export function rerollShopSlots(
+  shop: ShopState,
+  random: () => number = Math.random,
+): ShopSlot[] {
+  return shop.slots.map((slot) => ({
+    ...slot,
+    item: pickItem(
+      slot.id,
+      random,
+      shop.itemCatalog,
+      slot.item?.id,
+    ),
+    soldItem: null,
+  }));
 }
 
 export function normalizeShopState(value: unknown): ShopState {
@@ -76,22 +102,38 @@ export function normalizeShopState(value: unknown): ShopState {
 
   if (Array.isArray(value.slots)) {
     const savedSlots = value.slots;
-    return {
-      slots: slotIds.map((id) => {
-        const savedSlot = savedSlots.find(
-          (slot) => isRecord(slot) && slot.id === id,
-        );
-        if (!isRecord(savedSlot)) {
-          return { id, item: null };
-        }
+    const slots = slotIds.map((id) => {
+      const savedSlot = savedSlots.find(
+        (slot) => isRecord(slot) && slot.id === id,
+      );
+      if (!isRecord(savedSlot)) {
+        return { id, item: null, soldItem: null };
+      }
 
-        const item = savedSlot.item === null ? null : getCatalogItem(savedSlot.item);
-        if (savedSlot.item !== null && !item) {
-          throw new Error(`Invalid item in saved shop slot: ${id}`);
-        }
-        return { id, item };
-      }),
+      const item =
+        savedSlot.item === null ? null : getCatalogItem(savedSlot.item);
+      if (savedSlot.item !== null && !item) {
+        throw new Error(`Invalid item in saved shop slot: ${id}`);
+      }
+      const soldItem =
+        savedSlot.soldItem == null
+          ? null
+          : getCatalogItem(savedSlot.soldItem);
+      if (savedSlot.soldItem != null && !soldItem) {
+        throw new Error(`Invalid sold item in saved shop slot: ${id}`);
+      }
+      return { id, item, soldItem };
+    });
+
+    return {
+      slots,
       itemCatalog: items,
+      rerollUsedThisRound:
+        value.rerollUsedThisRound === true,
+      purchaseMadeThisRound:
+        value.purchaseMadeThisRound === true ||
+        (value.purchaseMadeThisRound === undefined &&
+          slots.some((slot) => slot.item === null)),
     };
   }
 
@@ -117,6 +159,8 @@ export function normalizeShopState(value: unknown): ShopState {
           ) ?? null,
       })),
       itemCatalog: items,
+      rerollUsedThisRound: false,
+      purchaseMadeThisRound: false,
     };
   }
 
@@ -130,5 +174,6 @@ export function restockEmptyShopSlots(
   return shop.slots.map((slot) => ({
     ...slot,
     item: slot.item ?? pickItem(slot.id, random, shop.itemCatalog),
+    soldItem: slot.item === null ? null : slot.soldItem,
   }));
 }

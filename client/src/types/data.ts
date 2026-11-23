@@ -32,6 +32,7 @@ import {
   BUY_FROM_SHOP,
   INITIALIZE_SHOP,
   REMOVE_FROM_SHOP,
+  REROLL_SHOP,
   RESTOCK_SHOP,
 } from '../redux/constants/shop';
 import { SET_CURRENT_USER, SET_SAVED_GAMES } from '../redux/constants/user';
@@ -58,6 +59,7 @@ export type ActionType =
   | PayloadAction<typeof SET_SAVED_GAMES, SavedGame[]>
   | PayloadAction<typeof INITIALIZE_SHOP, ShopSlot[]>
   | PayloadAction<typeof RESTOCK_SHOP, ShopSlot[]>
+  | PayloadAction<typeof REROLL_SHOP, ShopSlot[]>
   | PayloadAction<typeof REMOVE_FROM_SHOP, ShopSlotId>
   | PayloadAction<
       typeof BUY_FROM_SHOP,
