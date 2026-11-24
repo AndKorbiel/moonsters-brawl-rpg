@@ -14,6 +14,7 @@ import { setStatusCode } from '../redux/actions/game';
 import { GAME_STATUS } from '../redux/constants/game';
 import type { AppState } from '../types';
 import type { GameStatusCode } from '../redux/constants/game';
+import { colors, px } from '../theme/tokens';
 
 export function Navbar({ status }: { status: GameStatusCode }) {
   const dispatch = useDispatch();
@@ -30,9 +31,9 @@ export function Navbar({ status }: { status: GameStatusCode }) {
       <Typography
         variant="body1"
         sx={{
-          borderLeft: '1px solid #d3d3d3',
-          borderRight: '1px solid white',
-          padding: '0 10px',
+          borderLeft: `${px()} solid ${colors.goldDark}`,
+          borderRight: `${px()} solid ${colors.goldMid}`,
+          px: px(5),
         }}
       >
         Logged in as: {currentUser?.email}
@@ -46,8 +47,12 @@ export function Navbar({ status }: { status: GameStatusCode }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="primary">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Toolbar sx={{ minHeight: px(32), px: px(12), gap: px(4) }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, fontSize: 28 }}
+          >
             Moonster Brawl RPG
           </Typography>
 
@@ -55,6 +60,7 @@ export function Navbar({ status }: { status: GameStatusCode }) {
             <>
               <Button
                 color="inherit"
+                sx={{ minWidth: px(56), minHeight: px(24), fontSize: 28 }}
                 onClick={() => dispatch(setStatusCode(GAME_STATUS.MAIN_MENU))}
               >
                 MENU
@@ -64,6 +70,7 @@ export function Navbar({ status }: { status: GameStatusCode }) {
               ) : (
                 <Button
                   color="inherit"
+                  sx={{ minWidth: px(56), minHeight: px(24), fontSize: 28 }}
                   onClick={() => dispatch(setStatusCode(GAME_STATUS.LOGIN))}
                 >
                   Login

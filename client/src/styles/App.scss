@@ -7,10 +7,6 @@
 .App {
   width: calc(100% - 32px);
 
-  .main-cont {
-    margin-top: 60px;
-  }
-
   // ---- layout utilities (unchanged) ----
   .centered {
     margin-left: auto;
@@ -33,11 +29,6 @@
   .topbot {
     background: var(--game-panel);
     padding: 15px 0;
-  }
-
-  // TEMPORARY: remove after screens/main-menu.md is implemented
-  .main-menu {
-    background: var(--game-panel);
   }
 
   // ---- tables sit directly on the window (unchanged) ----

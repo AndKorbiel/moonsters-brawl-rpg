@@ -8,6 +8,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeShop } from "./redux/actions/shop";
 import { GAME_STATUS, START_GAME } from "./redux/constants/game";
+import { px } from "./theme/tokens";
 
 import { MainMenu } from "./modules/MainMenu";
 import { AppState } from "./types";
@@ -92,7 +93,10 @@ export default function App() {
       <div className="App">
         <Grid
           container
-          sx={{ maxWidth: 1536 }}
+          sx={{
+            maxWidth: px(768),
+            marginTop: statusCode === GAME_STATUS.MAIN_MENU ? px(16) : px(30),
+          }}
           spacing={2}
           className="main-cont centered"
         >
