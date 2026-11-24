@@ -1,10 +1,13 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useMemo, useState } from 'react';
 
-import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import { useGameOver, useGameStart } from '../hooks';
+import { LifeBar } from './ui/LifeBar';
+import { colors, px } from '../theme/tokens';
 import { AppState, CharacterState, OpponentState } from '../types';
 
 export type LocalFightLogicState = {
@@ -43,6 +46,9 @@ export const FightLogicContainer = () => {
       return player.stats.filter((el) => el.name === 'life')[0].value;
     }
   };
+
+  const maxHeroLife = getLifePoints(character) ?? 0;
+  const maxOpponentLife = getLifePoints(opponent) ?? 0;
 
   const [localState, setLocalState] = useState(iniitialState);
   const [gameIsReady, setGameIsReady] = useState(false);
@@ -97,32 +103,152 @@ export const FightLogicContainer = () => {
   if (!gameIsReady) return <h1>Loading...</h1>;
 
   return (
-    <Grid container sx={{ maxWidth: 1536 }} spacing={2} className="centered">
-      <Grid size={6}>
-        <p>
-          <b>Your life points: {getLifePoints(localState.hero)}</b>
-        </p>
-      </Grid>
-      <Grid size={6}>
-        <p>
-          <b>Your opponent life points: {getLifePoints(localState.opponent)}</b>
-        </p>
-      </Grid>
-      <Grid size={12}>
-        {willAttackFristLabel}
-        {localState.logger.map((el, index) => {
-          return <p key={index}>{el}</p>;
-        })}
-        {!localState.isFighting && (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleFightOverState}
+    <Box
+      sx={{
+        display: 'flex',
+        flex: 1,
+        minHeight: 0,
+        flexDirection: 'column',
+        gap: px(6),
+      }}
+    >
+      {[
+        {
+          label: 'Your life points:',
+          value: getLifePoints(localState.hero) ?? 0,
+          max: maxHeroLife,
+          color: colors.hpFull,
+        },
+        {
+          label: 'Your opponent life points:',
+          value: getLifePoints(localState.opponent) ?? 0,
+          max: maxOpponentLife,
+          color: colors.dangerText,
+        },
+      ].map(({ label, value, max, color }) => (
+        <Box
+          key={label}
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: `minmax(0, 1fr) ${px(66)} auto`,
+            alignItems: 'center',
+            gap: px(4),
+            minHeight: px(16),
+          }}
+        >
+          <Typography
+            component="span"
+            variant="body1"
+            sx={{ color: colors.labelKey, overflowWrap: 'anywhere' }}
           >
-            Continue
-          </Button>
-        )}
-      </Grid>
-    </Grid>
+            {label}
+          </Typography>
+          <LifeBar value={value} max={max} color={color} />
+          <Typography
+            component="span"
+            variant="body1"
+            sx={{
+              minWidth: px(12),
+              textAlign: 'right',
+              color: value < 0 ? colors.dangerText : colors.parchment,
+            }}
+          >
+            {value}
+          </Typography>
+        </Box>
+      ))}
+
+      <Box
+        component="ul"
+        aria-live="polite"
+        sx={{
+          display: 'flex',
+          flex: 1,
+          minHeight: px(72),
+          maxHeight: px(72),
+          flexDirection: 'column',
+          gap: px(4),
+          m: 0,
+          p: px(6),
+          overflowY: 'auto',
+          listStyle: 'none',
+          boxSizing: 'border-box',
+          border: `${px()} solid ${colors.outline}`,
+          backgroundColor: colors.logBox,
+          boxShadow: `inset 0 0 0 ${px()} ${colors.goldDark}, inset 0 0 0 ${px(2)} ${colors.outline}, inset ${px()} ${px()} 0 ${colors.insetShadow}`,
+        }}
+      >
+        {[willAttackFristLabel, ...localState.logger].map((line, index) => {
+          const isWin = line === 'You have won';
+          const damage = line.match(/^(.*? for )(\d+)$/);
+
+          return (
+            <Box
+              component="li"
+              key={`${index}-${line}`}
+              sx={{
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: px(4),
+                minHeight: px(16),
+                color: isWin ? colors.gold : colors.parchment,
+                lineHeight: px(16),
+                overflowWrap: 'anywhere',
+              }}
+            >
+              <Box
+                component="span"
+                aria-hidden="true"
+                sx={{
+                  width: px(3),
+                  height: px(5),
+                  flexShrink: 0,
+                  backgroundColor: isWin ? colors.ember : colors.goldMid,
+                  clipPath: 'polygon(0 0, 100% 50%, 0 100%)',
+                  alignSelf: 'center',
+                }}
+              />
+              <Typography
+                component="span"
+                variant="h6"
+                sx={{
+                  color: 'inherit',
+                  lineHeight: px(16),
+                  overflowWrap: 'anywhere',
+                }}
+              >
+                {damage ? (
+                  <>
+                    {damage[1]}
+                    <Box component="span" sx={{ color: colors.damageText }}>
+                      {damage[2]}
+                    </Box>
+                  </>
+                ) : (
+                  line
+                )}
+              </Typography>
+            </Box>
+          );
+        })}
+      </Box>
+
+      {!localState.isFighting && (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleFightOverState}
+          sx={{
+            alignSelf: 'center',
+            mt: 'auto',
+            width: px(92),
+            minWidth: px(92),
+            minHeight: px(20),
+          }}
+        >
+          Continue
+        </Button>
+      )}
+    </Box>
   );
 };
