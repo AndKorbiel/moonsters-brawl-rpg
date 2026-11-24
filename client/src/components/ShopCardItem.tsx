@@ -1,12 +1,13 @@
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Item, ItemRarity, ItemType } from "../types";
 import { STAT_LABELS } from "../constants/statLabels";
+import { PixelPanel } from "./ui/PixelPanel";
+import { StatPlate } from "./ui/StatPlate";
+import { colors, px } from "../theme/tokens";
 
 const ITEM_TYPE_LABELS: Record<ItemType, string> = {
   [ItemType.ARMOR]: "Armor",
@@ -20,6 +21,24 @@ const ITEM_RARITY_LABELS: Record<ItemRarity, string> = {
   [ItemRarity.MAGIC]: "Magic",
   [ItemRarity.RARE]: "Rare",
 };
+
+const ITEM_RARITY_COLORS: Record<ItemRarity, string> = {
+  [ItemRarity.COMMON]: colors.rarityCommon,
+  [ItemRarity.MAGIC]: colors.rarityMagic,
+  [ItemRarity.RARE]: colors.rarityRare,
+};
+
+const visuallyHiddenSx = {
+  position: "absolute",
+  width: px(1),
+  height: px(1),
+  m: px(-1),
+  p: 0,
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  border: 0,
+} as const;
 
 type ShopCardItemProps = {
   item: Item;
@@ -35,56 +54,161 @@ export function ShopCardItem({
   sold = false,
 }: ShopCardItemProps) {
   return (
-    <Box sx={{ position: "relative", maxWidth: 345 }} className="centered">
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        maxWidth: px(172),
+        height: "100%",
+        mx: "auto",
+      }}
+      className="centered"
+    >
       <Card
         sx={{
-          maxWidth: 345,
-          ...(sold && { filter: "grayscale(1)", opacity: 0.28 }),
+          width: "100%",
+          height: "100%",
+          minHeight: px(195),
+          boxSizing: "border-box",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: px(2),
+          p: px(6),
+          ...(sold && { filter: "grayscale(1)", opacity: 0.45 }),
+          ...(!sold && {
+            "&:hover, &:focus-within": {
+              boxShadow: `inset 0 0 0 ${px()} ${colors.ember}`,
+            },
+          }),
         }}
       >
-        <CardContent>
-          <Typography variant="h6">{item.name}</Typography>
-        </CardContent>
+        <Typography
+          variant="body1"
+          align="center"
+          sx={{
+            width: "100%",
+            minHeight: px(12),
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: colors.gold,
+            lineHeight: px(12),
+            overflowWrap: "anywhere",
+          }}
+        >
+          {item.name}
+        </Typography>
 
-        <CardMedia component="img" height="140" image={item.image} />
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: "100%",
+            height: px(),
+            backgroundColor: colors.goldDark,
+            boxShadow: `0 ${px()} 0 ${colors.outline}`,
+          }}
+        />
 
-        <CardContent>
-          <Typography>Type: {ITEM_TYPE_LABELS[item.type]}</Typography>
-          <Typography>Rarity: {ITEM_RARITY_LABELS[item.rarity]}</Typography>
-          <Typography variant="h6" sx={{ lineHeight: "18px", mb: 2 }}>
-            <Box
-              component="img"
-              src="assets/images/gold-coins.svg"
-              alt=""
-              aria-hidden="true"
-              sx={{ width: 18, height: 18, verticalAlign: "bottom" }}
-            />{" "}
-            {item.price}
-          </Typography>
+        <PixelPanel
+          sx={{
+            width: px(50),
+            height: px(50),
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 0,
+            backgroundColor: colors.inset,
+          }}
+        >
+          <CardMedia
+            component="img"
+            image={item.image}
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              imageRendering: "pixelated",
+            }}
+          />
+        </PixelPanel>
 
-          <Typography variant="h6">
-            {item.stats.map((stat) => (
-              <Typography key={stat.name} variant="body2">
-                +{stat.value} {STAT_LABELS[stat.name]}
-              </Typography>
-            ))}
-          </Typography>
-        </CardContent>
+        <Typography
+          component="p"
+          variant="body1"
+          align="center"
+          sx={{ width: "100%", lineHeight: px(9) }}
+        >
+          <Box component="span" aria-hidden="true" sx={{ color: colors.labelKey }}>
+            Type:{" "}
+          </Box>
+          <Box component="span" aria-hidden="true" sx={{ color: colors.parchment }}>
+            {ITEM_TYPE_LABELS[item.type]}
+          </Box>
+          <Box component="span" sx={visuallyHiddenSx}>
+            Type: {ITEM_TYPE_LABELS[item.type]}
+          </Box>
+        </Typography>
 
-        {sold ? (
-          <CardActions sx={{ height: 52, boxSizing: "border-box" }} />
-        ) : action ? (
-          <CardActions sx={{ height: 52, boxSizing: "border-box" }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={disabled}
-              onClick={() => action(item)}
+        <Typography
+          component="p"
+          variant="body1"
+          align="center"
+          sx={{ width: "100%", lineHeight: px(9) }}
+        >
+          <Box component="span" aria-hidden="true" sx={{ color: colors.labelKey }}>
+            Rarity:{" "}
+          </Box>
+          <Box
+            component="span"
+            aria-hidden="true"
+            sx={{ color: ITEM_RARITY_COLORS[item.rarity] }}
+          >
+            {ITEM_RARITY_LABELS[item.rarity]}
+          </Box>
+          <Box component="span" sx={visuallyHiddenSx}>
+            Rarity: {ITEM_RARITY_LABELS[item.rarity]}
+          </Box>
+        </Typography>
+
+        <Box sx={{ lineHeight: px(9) }}>
+          <StatPlate coin value={item.price} width={px(44)} />
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+            gap: px(1),
+            textAlign: "center",
+          }}
+        >
+          {item.stats.map((stat) => (
+            <Typography
+              key={stat.name}
+              variant="h6"
+              sx={{ color: colors.success, lineHeight: px(12) }}
             >
-              Buy this item
-            </Button>
-          </CardActions>
-        ) : null}
+              +{stat.value} {STAT_LABELS[stat.name]}
+            </Typography>
+          ))}
+        </Box>
+
+        {action && !sold && (
+          <Button
+            variant="contained"
+            color="secondary"
+            disabled={disabled}
+            onClick={() => action(item)}
+            fullWidth
+            sx={{ mt: "auto", minHeight: px(18), flexShrink: 0 }}
+          >
+            Buy this item
+          </Button>
+        )}
       </Card>
 
       {sold && (
@@ -96,20 +220,20 @@ export function ShopCardItem({
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.65)",
-            color: "white",
+            gap: px(2),
+            backgroundColor: colors.panel,
+            color: colors.parchment,
             textAlign: "center",
             pointerEvents: "none",
+            p: px(6),
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{ color: "error.light", fontWeight: "bold" }}
-          >
+          <Typography variant="h5" sx={{ color: colors.dangerText }}>
             Sold
           </Typography>
-          <Typography variant="body2">Restocks after next fight.</Typography>
+          <Typography variant="body2">
+            Restocks after next fight.
+          </Typography>
         </Box>
       )}
     </Box>

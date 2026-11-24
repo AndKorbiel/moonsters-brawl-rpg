@@ -51,7 +51,7 @@ describe('CharacterInventory', () => {
     );
   });
 
-  it('shows a weapon in the first slot instead of the placeholder', () => {
+  it('shows pixelated contained weapon art in the first slot instead of the placeholder', () => {
     const store = createStore(rootReducer);
     const character = {
       ...store.getState().character,
@@ -67,6 +67,18 @@ describe('CharacterInventory', () => {
     expect(
       container.querySelector('.inventory-placeholder-weapon'),
     ).not.toBeInTheDocument();
+
+    const weaponImage = container.querySelector<HTMLImageElement>(
+      '.inventory-box:not(.inventory-placeholder) img',
+    );
+    if (!weaponImage) {
+      throw new Error('Equipped weapon image was not rendered');
+    }
+
+    expect(weaponImage).toHaveStyle({
+      objectFit: 'contain',
+      imageRendering: 'pixelated',
+    });
   });
 
   it('shows the correct placeholders for all empty item types', () => {
@@ -93,12 +105,9 @@ describe('CharacterInventory', () => {
     ).toHaveAttribute('src', 'assets/images/magic_item_placeholder.svg');
   });
 
-  it('renders four inventory slots with two slots per row', () => {
+  it('renders labeled slots in the required 2x2 layout', () => {
     const store = createStore(rootReducer);
-    const character = {
-      ...store.getState().character,
-      items: [sword],
-    };
+    const character = store.getState().character;
 
     const { container } = render(
       <Provider store={store}>
@@ -106,7 +115,26 @@ describe('CharacterInventory', () => {
       </Provider>,
     );
 
-    expect(container.querySelectorAll('.inventory-box')).toHaveLength(4);
+    const inventoryGrid = container.querySelector<HTMLElement>('.inventory-cont');
+    if (!inventoryGrid) {
+      throw new Error('Inventory grid was not rendered');
+    }
+
+    const slots = Array.from(
+      container.querySelectorAll<HTMLElement>('.inventory-box'),
+    );
+    expect(inventoryGrid).toHaveStyle({
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+      gap: '16px',
+    });
+    expect(slots).toHaveLength(4);
+    expect(slots.map((slot) => slot.textContent?.trim())).toEqual([
+      'Weapon',
+      'Off-hand',
+      'Armor',
+      'Magic item',
+    ]);
   });
 
   it('only offers item removal when dropping is enabled', () => {

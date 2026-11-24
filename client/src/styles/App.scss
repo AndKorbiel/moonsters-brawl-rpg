@@ -60,22 +60,6 @@
     }
   }
 
-  // ---- inventory slots ----
-  // TEMPORARY: remove after screens/inventory.md is implemented
-  #character-inventory {
-    .inventory-cont {
-      margin-left: -16px;
-      padding: 10px;
-      margin-top: 1em;
-
-      .inventory-box {
-        border: 1px solid var(--game-gold-dark);
-        aspect-ratio: 1 / 1;
-        padding: 0;
-      }
-    }
-  }
-
   // ---- high score / list tables: layout only (colors come from the theme) ----
   .menu-table {
     margin-bottom: 40px;

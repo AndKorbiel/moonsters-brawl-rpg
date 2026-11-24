@@ -17,6 +17,9 @@ export const colors = {
   panelSolid: "#180c10",
   portraitStart: "#2e1828",
   portraitEnd: "#180c10",
+  inventoryEmptyFrame: "#563c24",
+  inventoryLabel: "#10090b",
+  inventoryLabelLine: "#3c2a20",
   appBar: "#28161a",
   inset: "#140a0d",
   insetShadow: "#080406",
@@ -45,6 +48,8 @@ export const colors = {
   labelKey: "#bea06e",
   labelMuted: "#aa9682",
   rarityCommon: "#b0b8b0",
+  rarityMagic: "#6ea8ff",
+  rarityRare: "#c08cff",
   textShadow: "#0d0606",
 } as const;
 

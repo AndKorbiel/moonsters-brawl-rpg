@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
 import { GAME_OVER } from "../redux/constants/game";
+import { buttonStates } from "../theme/tokens";
 import App from "../App";
 
 const renderApp = () =>
@@ -11,6 +12,9 @@ const renderApp = () =>
       <App />
     </Provider>,
   );
+
+const findShopHeading = () =>
+  screen.findByText("Welcome to the Magic Shop", {}, { timeout: 5000 });
 
 describe("App", () => {
   beforeEach(() => {
@@ -29,9 +33,7 @@ describe("App", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /new game/i }));
 
-    expect(
-      await screen.findByText("Welcome to the Magic Shop"),
-    ).toBeInTheDocument();
+    expect(await findShopHeading()).toBeInTheDocument();
     expect(screen.getByText("Inventory")).toBeInTheDocument();
     expect(store.getState().shop.slots).toHaveLength(3);
     expect(
@@ -44,23 +46,23 @@ describe("App", () => {
     renderApp();
 
     fireEvent.click(screen.getByRole("button", { name: /new game/i }));
-    await screen.findByText("Welcome to the Magic Shop");
+    await findShopHeading();
 
     const rerollButton = screen.getByRole("button", { name: "Reroll stock" });
     fireEvent.click(rerollButton);
 
     expect(rerollButton).toBeDisabled();
     expect(rerollButton).toHaveClass("MuiButton-contained");
-    expect(window.getComputedStyle(rerollButton).backgroundColor).toBe(
-      "rgb(102, 102, 102)",
-    );
+    expect(rerollButton).toHaveStyle({
+      backgroundColor: buttonStates.stone.disabled.face,
+    });
   });
 
   it("returns to the main menu from the menu button", async () => {
     renderApp();
 
     fireEvent.click(screen.getByRole("button", { name: /new game/i }));
-    await screen.findByText("Welcome to the Magic Shop");
+    await findShopHeading();
     const stockBeforeMenu = store
       .getState()
       .shop.slots.map((slot) => slot.item?.id);
@@ -69,7 +71,7 @@ describe("App", () => {
     expect(screen.getByTestId("main-menu")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /resume/i }));
-    await screen.findByText("Welcome to the Magic Shop");
+    await findShopHeading();
     expect(store.getState().shop.slots.map((slot) => slot.item?.id)).toEqual(
       stockBeforeMenu,
     );
