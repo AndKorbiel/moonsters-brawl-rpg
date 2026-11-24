@@ -36,6 +36,7 @@ export function FightScreenCard() {
     <PixelPanel
       sx={{
         height: "100%",
+        minHeight: px(192),
         display: "flex",
         flexDirection: "column",
         gap: px(6),

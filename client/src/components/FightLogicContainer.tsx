@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -50,6 +50,7 @@ export const FightLogicContainer = () => {
   const maxHeroLife = getLifePoints(character) ?? 0;
   const maxOpponentLife = getLifePoints(opponent) ?? 0;
 
+  const logRef = useRef<HTMLUListElement>(null);
   const [localState, setLocalState] = useState(iniitialState);
   const [gameIsReady, setGameIsReady] = useState(false);
   const [isFightOver, setIsFightIsOver] = useState(false);
@@ -89,6 +90,13 @@ export const FightLogicContainer = () => {
       handleGameStart();
     }
   }, [handleGameStart, gameIsReady]);
+
+  useEffect(() => {
+    const log = logRef.current;
+    if (log) {
+      log.scrollTop = log.scrollHeight;
+    }
+  }, [localState.logger.length]);
 
   const willAttackFristLabel = useMemo(
     () =>
@@ -160,12 +168,12 @@ export const FightLogicContainer = () => {
 
       <Box
         component="ul"
+        ref={logRef}
         aria-live="polite"
         sx={{
           display: 'flex',
           flex: 1,
           minHeight: px(72),
-          maxHeight: px(72),
           flexDirection: 'column',
           gap: px(4),
           m: 0,
