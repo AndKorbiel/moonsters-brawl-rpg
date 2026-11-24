@@ -3,8 +3,10 @@ import { useEffect, useState } from 'react';
 
 import { useStatsChange, useStatsSave } from '../hooks';
 import { AppState, CharacterState } from '../types';
-import { Card, CardMedia } from '@mui/material';
+import { CardMedia } from '@mui/material';
 import { GAME_STATUS } from '../redux/constants/game';
+import { PixelPanel } from '../components/ui/PixelPanel';
+import { colors, px } from '../theme/tokens';
 import {
   ActionButtons,
   CharacterInventory,
@@ -59,14 +61,38 @@ export const CharacterCardContainer = () => {
       false);
 
   return (
-    <Card sx={{ height: '100%' }}>
+    <PixelPanel
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: px(6),
+        backgroundColor: colors.panel,
+      }}
+    >
       <CharacterName
         character={character}
         handleNameChange={handleNameChange}
         validation={localState.validation}
       />
 
-      <CardMedia component="img" height="140" image={character.image} />
+      <PixelPanel
+        sx={{
+          width: px(64),
+          height: px(64),
+          mx: 'auto',
+          p: px(5),
+          boxSizing: 'border-box',
+          flexShrink: 0,
+          background: `linear-gradient(to bottom, ${colors.portraitStart}, ${colors.portraitEnd})`,
+        }}
+      >
+        <CardMedia
+          component="img"
+          image={character.image}
+          sx={{ width: '100%', height: '100%', objectFit: 'contain' }}
+        />
+      </PixelPanel>
 
       <CharacterStats
         character={character}
@@ -88,6 +114,6 @@ export const CharacterCardContainer = () => {
       {statusCode === GAME_STATUS.FIGHT_SCREEN && (
         <CharacterInventory character={character} allowDrop={false} />
       )}
-    </Card>
+    </PixelPanel>
   );
 };

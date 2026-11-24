@@ -15,6 +15,8 @@ export const colors = {
   outline: "#140a0a",
   panel: "rgba(24, 12, 16, 0.86)",
   panelSolid: "#180c10",
+  portraitStart: "#2e1828",
+  portraitEnd: "#180c10",
   appBar: "#28161a",
   inset: "#140a0d",
   insetShadow: "#080406",

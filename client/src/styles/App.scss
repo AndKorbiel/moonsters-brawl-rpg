@@ -60,30 +60,6 @@
     }
   }
 
-  // ---- character stats list: layout only ----
-  // TEMPORARY: remove after screens/character-creation.md is implemented
-  .stats {
-    display: block;
-
-    ul {
-      padding: 0;
-
-      li {
-        list-style: none;
-        display: flex;
-        margin-bottom: 1em;
-        justify-content: space-between;
-        align-items: baseline;
-
-        h6 {
-          font-size: 14px;
-          width: 100%;
-          text-align: center;
-        }
-      }
-    }
-  }
-
   // ---- inventory slots ----
   // TEMPORARY: remove after screens/inventory.md is implemented
   #character-inventory {

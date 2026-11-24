@@ -7,6 +7,7 @@ import { setStatusCode } from '../../redux/actions/game';
 import { GAME_STATUS } from '../../redux/constants/game';
 import { AppState, CharacterState } from '../../types';
 import { CharacterLocalState } from '../../modules';
+import { colors, px } from '../../theme/tokens';
 
 type ActionButtonsProps = {
   character: CharacterState;
@@ -29,13 +30,56 @@ export const ActionButtons = ({
   }));
 
   return (
-    <CardContent>
+    <CardContent
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'stretch',
+        gap: px(8),
+        px: 0,
+        pt: px(30),
+        pb: px(8),
+        '&:last-child': { pb: px(8) },
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: px(10),
+          left: px(40),
+          right: px(40),
+          height: px(),
+          backgroundColor: colors.goldDark,
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: px(7),
+          left: '50%',
+          width: px(6),
+          height: px(6),
+          backgroundColor: colors.goldMid,
+          clipPath: 'polygon(50% 0, 100% 50%, 50% 100%, 0 50%)',
+          transform: 'translateX(-50%)',
+        },
+        '& > .MuiButton-root': {
+          flex: '1 1 0',
+          minWidth: px(46),
+          minHeight: px(24),
+          fontSize: 24,
+        },
+        [`@media (max-width: ${px(200)})`]: {
+          gap: px(4),
+          '& > .MuiButton-root': {
+            minWidth: 0,
+            fontSize: 20,
+          },
+        },
+      }}
+    >
       {character.isEditing ? (
         <>
           <Button
             variant="outlined"
             color="secondary"
-            sx={{ mr: 1 }}
             onClick={handleCancel}
           >
             Cancel
