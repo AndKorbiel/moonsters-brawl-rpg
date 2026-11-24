@@ -1,6 +1,8 @@
 import "./styles/App.scss";
 import Grid from "@mui/material/Grid";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import { gameTheme } from "./theme/gameTheme";
+import { GameGlobalStyles } from "./theme/GameGlobalStyles";
 
 import { lazy, Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,41 +68,13 @@ const SaveGame = lazy(() =>
   })),
 );
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#2c0f23",
-    },
-    secondary: {
-      main: "#fe7800",
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          "&.Mui-disabled": {
-            backgroundColor: "#666",
-            borderColor: "#666",
-            color: "#f5f5f5",
-            opacity: 1,
-          },
-        },
-      },
-    },
-  },
-});
-
 export default function App() {
   const dispatch = useDispatch();
   const game = useSelector((state: AppState) => state.game);
   const { menuOptions, statusCode } = game;
 
   useEffect(() => {
-    if (
-      statusCode === GAME_STATUS.CHARACTER_SCREEN &&
-      !game.gameStarted
-    ) {
+    if (statusCode === GAME_STATUS.CHARACTER_SCREEN && !game.gameStarted) {
       dispatch(initializeShop());
       dispatch({ type: START_GAME });
     }
@@ -109,7 +83,8 @@ export default function App() {
   if (!menuOptions) return <h1>Loading...</h1>;
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={gameTheme}>
+      <GameGlobalStyles />
       <Suspense fallback={null}>
         <Navbar status={statusCode} />
       </Suspense>

@@ -1,20 +1,17 @@
+// Legacy global rules.
+// Colors, fonts and the look of MUI components now come from client/src/theme
+// (gameTheme.ts, tokens.ts). Keep this file for LAYOUT only.
+// Rules marked TEMPORARY are removed when the matching screen is restyled
+// (see docs/design/screens/*.md).
+
 .App {
-  color: #fff;
   width: calc(100% - 32px);
 
   .main-cont {
     margin-top: 60px;
-
-    .MuiPaper-root {
-      background: rgba(40, 44, 52, 0.57);
-      color: #fff;
-    }
   }
 
-  .topbot {
-    background: rgba(40, 44, 52, 0.57);
-  }
-
+  // ---- layout utilities (unchanged) ----
   .centered {
     margin-left: auto;
     margin-right: auto;
@@ -24,37 +21,41 @@
     text-align: center;
   }
 
-  .font-white .MuiInputBase-root.MuiInput-root,
-  .font-white .custom-input,
-  .font-white .MuiFormLabel-root.MuiInputLabel-root,
-  .font-white .MuiTypography-root.MuiLink-root,
-  h4 {
-    color: #d3d3d3;
+  .padlr {
+    padding: 15px;
   }
 
-  .font-white .MuiInputBase-root .MuiInput-root:after {
-    border-bottom: 2px solid #d3d3d3;
+  .padlrextra {
+    padding: 15px 45px;
   }
 
-  .main-menu,
-  .MuiPaper-root.MuiCard-root {
-    background: rgba(40, 44, 52, 0.57);
-    border-radius: 6px;
-    color: #d3d3d3;
+  // ---- TEMPORARY: replace with <PixelPanel> when touching these components ----
+  .topbot {
+    background: var(--game-panel);
+    padding: 15px 0;
   }
 
+  // TEMPORARY: remove after screens/main-menu.md is implemented
+  .main-menu {
+    background: var(--game-panel);
+  }
+
+  // ---- tables sit directly on the window (unchanged) ----
   .MuiPaper-root.MuiTableContainer-root {
     background: none;
     box-shadow: none;
   }
 
+  // ---- Save screen: nested papers/cards stay transparent (no double frames) ----
   .save .MuiPaper-root {
-    background: rgba(40, 44, 52, 0.57);
+    background: var(--game-panel);
 
     .MuiCard-root,
     > .MuiPaper-root {
       background: none;
       box-shadow: none;
+      border: none;
+      clip-path: none;
     }
 
     .MuiAlert-standardError {
@@ -68,16 +69,8 @@
     }
   }
 
-  .main-menu {
-    button {
-      font-size: 32px;
-      color: #adadad;
-    }
-  }
-
-  .MuiCardMedia-img {
-    object-fit: contain;
-  }
+  // ---- character stats list: layout only ----
+  // TEMPORARY: remove after screens/character-creation.md is implemented
   .stats {
     display: block;
 
@@ -100,16 +93,8 @@
     }
   }
 
-  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input,
-  .css-1dhyhd5-MuiFormLabel-root-MuiInputLabel-root,
-  .MuiFormLabel-root.MuiInputLabel-root {
-    color: #d3d3d3;
-  }
-
-  .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-    border-color: #d3d3d3;
-  }
-
+  // ---- inventory slots ----
+  // TEMPORARY: remove after screens/inventory.md is implemented
   #character-inventory {
     .inventory-cont {
       margin-left: -16px;
@@ -117,25 +102,14 @@
       margin-top: 1em;
 
       .inventory-box {
-        border: 1px solid #2c2c2c;
+        border: 1px solid var(--game-gold-dark);
         aspect-ratio: 1 / 1;
         padding: 0;
       }
     }
   }
 
-  .topbot {
-    padding: 15px 0;
-  }
-
-  .padlr {
-    padding: 15px;
-  }
-
-  .padlrextra {
-    padding: 15px 45px;
-  }
-
+  // ---- high score / list tables: layout only (colors come from the theme) ----
   .menu-table {
     margin-bottom: 40px;
 
@@ -145,7 +119,6 @@
 
     th,
     td {
-      color: #d3d3d3;
       font-size: 16px;
     }
   }
