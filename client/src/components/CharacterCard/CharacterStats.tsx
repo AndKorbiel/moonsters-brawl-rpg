@@ -15,6 +15,7 @@ type CharacterStatsProps = {
   showLevel: boolean;
   points: CharacterLocalState['points'];
   stats: CharacterLocalState['stats'];
+  compact?: boolean;
 };
 
 const statIcons = {
@@ -42,6 +43,7 @@ export const CharacterStats = ({
   showGold,
   showLevel,
   handleStatsChange,
+  compact = false,
 }: CharacterStatsProps) => {
   return (
     <CardActions
@@ -52,8 +54,8 @@ export const CharacterStats = ({
         '& ul': {
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          gap: px(10),
+          alignItems: compact ? 'flex-start' : 'center',
+          gap: compact ? 0 : px(10),
           width: '100%',
           m: 0,
           p: 0,
@@ -69,13 +71,18 @@ export const CharacterStats = ({
           justifyContent: 'center',
         },
         '& .character-stat-row': {
-          display: 'grid',
-          gridTemplateColumns: character.isEditing
-            ? 'auto minmax(0, 1fr) auto'
-            : 'minmax(0, 1fr)',
+          display: compact
+            ? 'flex'
+            : 'grid',
+          gridTemplateColumns: compact
+            ? undefined
+            : character.isEditing
+              ? 'auto minmax(0, 1fr) auto'
+              : 'minmax(0, 1fr)',
           alignItems: 'center',
-          gap: px(4),
-          minHeight: px(20),
+          justifyContent: compact ? 'flex-start' : undefined,
+          gap: compact ? px(2) : px(4),
+          minHeight: compact ? px(11) : px(20),
         },
         '& .character-stat-controls': {
           display: 'flex',
@@ -92,11 +99,12 @@ export const CharacterStats = ({
         '& .character-stat-label': {
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          gap: px(4),
+          justifyContent: compact ? 'flex-start' : 'center',
+          gap: compact ? px(2) : px(4),
           minWidth: 0,
           color: colors.parchment,
           whiteSpace: 'nowrap',
+          ...(compact && { lineHeight: px(11) }),
         },
         '& .character-stat-label img': {
           width: px(9),

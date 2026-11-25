@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
-import { GAME_OVER } from "../redux/constants/game";
+import { GAME_OVER, GAME_STATUS } from "../redux/constants/game";
+import { setStatusCode } from "../redux/actions/game";
 import { buttonStates } from "../theme/tokens";
 import App from "../App";
 
@@ -40,6 +41,18 @@ describe("App", () => {
       store.getState().shop.slots.every((slot) => slot.item !== null),
     ).toBe(true);
     expect(store.getState().character.gold).toBe(20);
+  });
+
+  it("uses compact character and inventory cards during a fight", async () => {
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: /new game/i }));
+    await findShopHeading();
+    store.dispatch(setStatusCode(GAME_STATUS.FIGHT_SCREEN));
+
+    expect(await screen.findByLabelText("Weapon")).toBeInTheDocument();
+    expect(screen.getByLabelText("Off-hand")).toBeInTheDocument();
+    expect(screen.getByText("Inventory")).toBeInTheDocument();
   });
 
   it("keeps disabled shop buttons filled and visibly grey", async () => {

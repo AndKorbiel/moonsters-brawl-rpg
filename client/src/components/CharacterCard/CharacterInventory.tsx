@@ -4,6 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 import { useDispatch } from "react-redux";
@@ -20,11 +21,13 @@ import { colors, px } from "../../theme/tokens";
 type CharacterInventoryProps = {
   character: CharacterState;
   allowDrop: boolean;
+  compact?: boolean;
 };
 
 export const CharacterInventory = ({
   character,
   allowDrop,
+  compact = false,
 }: CharacterInventoryProps) => {
   const dispatch = useDispatch();
   const inventorySlots = [
@@ -65,27 +68,39 @@ export const CharacterInventory = ({
         "&:last-child": { pb: 0 },
       }}
     >
-      <Typography variant="h5" component="div" sx={{ mb: px(4) }}>
+      <Typography
+        variant={compact ? "h6" : "h5"}
+        component="div"
+        sx={
+          compact
+            ? { mb: px(2), color: colors.gold, fontSize: 16, lineHeight: px(8) }
+            : { mb: px(4) }
+        }
+      >
         Inventory
       </Typography>
 
-      <Box
-        aria-hidden="true"
-        sx={{
-          width: "100%",
-          height: px(),
-          mb: px(8),
-          backgroundColor: colors.goldDark,
-          boxShadow: `0 ${px()} 0 ${colors.outline}`,
-        }}
-      />
+      {!compact && (
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: "100%",
+            height: px(),
+            mb: px(8),
+            backgroundColor: colors.goldDark,
+            boxShadow: `0 ${px()} 0 ${colors.outline}`,
+          }}
+        />
+      )}
 
       <Box
         className="inventory-cont"
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-          gap: px(8),
+          gridTemplateColumns: compact
+            ? "repeat(4, minmax(0, 1fr))"
+            : "repeat(2, minmax(0, 1fr))",
+          gap: compact ? px(3) : px(8),
           width: "100%",
         }}
       >
@@ -100,6 +115,102 @@ export const CharacterInventory = ({
             [ItemType.MAGIC]: "Magic item",
           }[slot.type];
           const image = item?.image ?? slot.placeholder;
+          if (compact) {
+            const tooltipContent = item ? (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: px(1) }}>
+                <Typography
+                  component="div"
+                  variant="body2"
+                  sx={{ fontWeight: "bold" }}
+                >
+                  {item.name}
+                </Typography>
+                <Typography component="div" variant="body2">
+                  Rarity:{" "}
+                  {item.rarity.charAt(0).toUpperCase() + item.rarity.slice(1)}
+                </Typography>
+                <Typography component="div" variant="body2">
+                  Type: {label}
+                </Typography>
+                {item.stats.map((stat) => (
+                  <Typography component="div" variant="body2" key={stat.name}>
+                    +{stat.value} {STAT_LABELS[stat.name]}
+                  </Typography>
+                ))}
+              </Box>
+            ) : (
+              label
+            );
+
+            return (
+              <Tooltip title={tooltipContent} key={slot.type}>
+                <Box
+                  aria-label={label}
+                  className={`inventory-box ${
+                    item
+                      ? "inventory-equipped"
+                      : `inventory-placeholder inventory-placeholder-${slot.type}`
+                  }`}
+                  sx={{
+                    position: "relative",
+                    minWidth: 0,
+                    aspectRatio: "1 / 1",
+                    overflow: "hidden",
+                    backgroundColor: item ? colors.panelSolid : colors.inset,
+                    ...(!item && {
+                      boxShadow: `inset 0 0 0 ${px()} ${colors.outline}, inset 0 0 0 ${px(
+                        2,
+                      )} ${colors.inventoryEmptyFrame}, inset 0 0 0 ${px(
+                        3,
+                      )} ${colors.outline}`,
+                    }),
+                  }}
+                >
+                  {item ? (
+                    <PixelPanel
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        p: 0,
+                        boxSizing: "border-box",
+                        backgroundColor: colors.inset,
+                      }}
+                    >
+                      <CardMedia
+                        component="img"
+                        image={image}
+                        alt=""
+                        aria-hidden="true"
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                          imageRendering: "pixelated",
+                        }}
+                      />
+                    </PixelPanel>
+                  ) : (
+                    <CardMedia
+                      component="img"
+                      image={image}
+                      alt=""
+                      aria-hidden="true"
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center top",
+                        opacity: 0.55,
+                        filter: "grayscale(1) sepia(0.35)",
+                        clipPath: "inset(0 0 16% 0)",
+                      }}
+                    />
+                  )}
+                </Box>
+              </Tooltip>
+            );
+          }
+
           const slotContent = (
             <>
               <Box

@@ -65,13 +65,23 @@ export const buttonStates = {
     normal: { face: "#5a3b2e", hi: "#8a6246", sh: "#2a150f", text: "#f0dcae" },
     hover: { face: "#704a37", hi: "#a87a56", sh: "#2a150f", text: "#f0d27a" },
     pressed: { face: "#3f261e", hi: "#2a150f", sh: "#6e4e3a", text: "#c8963c" },
-    disabled: { face: "#3a3030", hi: "#3a3030", sh: "#282020", text: "#7a6a62" },
+    disabled: {
+      face: "#3a3030",
+      hi: "#3a3030",
+      sh: "#282020",
+      text: "#7a6a62",
+    },
   },
   gold: {
     normal: { face: "#c8963c", hi: "#fae496", sh: "#7a5420", text: "#2a1606" },
     hover: { face: "#dcaa4c", hi: "#ffeeaa", sh: "#7a5420", text: "#2a1606" },
     pressed: { face: "#aa7e30", hi: "#7a5420", sh: "#e6c46e", text: "#2a1606" },
-    disabled: { face: "#60523c", hi: "#60523c", sh: "#463c2c", text: "#8c7c64" },
+    disabled: {
+      face: "#60523c",
+      hi: "#60523c",
+      sh: "#463c2c",
+      text: "#8c7c64",
+    },
   },
 } satisfies Record<string, Record<string, ButtonStateColors>>;
 
@@ -84,7 +94,7 @@ export const fieldBorders = {
 } as const;
 
 export const fonts = {
-  body: '"Pixelify Sans", "Press Start 2P", monospace',
+  body: '"GameDigits", "Pixelify Sans", monospace',
 } as const;
 
 /** Variables exposed on :root so SCSS and plain CSS can use the same values. */

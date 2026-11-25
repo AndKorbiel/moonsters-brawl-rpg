@@ -137,6 +137,70 @@ describe('CharacterInventory', () => {
     ]);
   });
 
+  it('renders compact slots as an accessible four-column strip', async () => {
+    const store = createStore(rootReducer);
+    const character = store.getState().character;
+
+    const { container } = render(
+      <Provider store={store}>
+        <CharacterInventory
+          character={character}
+          allowDrop={false}
+          compact
+        />
+      </Provider>,
+    );
+
+    const inventoryGrid = container.querySelector<HTMLElement>('.inventory-cont');
+    expect(inventoryGrid).toHaveStyle({
+      gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+      gap: '6px',
+    });
+
+    const slots = Array.from(
+      container.querySelectorAll<HTMLElement>('.inventory-box'),
+    );
+    expect(slots.map((slot) => slot.getAttribute('aria-label'))).toEqual([
+      'Weapon',
+      'Off-hand',
+      'Armor',
+      'Magic item',
+    ]);
+    expect(slots.every((slot) => !slot.textContent?.trim())).toBe(true);
+
+    fireEvent.mouseOver(slots[0]);
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('Weapon');
+  });
+
+  it('shows compact equipped item details without the price', async () => {
+    const store = createStore(rootReducer);
+    const character = {
+      ...store.getState().character,
+      items: [multiStatArmor],
+    };
+
+    const { container } = render(
+      <Provider store={store}>
+        <CharacterInventory
+          character={character}
+          allowDrop={false}
+          compact
+        />
+      </Provider>,
+    );
+
+    const slots = container.querySelectorAll<HTMLElement>('.inventory-box');
+    fireEvent.mouseOver(slots[2]);
+
+    const tooltip = await screen.findByRole('tooltip');
+    expect(tooltip).toHaveTextContent('Arcane Guard');
+    expect(tooltip).toHaveTextContent('Rarity: Magic');
+    expect(tooltip).toHaveTextContent('Type: Armor');
+    expect(tooltip).toHaveTextContent('+10 Defense');
+    expect(tooltip).toHaveTextContent('+5 Life');
+    expect(tooltip).not.toHaveTextContent('Price');
+  });
+
   it('only offers item removal when dropping is enabled', () => {
     const store = createStore(rootReducer);
     const character = {

@@ -1,19 +1,6 @@
 import GlobalStyles from "@mui/material/GlobalStyles";
+import digitsFontUrl from "@fontsource/jersey-10/files/jersey-10-latin-400-normal.woff2?url";
 import { colors, cssVars, fonts, px } from "./tokens";
-
-const brickWallSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${px(40)}" height="${px(20)}" viewBox="0 0 40 20">
-  <rect width="40" height="20" fill="${colors.panelSolid}"/>
-  <g fill="${colors.appBar}">
-    <rect x="1" y="1" width="18" height="8"/>
-    <rect x="21" y="1" width="18" height="8"/>
-    <rect x="-19" y="11" width="18" height="8"/>
-    <rect x="1" y="11" width="18" height="8"/>
-    <rect x="21" y="11" width="18" height="8"/>
-  </g>
-  <path d="M0 0h40M0 10h40M0 20h40M20 0v10M0 10v10M40 10v10"
-    fill="none" stroke="${colors.outline}" stroke-width="1"/>
-</svg>`;
-const brickWall = `url("data:image/svg+xml,${encodeURIComponent(brickWallSvg)}")`;
 
 const arrow = (direction: "up" | "down", color: string): string => {
   // 5x3 pixel triangle as an inline SVG (colors come from tokens)
@@ -81,6 +68,18 @@ export function GameGlobalStyles() {
   return (
     <GlobalStyles
       styles={{
+        // Digits 0-9 only come from Jersey 10 (clear 2/5/8); all letters stay in Pixelify Sans.
+        // "GameDigits" must be the first family in fonts.body (tokens.ts).
+        // size-adjust 110% was tuned visually (docs: digit-align-test.html) so digits match the letter height.
+        "@font-face": {
+          fontFamily: "GameDigits",
+          fontStyle: "normal",
+          fontWeight: 400,
+          fontDisplay: "swap",
+          src: `url(${digitsFontUrl}) format("woff2")`,
+          unicodeRange: "U+0030-0039",
+          sizeAdjust: "110%",
+        },
         ":root": cssVars,
         body: {
           fontFamily: fonts.body,

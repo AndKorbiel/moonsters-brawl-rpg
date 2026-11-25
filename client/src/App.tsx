@@ -129,7 +129,10 @@ export default function App() {
 
             {statusCode === GAME_STATUS.FIGHT_SCREEN && (
               <>
-                <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+                <Grid
+                  size={{ xs: 12, md: 4, lg: 3 }}
+                  sx={{ alignSelf: "flex-start" }}
+                >
                   <CharacterCardContainer />
                 </Grid>
                 <Grid size={{ xs: 12, md: 4, lg: 6 }}>
