@@ -7,6 +7,7 @@ import { CharacterInventory } from '../components/CharacterCard/CharacterInvento
 import { buyItem, calculateStatsFromItem } from '../redux/actions/character';
 import { rootReducer } from '../redux/reducers';
 import { Item, ItemRarity, ItemType } from '../types';
+import { colors } from '../theme/tokens';
 
 const sword: Item = {
   id: 1,
@@ -246,11 +247,72 @@ describe('CharacterInventory', () => {
 
     expect(screen.getByText('Sword')).toBeInTheDocument();
     expect(screen.getByText('Price: 10 gold')).toBeInTheDocument();
-    expect(screen.getByText('Rarity: Common')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (_, element) =>
+          element?.tagName === 'P' &&
+          element.textContent?.replace(/\s/g, '') === 'Rarity:Common',
+      ),
+    ).toBeInTheDocument();
     expect(screen.getByText('+5 Attack')).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Drop item' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('colors rarity values in inventory details using the shared rarity palette', () => {
+    const store = createStore(rootReducer);
+    const rareOffHand = {
+      ...sword,
+      rarity: ItemRarity.RARE,
+      type: ItemType.OFF_HAND,
+    };
+    const character = {
+      ...store.getState().character,
+      items: [sword, multiStatArmor, rareOffHand],
+    };
+
+    render(
+      <Provider store={store}>
+        <CharacterInventory character={character} allowDrop={false} />
+      </Provider>,
+    );
+
+    expect(screen.getByText('Common')).toHaveStyle({
+      color: colors.rarityCommon,
+    });
+    expect(screen.getByText('Magic')).toHaveStyle({
+      color: colors.rarityMagic,
+    });
+    expect(screen.getByText('Rare')).toHaveStyle({
+      color: colors.rarityRare,
+    });
+  });
+
+  it('colors rarity values in compact inventory tooltips', async () => {
+    const store = createStore(rootReducer);
+    const character = {
+      ...store.getState().character,
+      items: [multiStatArmor],
+    };
+
+    const { container } = render(
+      <Provider store={store}>
+        <CharacterInventory
+          character={character}
+          allowDrop={false}
+          compact
+        />
+      </Provider>,
+    );
+
+    const armorSlot =
+      container.querySelectorAll<HTMLElement>('.inventory-box')[2];
+    fireEvent.mouseOver(armorSlot);
+
+    expect(await screen.findByText('Magic')).toHaveStyle({
+      color: colors.rarityMagic,
+    });
   });
 
   it('drops the item and reverses its stat bonus when selected', () => {

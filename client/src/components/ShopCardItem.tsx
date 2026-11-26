@@ -7,7 +7,7 @@ import { Item, ItemRarity, ItemType } from "../types";
 import { STAT_LABELS } from "../constants/statLabels";
 import { PixelPanel } from "./ui/PixelPanel";
 import { StatPlate } from "./ui/StatPlate";
-import { colors, px } from "../theme/tokens";
+import { colors, itemRarityColors, px } from "../theme/tokens";
 
 const ITEM_TYPE_LABELS: Record<ItemType, string> = {
   [ItemType.ARMOR]: "Armor",
@@ -20,12 +20,6 @@ const ITEM_RARITY_LABELS: Record<ItemRarity, string> = {
   [ItemRarity.COMMON]: "Common",
   [ItemRarity.MAGIC]: "Magic",
   [ItemRarity.RARE]: "Rare",
-};
-
-const ITEM_RARITY_COLORS: Record<ItemRarity, string> = {
-  [ItemRarity.COMMON]: colors.rarityCommon,
-  [ItemRarity.MAGIC]: colors.rarityMagic,
-  [ItemRarity.RARE]: colors.rarityRare,
 };
 
 const visuallyHiddenSx = {
@@ -163,7 +157,7 @@ export function ShopCardItem({
           <Box
             component="span"
             aria-hidden="true"
-            sx={{ color: ITEM_RARITY_COLORS[item.rarity] }}
+            sx={{ color: itemRarityColors[item.rarity] }}
           >
             {ITEM_RARITY_LABELS[item.rarity]}
           </Box>

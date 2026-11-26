@@ -48,13 +48,13 @@ export const useGameStart = ({
           }
           setState({
             ...state,
-            logger: [...state.logger, message],
+            logger: [...state.logger, { message, actor: 'system' }],
             isFighting: false,
             fightWon: fightWon,
           });
         }
       }
-    }, 300);
+    }, 420);
   }, [isFightOver, setIsFightIsOver, setState, state]);
 
   return { handleGameStart };

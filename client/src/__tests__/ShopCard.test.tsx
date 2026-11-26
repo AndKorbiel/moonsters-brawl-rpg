@@ -5,11 +5,43 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { initializeShop } from "../redux/actions/shop";
 import { rootReducer } from "../redux/reducers";
+import { ShopCardItem } from "../components/ShopCardItem";
 import { ShopCard } from "../modules/ShopCard";
 import { gameTheme } from "../theme/gameTheme";
 import { buttonStates, colors } from "../theme/tokens";
+import { Item, ItemRarity, ItemType } from "../types";
 
 describe("ShopCard", () => {
+  it("uses the rarity palette for each shop item rarity", () => {
+    const item: Item = {
+      id: 1,
+      name: "Test Item",
+      image: "item.png",
+      price: 10,
+      rarity: ItemRarity.COMMON,
+      type: ItemType.WEAPON,
+      stats: [{ name: "attack", value: 1 }],
+    };
+    const { container, rerender } = render(
+      <ShopCardItem item={item} disabled={false} />,
+    );
+
+    const rarityCases = [
+      [ItemRarity.COMMON, "Common", colors.rarityCommon],
+      [ItemRarity.MAGIC, "Magic", colors.rarityMagic],
+      [ItemRarity.RARE, "Rare", colors.rarityRare],
+    ] as const;
+
+    rarityCases.forEach(([rarity, label, color]) => {
+      rerender(<ShopCardItem item={{ ...item, rarity }} disabled={false} />);
+      const rarityValue = Array.from(
+        container.querySelectorAll("p span"),
+      ).find((span) => span.textContent === label);
+
+      expect(rarityValue).toHaveStyle({ color });
+    });
+  });
+
   it("shows three offers and clears the purchased slot", () => {
     const store = createStore(rootReducer);
     store.dispatch(initializeShop(() => 0));

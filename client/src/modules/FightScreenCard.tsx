@@ -1,5 +1,6 @@
+import { useState } from "react";
+
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -16,21 +17,7 @@ export function FightScreenCard() {
     currentLevel: state.character.level,
     fightStarted: state.game.fightStarted,
   }));
-
-  const StartFightButton = (
-    <Button
-      variant="contained"
-      color="secondary"
-      sx={{
-        width: px(92),
-        minHeight: px(20),
-        mx: "auto",
-      }}
-      onClick={() => dispatch({ type: START_FIGHT })}
-    >
-      Start the brawl
-    </Button>
-  );
+  const [heroStarts] = useState(() => Math.round(Math.random()) === 1);
 
   return (
     <PixelPanel
@@ -75,20 +62,11 @@ export function FightScreenCard() {
         }}
       />
 
-      {fightStarted ? (
-        <FightLogicContainer />
-      ) : (
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {StartFightButton}
-        </Box>
-      )}
+      <FightLogicContainer
+        heroStarts={heroStarts}
+        fightStarted={fightStarted}
+        onStartFight={() => dispatch({ type: START_FIGHT })}
+      />
     </PixelPanel>
   );
 }

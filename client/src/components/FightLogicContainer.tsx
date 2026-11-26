@@ -1,14 +1,14 @@
-import { useSelector } from 'react-redux';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
-import { useGameOver, useGameStart } from '../hooks';
-import { LifeBar } from './ui/LifeBar';
-import { colors, px } from '../theme/tokens';
-import { AppState, CharacterState, OpponentState } from '../types';
+import { useGameOver, useGameStart } from "../hooks";
+import { LifeBar } from "./ui/LifeBar";
+import { colors, px } from "../theme/tokens";
+import { AppState, CharacterState, OpponentState } from "../types";
 
 export type LocalFightLogicState = {
   fightWon: boolean;
@@ -17,11 +17,38 @@ export type LocalFightLogicState = {
   heroIsStarting: number;
   activePlayer: boolean;
   isFighting: boolean;
-  logger: string[];
+  logger: FightLogEntry[];
   previousOpponent: string;
 };
 
-export const FightLogicContainer = () => {
+export type FightLogEntry = {
+  message: string;
+  actor: "player" | "opponent" | "system";
+};
+
+const FIGHT_LOG_MAX_LINES = 10;
+const FIGHT_LOG_LINE_HEIGHT = 16;
+const FIGHT_LOG_GAP = 4;
+const FIGHT_LOG_PADDING = 6;
+const FIGHT_LOG_BORDER = 1;
+const FIGHT_LOG_MAX_HEIGHT = px(
+  FIGHT_LOG_MAX_LINES * FIGHT_LOG_LINE_HEIGHT +
+    (FIGHT_LOG_MAX_LINES - 1) * FIGHT_LOG_GAP +
+    2 * FIGHT_LOG_PADDING +
+    2 * FIGHT_LOG_BORDER,
+);
+
+type FightLogicContainerProps = {
+  heroStarts: boolean;
+  fightStarted: boolean;
+  onStartFight: () => void;
+};
+
+export const FightLogicContainer = ({
+  heroStarts,
+  fightStarted,
+  onStartFight,
+}: FightLogicContainerProps) => {
   const { character, opponent, opponentIsReaady } = useSelector(
     (state: AppState) => ({
       character: state.character,
@@ -34,16 +61,16 @@ export const FightLogicContainer = () => {
     fightWon: false,
     hero: null,
     opponent: null,
-    heroIsStarting: 0,
+    heroIsStarting: heroStarts ? 1 : 0,
     activePlayer: false,
     isFighting: true,
     logger: [],
-    previousOpponent: '',
+    previousOpponent: "",
   };
 
   const getLifePoints = (player: CharacterState | OpponentState) => {
     if (player) {
-      return player.stats.filter((el) => el.name === 'life')[0].value;
+      return player.stats.filter((el) => el.name === "life")[0].value;
     }
   };
 
@@ -54,6 +81,8 @@ export const FightLogicContainer = () => {
   const [localState, setLocalState] = useState(iniitialState);
   const [gameIsReady, setGameIsReady] = useState(false);
   const [isFightOver, setIsFightIsOver] = useState(false);
+  const heroName = localState.hero?.name ?? character.name;
+  const opponentName = localState.opponent?.name ?? opponent.name;
 
   const { handleGameStart } = useGameStart({
     state: localState,
@@ -71,19 +100,18 @@ export const FightLogicContainer = () => {
   });
 
   useEffect(() => {
-    if (opponentIsReaady) {
+    if (fightStarted && opponentIsReaady) {
       setGameIsReady(true);
-      const starting = Math.round(Math.random());
 
       setLocalState((currentState) => ({
         ...currentState,
         hero: { ...character },
         opponent: { ...opponent },
-        heroIsStarting: starting,
-        activePlayer: starting ? true : false,
+        heroIsStarting: heroStarts ? 1 : 0,
+        activePlayer: heroStarts,
       }));
     }
-  }, [character, opponent, opponentIsReaady]);
+  }, [character, fightStarted, heroStarts, opponent, opponentIsReaady]);
 
   useEffect(() => {
     if (gameIsReady) {
@@ -98,38 +126,37 @@ export const FightLogicContainer = () => {
     }
   }, [localState.logger.length]);
 
-  const willAttackFristLabel = useMemo(
-    () =>
-      `${
-        localState.heroIsStarting === 1
-          ? localState.hero?.name
-          : localState.opponent?.name
-      } will attack first.`,
-    [localState],
-  );
+  const firstAttacker = heroStarts
+    ? (localState.hero?.name ?? character.name)
+    : (localState.opponent?.name ?? opponent.name);
+  const willAttackFirstLabel = firstAttacker
+    ? `${firstAttacker} will attack first.`
+    : "Waiting for opponent...";
 
-  if (!gameIsReady) return <h1>Loading...</h1>;
+  if (fightStarted && !gameIsReady) return <h1>Loading...</h1>;
 
   return (
     <Box
       sx={{
-        display: 'flex',
+        display: "flex",
         flex: 1,
         minHeight: 0,
-        flexDirection: 'column',
+        flexDirection: "column",
         gap: px(6),
       }}
     >
       {[
         {
-          label: 'Your life points:',
-          value: getLifePoints(localState.hero) ?? 0,
+          label: heroName ? `${heroName}'s life points:` : "Your life points:",
+          value: getLifePoints(localState.hero ?? character) ?? 0,
           max: maxHeroLife,
           color: colors.hpFull,
         },
         {
-          label: 'Your opponent life points:',
-          value: getLifePoints(localState.opponent) ?? 0,
+          label: opponentName
+            ? `${opponentName}'s life points:`
+            : "Your opponent life points:",
+          value: getLifePoints(localState.opponent ?? opponent) ?? 0,
           max: maxOpponentLife,
           color: colors.dangerText,
         },
@@ -137,9 +164,9 @@ export const FightLogicContainer = () => {
         <Box
           key={label}
           sx={{
-            display: 'grid',
+            display: "grid",
             gridTemplateColumns: `minmax(0, 1fr) ${px(66)} auto`,
-            alignItems: 'center',
+            alignItems: "center",
             gap: px(4),
             minHeight: px(16),
           }}
@@ -147,7 +174,7 @@ export const FightLogicContainer = () => {
           <Typography
             component="span"
             variant="body1"
-            sx={{ color: colors.labelKey, overflowWrap: 'anywhere' }}
+            sx={{ color: colors.labelKey, overflowWrap: "anywhere" }}
           >
             {label}
           </Typography>
@@ -157,7 +184,7 @@ export const FightLogicContainer = () => {
             variant="body1"
             sx={{
               minWidth: px(12),
-              textAlign: 'right',
+              textAlign: "right",
               color: value < 0 ? colors.dangerText : colors.parchment,
             }}
           >
@@ -171,23 +198,28 @@ export const FightLogicContainer = () => {
         ref={logRef}
         aria-live="polite"
         sx={{
-          display: 'flex',
+          display: "flex",
           flex: 1,
           minHeight: px(72),
-          flexDirection: 'column',
-          gap: px(4),
+          maxHeight: FIGHT_LOG_MAX_HEIGHT,
+          flexDirection: "column",
+          gap: px(FIGHT_LOG_GAP),
           m: 0,
-          p: px(6),
-          overflowY: 'auto',
-          listStyle: 'none',
-          boxSizing: 'border-box',
+          p: px(FIGHT_LOG_PADDING),
+          overflowY: "auto",
+          listStyle: "none",
+          boxSizing: "border-box",
           border: `${px()} solid ${colors.outline}`,
           backgroundColor: colors.logBox,
           boxShadow: `inset 0 0 0 ${px()} ${colors.goldDark}, inset 0 0 0 ${px(2)} ${colors.outline}, inset ${px()} ${px()} 0 ${colors.insetShadow}`,
         }}
       >
-        {[willAttackFristLabel, ...localState.logger].map((line, index) => {
-          const isWin = line === 'You have won';
+        {[
+          { message: willAttackFirstLabel, actor: "system" as const },
+          ...localState.logger,
+        ].map(({ message: line, actor }, index) => {
+          const isWin = line === "You have won";
+          const isPlayerAction = actor === "player";
           const damage = line.match(/^(.*? for )(\d+)$/);
 
           return (
@@ -195,13 +227,17 @@ export const FightLogicContainer = () => {
               component="li"
               key={`${index}-${line}`}
               sx={{
-                display: 'flex',
-                alignItems: 'baseline',
-                gap: px(4),
-                minHeight: px(16),
-                color: isWin ? colors.gold : colors.parchment,
+                display: "flex",
+                alignItems: "baseline",
+                gap: px(FIGHT_LOG_GAP),
+                minHeight: px(FIGHT_LOG_LINE_HEIGHT),
+                color: isWin
+                  ? colors.gold
+                  : isPlayerAction
+                    ? colors.goldMid
+                    : colors.parchment,
                 lineHeight: px(16),
-                overflowWrap: 'anywhere',
+                overflowWrap: "anywhere",
               }}
             >
               <Box
@@ -212,23 +248,30 @@ export const FightLogicContainer = () => {
                   height: px(5),
                   flexShrink: 0,
                   backgroundColor: isWin ? colors.ember : colors.goldMid,
-                  clipPath: 'polygon(0 0, 100% 50%, 0 100%)',
-                  alignSelf: 'center',
+                  clipPath: "polygon(0 0, 100% 50%, 0 100%)",
+                  alignSelf: "center",
                 }}
               />
               <Typography
                 component="span"
                 variant="h6"
                 sx={{
-                  color: 'inherit',
-                  lineHeight: px(16),
-                  overflowWrap: 'anywhere',
+                  color: "inherit",
+                  lineHeight: px(FIGHT_LOG_LINE_HEIGHT),
+                  overflowWrap: "anywhere",
                 }}
               >
                 {damage ? (
                   <>
                     {damage[1]}
-                    <Box component="span" sx={{ color: colors.damageText }}>
+                    <Box
+                      component="span"
+                      sx={{
+                        color: isPlayerAction
+                          ? colors.goldMid
+                          : colors.damageText,
+                      }}
+                    >
                       {damage[2]}
                     </Box>
                   </>
@@ -241,14 +284,29 @@ export const FightLogicContainer = () => {
         })}
       </Box>
 
-      {!localState.isFighting && (
+      {!fightStarted ? (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={onStartFight}
+          sx={{
+            alignSelf: "center",
+            mt: "auto",
+            width: px(92),
+            minWidth: px(92),
+            minHeight: px(20),
+          }}
+        >
+          Start the brawl
+        </Button>
+      ) : !localState.isFighting ? (
         <Button
           variant="contained"
           color="secondary"
           onClick={handleFightOverState}
           sx={{
-            alignSelf: 'center',
-            mt: 'auto',
+            alignSelf: "center",
+            mt: "auto",
             width: px(92),
             minWidth: px(92),
             minHeight: px(20),
@@ -256,7 +314,7 @@ export const FightLogicContainer = () => {
         >
           Continue
         </Button>
-      )}
+      ) : null}
     </Box>
   );
 };

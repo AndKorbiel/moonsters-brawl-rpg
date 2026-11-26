@@ -34,7 +34,7 @@ const fightState: LocalFightLogicState = {
   heroIsStarting: 1,
   activePlayer: true,
   isFighting: true,
-  logger: ['Fight started'],
+  logger: [{ message: 'Fight started', actor: 'system' }],
   previousOpponent: '',
 };
 
@@ -55,7 +55,10 @@ describe('calculateFightStats', () => {
     expect(state).toEqual(originalState);
     expect(result.opponent?.stats.find((stat) => stat.name === 'life')?.value)
       .toBe(8);
-    expect(result.logger).toEqual(['Fight started', 'Hero has attacked for 12']);
+    expect(result.logger).toEqual([
+      { message: 'Fight started', actor: 'system' },
+      { message: 'Hero has attacked for 12', actor: 'player' },
+    ]);
     expect(result.logger).not.toBe(state.logger);
   });
 
@@ -73,7 +76,10 @@ describe('calculateFightStats', () => {
     expect(result.hero?.stats.find((stat) => stat.name === 'life')?.value).toBe(
       20,
     );
-    expect(result.logger.at(-1)).toBe('Opponent has been blocked');
+    expect(result.logger.at(-1)).toEqual({
+      message: 'Opponent has been blocked',
+      actor: 'opponent',
+    });
   });
 
   it('uses the opponent defense when the hero attacks', () => {
@@ -88,7 +94,10 @@ describe('calculateFightStats', () => {
 
     expect(result.opponent?.stats.find((stat) => stat.name === 'life')?.value)
       .toBe(20);
-    expect(result.logger.at(-1)).toBe('Hero has been blocked');
+    expect(result.logger.at(-1)).toEqual({
+      message: 'Hero has been blocked',
+      actor: 'player',
+    });
   });
 
   it('does not block when the roll exceeds the equal-stat 50% chance', () => {
@@ -101,7 +110,10 @@ describe('calculateFightStats', () => {
 
     expect(result.opponent?.stats.find((stat) => stat.name === 'life')?.value)
       .toBe(10);
-    expect(result.logger.at(-1)).toBe('Hero has attacked for 10');
+    expect(result.logger.at(-1)).toEqual({
+      message: 'Hero has attacked for 10',
+      actor: 'player',
+    });
   });
 
   it('uses defense divided by defense plus incoming damage', () => {
@@ -115,7 +127,10 @@ describe('calculateFightStats', () => {
 
     expect(result.opponent?.stats.find((stat) => stat.name === 'life')?.value)
       .toBe(10);
-    expect(result.logger.at(-1)).toBe('Hero has attacked for 10');
+    expect(result.logger.at(-1)).toEqual({
+      message: 'Hero has attacked for 10',
+      actor: 'player',
+    });
   });
 
   it('does not roll damage above 1.4 times attack when the maximum is fractional', () => {
@@ -127,7 +142,10 @@ describe('calculateFightStats', () => {
 
     const result = calculateFightStats(state);
 
-    expect(result.logger.at(-1)).toBe('Hero has attacked for 15');
+    expect(result.logger.at(-1)).toEqual({
+      message: 'Hero has attacked for 15',
+      actor: 'player',
+    });
   });
 });
 

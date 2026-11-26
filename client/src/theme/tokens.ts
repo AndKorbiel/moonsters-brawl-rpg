@@ -1,3 +1,5 @@
+import { ItemRarity } from "../types/shop";
+
 /**
  * Design tokens for the pixel-RPG look (see docs/design/tokens.md).
  * This file is the single source of truth: theme overrides, `sx` props and
@@ -52,6 +54,12 @@ export const colors = {
   rarityRare: "#c08cff",
   textShadow: "#0d0606",
 } as const;
+
+export const itemRarityColors: Record<ItemRarity, string> = {
+  [ItemRarity.COMMON]: colors.rarityCommon,
+  [ItemRarity.MAGIC]: colors.rarityMagic,
+  [ItemRarity.RARE]: colors.rarityRare,
+};
 
 export type ButtonStateColors = {
   face: string;

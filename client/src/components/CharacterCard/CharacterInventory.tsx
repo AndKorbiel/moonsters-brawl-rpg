@@ -16,7 +16,7 @@ import {
 } from "../../redux/actions/character";
 import { STAT_LABELS } from "../../constants/statLabels";
 import { CharacterState, Item, ItemType } from "../../types";
-import { colors, px } from "../../theme/tokens";
+import { colors, itemRarityColors, px } from "../../theme/tokens";
 
 type CharacterInventoryProps = {
   character: CharacterState;
@@ -129,7 +129,12 @@ export const CharacterInventory = ({
                 </Typography>
                 <Typography component="div" variant="body2">
                   Rarity:{" "}
-                  {item.rarity.charAt(0).toUpperCase() + item.rarity.slice(1)}
+                  <Box
+                    component="span"
+                    sx={{ color: itemRarityColors[item.rarity] }}
+                  >
+                    {item.rarity.charAt(0).toUpperCase() + item.rarity.slice(1)}
+                  </Box>
                 </Typography>
                 <Typography component="div" variant="body2">
                   Type: {label}
@@ -309,8 +314,13 @@ export const CharacterInventory = ({
                         sx={{ lineHeight: px(8) }}
                       >
                         Rarity:{" "}
-                        {item.rarity.charAt(0).toUpperCase() +
-                          item.rarity.slice(1)}
+                        <Box
+                          component="span"
+                          sx={{ color: itemRarityColors[item.rarity] }}
+                        >
+                          {item.rarity.charAt(0).toUpperCase() +
+                            item.rarity.slice(1)}
+                        </Box>
                       </Typography>
                       {item.stats.map((stat) => (
                         <Typography

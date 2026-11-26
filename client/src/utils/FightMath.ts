@@ -71,7 +71,13 @@ export const calculateFightStats = (state: LocalFightLogicState) => {
     activePlayer: !state.activePlayer,
     hero,
     opponent,
-    logger: [...state.logger, message],
+    logger: [
+      ...state.logger,
+      {
+        message,
+        actor: state.activePlayer ? ('player' as const) : ('opponent' as const),
+      },
+    ],
   };
 };
 
