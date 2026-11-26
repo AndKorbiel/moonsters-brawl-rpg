@@ -117,7 +117,9 @@ export const CharacterInventory = ({
           const image = item?.image ?? slot.placeholder;
           if (compact) {
             const tooltipContent = item ? (
-              <Box sx={{ display: "flex", flexDirection: "column", gap: px(1) }}>
+              <Box
+                sx={{ display: "flex", flexDirection: "column", gap: px(1) }}
+              >
                 <Typography
                   component="div"
                   variant="body2"
@@ -214,6 +216,7 @@ export const CharacterInventory = ({
           const slotContent = (
             <>
               <Box
+                className="inventory-image-container"
                 sx={{
                   position: "relative",
                   display: "flex",
@@ -430,6 +433,10 @@ export const CharacterInventory = ({
                 "&:hover, &:focus-within": {
                   borderColor: colors.ember,
                 },
+                "&:hover .inventory-image-container, &:focus-within .inventory-image-container":
+                  {
+                    display: "contents",
+                  },
                 "&:hover .inventory-drop-actions, &:focus-within .inventory-drop-actions":
                   {
                     opacity: 1,
